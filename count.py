@@ -3,6 +3,18 @@
 import cProfile
 from functools import reduce
 from typing import Generator, Callable
+from itertools import combinations
+
+first = {suit: tuple(range(suit)) for suit in range(1,14)}
+maxSuit = {length:tuple(range(13-length, 13)) for length in range(1,14)}
+nextSuit = {}
+for length in range(1,13):
+    suits = combinations(range(13), length)
+    curr = next(suits)
+    while curr != maxSuit[length]:
+        new = next(suits)
+        nextSuit[curr] = (new,)  # facilitate concatenation
+        curr = new 
 
 Pattern = tuple[int]
 Suit = tuple[int]
@@ -20,16 +32,6 @@ one for the case of no duplicates, one for the case of
 lengths.  This last can only occcur in a 4-suited hand. 
 '''
 
-def incrSuit(suit:Suit)->Suit:
-    # Next suit in order
-    for idx, k in enumerate(suit[::-1]):
-        if k != 12 - idx:
-            break
-    index = len(suit)-1-idx  # index from the front
-    answer = suit[:index]
-    answer += tuple(range(k+1, k+1+len(suit)-index))
-    return answer
-
 def handGenerator(nextHand:Callable[[Hand],Hand])->Callable[[Pattern], Generator[Hand, None, None]]:
     def allHands(pattern: Pattern)->Generator[Hand, None, None]:
         hand = tuple(tuple(range(suit)) for suit in pattern)
@@ -45,27 +47,29 @@ def count_different(pattern:Pattern)->int:
     assert len(pattern) == len(set(pattern)) and sum(pattern) == 25
 
     factor = 12 if len(pattern)==2 else 24
+    handLength = len(pattern)
 
     def nextHand(hand:Hand)->Hand:
         # Find the first suit, starting from clubs, that
         # can be increased
 
         for idx, suit in enumerate(hand[::-1]):
-            if suit != tuple(range(13-len(suit), 13)):
+            index = handLength - 1 - idx   #index from front of hand
+            if suit != maxSuit[pattern[index]]:
                 break
         else:
             return None  
-        index = len(hand) - 1 - idx   #index from front of hand
+        
         answer = hand[:index]
         length = pattern[index]
-        new = (incrSuit(suit),)
-        while len(hand[index]) == length:
+        new = nextSuit[suit]
+        while pattern[index] == length:
             answer += new
             index += 1
-            if index == len(hand):
+            if index == handLength:
                 break
         else:
-            answer += tuple(tuple(range(suit)) for suit in pattern[index:])
+            answer += tuple(first[suit] for suit in pattern[index:])
         return answer
 
     allHands = handGenerator(nextHand)
@@ -89,21 +93,22 @@ def count_dup3(pattern:Pattern)->int:
         # can be increased
         
         for idx, suit in enumerate(hand[::-1]):
-            if suit != tuple(range(13-len(suit), 13)):
+            index = 2 - idx   #index from front of hand
+            if suit != maxSuit[pattern[index]]:
                 break
         else:
             return None  
-        index = 2 - idx   #index from front of hand
+        
         answer = hand[:index]
         length = pattern[index]
-        new = (incrSuit(suit),)
+        new = nextSuit[suit]
         while len(hand[index]) == length:
             answer += new
             index += 1
             if index == len(hand):
                 break
         else:
-            answer += tuple(tuple(range(suit)) for suit in pattern[index:])
+            answer += tuple(first[suit] for suit in pattern[index:])
         return answer
 
     allHands = handGenerator(nextHand)
@@ -131,21 +136,22 @@ def count_dup4(pattern:Pattern)->int:
         # can be increased
     
         for idx, suit in enumerate(hand[::-1]):
-            if suit != tuple(range(13-len(suit), 13)):
+            index = 3 - idx   #index from front of hand
+            if suit != maxSuit[[pattern][index]]:
                 break
         else:
             return None  
-        index = 3 - idx   #index from front of hand
+        
         answer = hand[:index]
         length = pattern[index]
-        new = (incrSuit(suit),)
-        while len(hand[index]) == length:
+        new = nextSuit[suit]
+        while pattern[index] == length:
             answer += new
             index += 1
-            if index == len(hand):
+            if index == 4:
                 break
         else:
-            answer += tuple(tuple(range(suit)) for suit in pattern[index:])
+            answer += tuple(first[suit] for suit in pattern[index:])
         return answer
 
     allHands = handGenerator(nextHand)
@@ -173,21 +179,21 @@ def count_trips(pattern:Pattern)->int:
         # can be increased
         
         for idx, suit in enumerate(hand[::-1]):
-            if suit != tuple(range(13-len(suit), 13)):
+            index = 3 - idx   #index from front of hand
+            if suit != maxSuit[pattern[index]]:
                 break
         else:
             return None  
-        index = 3 - idx   #index from front of hand
         answer = hand[:index]
         length = pattern[index]
-        new = (incrSuit(suit),)
-        while len(hand[index]) == length:
+        new = nextSuit[suit]
+        while pattern[index] == length:
             answer += new
             index += 1
-            if index == len(hand):
+            if index == 4:
                 break
         else:
-            answer += tuple(tuple(range(suit)) for suit in pattern[index:])
+            answer += tuple(first[suit] for suit in pattern[index:])
         return answer
 
     allHands = handGenerator(nextHand)
@@ -205,6 +211,6 @@ def test():
     a = count_trips((13,4,4,4))
     print('{:,}'.format(a))
 
-# cProfile.run('test()')
+#cProfile.run('test()')
 test()
 

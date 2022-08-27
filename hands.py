@@ -308,5 +308,5 @@ def genhands(s, h, d=0, c=0):
         fout.write('  return 0;\n')
         fout.write('}')
 
-genhands(13,8,3,1)
+genhands(11,11,3,0)
 

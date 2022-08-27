@@ -2,7 +2,7 @@
 
 import cProfile
 from functools import reduce
-from typing import Generator, Callable
+from typing import Callable, Iterator
 from itertools import combinations
 
 first = {suit: tuple(range(suit)) for suit in range(1,14)}
@@ -32,8 +32,8 @@ one for the case of no duplicates, one for the case of
 lengths.  This last can only occcur in a 4-suited hand. 
 '''
 
-def handGenerator(nextHand:Callable[[Hand],Hand])->Callable[[Pattern], Generator[Hand, None, None]]:
-    def allHands(pattern: Pattern)->Generator[Hand, None, None]:
+def handGenerator(nextHand:Callable[[Hand],Hand])->Callable[[Pattern], Iterator[Hand]]:
+    def allHands(pattern: Pattern)->Iterator[Hand]:
         hand = tuple(tuple(range(suit)) for suit in pattern)
         yield hand
         while (hand := nextHand(hand)) is not None:

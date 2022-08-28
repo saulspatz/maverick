@@ -20,9 +20,9 @@ def genhands(s, h, d=0, c=0):
         for x in range(3):
             fout.write(f'  index[{x}] = 0;\n')
         fout.write('  index[3]=-1;\n')
-        fout.write('  int factor;')
+        fout.write('  int factor;\n')
+        fout.write('  long total = 0L;\n')
         if s > h > d > c > 0:                       # abcd
-            fout.write('  long total = 0L;\n')
             fout.write('  while(1) {\n')
             fout.write('    if (index[3] < END3) {\n')
             fout.write('      index[3]++;\n')
@@ -72,7 +72,7 @@ def genhands(s, h, d=0, c=0):
             fout.write('      factor = 24;\n')
             fout.write('    } else break;\n')
 
-        if s > h and d == c == 0:                        # ab
+        if s > h and d == c == 0:                       # ab
             fout.write('  while(1) {\n')
             fout.write('    if (index[1] < END1) {\n')
             fout.write('      index[1]++;\n')
@@ -86,7 +86,6 @@ def genhands(s, h, d=0, c=0):
             fout.write('      index[3] = index[2] = index[1]= 0;\n')
             fout.write('      factor = 12;\n')
             fout.write('    } else break;\n')
-            fout.write('  }\n\n')
     
         if s == h > d > c > 0:                             # aabc
             fout.write('  while(1) {\n')
@@ -249,7 +248,6 @@ def genhands(s, h, d=0, c=0):
             fout.write('    } else break;\n')
         
         if s > h == d == c > 0:                             # abbb
-            fout.write('  long total = 4L;\n')
             fout.write('  while(1) {\n')
             fout.write('    if (index[3] < index[2]) {\n')
             fout.write('      index[3]++;\n')
@@ -283,8 +281,16 @@ def genhands(s, h, d=0, c=0):
         fout. write('\ncompute:\n\n    total += factor;\n')
         fout.write('  }\n\n')
         fout.write('  printf("%ld\\n", total);\n')
-        fout.write('  return 0;\n')
         fout.write('}')
 
-genhands(8, 7, 6, 4)
+genhands(13, 9, 2, 1)
+genhands(13,10,2)
+genhands(13,12)
+genhands(11,11,2,1)
+genhands(12,6,6,1)
+genhands(13,6,3,3)
+genhands(13,6,6)
+genhands(12,12,1)
+genhands(8,8,8,1)
+genhands(13,4,4,4)
 

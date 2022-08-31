@@ -5,9 +5,16 @@ mutliplying by the appropriate factors.
 
 There are 10 patterns that the distribution can have.
 '''
+
+from math import factorial
+
+def count(n):
+    return factorial(13)//(factorial(n)*factorial(13-n))
+
 def genhands(s, h, d=0, c=0):
-    with open(f'src/{s}{h}{d}{c}.c', 'w') as fout:
+    with open(f'src/dist{s}{h}{d}{c}.c', 'w') as fout:
         fout.write('#include <stdio.h>\n')
+        fout.write('#include "../include/card.h"\n')
         fout.write(f'#include "../include/spades{s}.h"\n')
         fout.write(f'#include "../include/hearts{h}.h"\n')
         if d:
@@ -22,6 +29,14 @@ def genhands(s, h, d=0, c=0):
         fout.write('  index[3]=-1;\n')
         fout.write('  int factor;\n')
         fout.write('  long total = 0L;\n')
+        fout.write(f'  int END0  = {count(s)-1};\n')
+        if h != s:
+            fout.write(f'  int END1  = {count(h)-1};\n')
+        if d and d!= h:
+            fout.write(f'  int END2  = {count(d)-1};\n')
+        if c and c!= d:
+            fout.write(f'  int END3  = {count(c)-1};\n')
+
         if s > h > d > c > 0:                       # abcd
             fout.write('  while(1) {\n')
             fout.write('    if (index[3] < END3) {\n')
@@ -76,14 +91,13 @@ def genhands(s, h, d=0, c=0):
             fout.write('  while(1) {\n')
             fout.write('    if (index[1] < END1) {\n')
             fout.write('      index[1]++;\n')
-            fout.write('      index[3] = index[2] = 0;\n')
             fout.write('      factor = 12;\n')
             fout.write('      goto compute;\n')
             fout.write('    }\n')
 
             fout.write('    if (index[0] < END0) {\n')
             fout.write('      index[0]++;\n')
-            fout.write('      index[3] = index[2] = index[1]= 0;\n')
+            fout.write('      index[1] = 0;\n')
             fout.write('      factor = 12;\n')
             fout.write('    } else break;\n')
     

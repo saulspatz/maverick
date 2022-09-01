@@ -1,5 +1,10 @@
 __pycache__
 .vscode/
 a.out
-/src
+/knuth
+*.o
+maverick
+
+
+
 

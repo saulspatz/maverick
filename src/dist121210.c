@@ -1,41 +1,46 @@
 #include <stdio.h>
 #include "types.h"
-extern Spades12 spades12[];
-extern Hearts12 hearts12[];
-extern Diamonds1 diamonds1[];
-enum {SPADES, HEARTS, DIAMONDS, CLUBS};
 
 void dist121210() {
+  extern RankSet suit12[];
+  extern RankSet suit12[];
+  extern RankSet suit1[];
+  RankSet *SPADES_START = suit12;
+  RankSet *HEARTS_START = suit12;
+  RankSet *DIAMONDS_START = suit1;
+  RankSet *SPADES_END  = SPADES_START + 12;
+  RankSet *DIAMONDS_END  = DIAMONDS_START + 12;
+  RankSet *spades = SPADES_START;
+  RankSet *hearts = HEARTS_START;
+  RankSet *diamonds = DIAMONDS_START-1;
   int factor;
   long total = 0L;
-  int END_SPADES  = 12;
-  int END_DIAMONDS  = 12;
-  int index[4];
-  index[DIAMONDS]=-1;
-  index[HEARTS]=0;
-  index[SPADES]=0;
+  RankSet Phony = 0;
   while(1) {
-    if (index[DIAMONDS] < END_DIAMONDS) {
-      index[DIAMONDS]++;
-      factor = (index[HEARTS] == index[SPADES]) ? 12 : 24;
+    if (diamonds < DIAMONDS_END) {
+      diamonds++;
+      factor = (hearts == spades) ? 12 : 24;
       goto compute;
     }
-    if (index[HEARTS] < index[SPADES]) {
-      index[HEARTS]++;
-      index[DIAMONDS] = 0;
-      factor = (index[HEARTS] == index[SPADES]) ? 12 : 24;
+    if (hearts < spades) {
+      hearts++;
+      diamonds = DIAMONDS_START;
+      factor = (hearts == spades) ? 12 : 24;
       goto compute;
     }
-    if (index[SPADES] < END_SPADES) {
-      index[SPADES]++;
-      index[DIAMONDS] = index[HEARTS] = 0;
+    if (spades < SPADES_END) {
+      spades++;
+      diamonds = DIAMONDS_START;
+      hearts = HEARTS_START;
       factor = 24;
     } else break;
 
 compute:
 
     total += factor;
+    Phony |= *spades & *hearts & *diamonds;
   }
 
   printf("12-12-1-0: %ld\n", total);
+  fprintf(stderr, "%d", Phony);
 }

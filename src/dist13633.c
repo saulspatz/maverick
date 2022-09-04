@@ -1,50 +1,57 @@
 #include <stdio.h>
 #include "types.h"
-extern Spades13 spades13[];
-extern Hearts6 hearts6[];
-extern Diamonds3 diamonds3[];
-extern Clubs3 clubs3[];
-enum {SPADES, HEARTS, DIAMONDS, CLUBS};
 
 void dist13633() {
+  extern RankSet suit13[];
+  extern RankSet suit6[];
+  extern RankSet suit3[];
+  RankSet *SPADES_START = suit13;
+  RankSet *HEARTS_START = suit6;
+  RankSet *DIAMONDS_START = suit3;
+  RankSet *CLUBS_START = suit3;
+  RankSet *SPADES_END  = SPADES_START + 0;
+   RankSet *HEARTS_END  = HEARTS_START + 1715;
+  RankSet *DIAMONDS_END  = DIAMONDS_START + 285;
+  RankSet *spades = SPADES_START;
+  RankSet *hearts = HEARTS_START;
+   RankSet *diamonds = DIAMONDS_START;
+  RankSet *clubs = CLUBS_START-1;
   int factor;
   long total = 0L;
-  int END_SPADES  = 0;
-  int END_HEARTS  = 1715;
-  int END_DIAMONDS  = 285;
-  int index[4];
-  index[CLUBS]=-1;
-  index[DIAMONDS]=0;
-  index[HEARTS]=0;
-  index[SPADES]=0;
+  RankSet Phony = 0;
   while(1) {
-    if (index[CLUBS] < index[DIAMONDS]) {
-      index[CLUBS]++;
-      factor = (index[CLUBS]==index[DIAMONDS]) ? 12 : 24;
+    if (clubs < diamonds) {
+      clubs++;
+      factor = (clubs==diamonds) ? 12 : 24;
       goto compute;
     }
-    if (index[DIAMONDS] < END_DIAMONDS) {
-      index[DIAMONDS]++;
-      index[CLUBS] = 0;
+    if (diamonds < DIAMONDS_END) {
+      diamonds++;
+      clubs = CLUBS_START;
       factor = 24;
       goto compute;
     }
-    if (index[HEARTS] < END_HEARTS) {
-      index[HEARTS]++;
-      index[CLUBS] = index[DIAMONDS] = 0;
+    if (hearts < HEARTS_END) {
+      hearts++;
+      clubs = CLUBS_START;
+      diamonds = DIAMONDS_START;
       factor = 12;
       goto compute;
     }
-    if (index[SPADES] < END_SPADES) {
-      index[SPADES]++;
-      index[CLUBS] = index[DIAMONDS] = index[HEARTS] = 0;
+    if (spades < SPADES_END) {
+      spades++;
+      clubs = CLUBS_START;
+      diamonds = DIAMONDS_START;
+      hearts = HEARTS_START;
       factor = 12;
     } else break;
 
 compute:
 
     total += factor;
+    Phony |= *spades & *hearts & *diamonds & *clubs;
   }
 
   printf("13-6-3-3: %ld\n", total);
+  fprintf(stderr, "%d", Phony);
 }

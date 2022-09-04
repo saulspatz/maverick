@@ -1,128 +1,42 @@
 #ifndef TYPES_H
 #define TYPES_H
-typedef struct {
-  unsigned char rank;
-  unsigned char suit;
-} Card;
 
-typedef unsigned int RankSet; typedef struct {
-  Card cards[7];
-  RankSet ranks;} Spades7;
+// count{n} =  13 choose n
+#define count1 13
+#define count2 78
+#define count3 286
+#define count4 715
+#define count5 1287
+#define count6 1716
+#define count7 count6
+#define count8 count5
+#define count9 count4
+#define count10 count3
+#define count11 count2
+#define count12 count1
+#define count13 1
 
-typedef struct {
-  Card cards[8];
-  RankSet ranks;} Spades8;
+typedef unsigned int Card;
+typedef unsigned short RankSet;
 
-typedef struct {
-  Card cards[9];
-  RankSet ranks;} Spades9;
+typedef RankSet Suit1[count1];
+typedef RankSet Suit2[count2];
+typedef RankSet Suit3[count3];
+typedef RankSet Suit4[count4];
+typedef RankSet Suit5[count5];
+typedef RankSet Suit6[count6];
+typedef RankSet Suit7[count7];
+typedef RankSet Suit8[count8];
+typedef RankSet Suit9[count9];
+typedef RankSet Suit10[count10];
+typedef RankSet Suit11[count11];
+typedef RankSet Suit12[count12];
+typedef RankSet Suit13[count13];
 
-typedef struct {
-  Card cards[10];
-  RankSet ranks;} Spades10;
-
-typedef struct {
-  Card cards[11];
-  RankSet ranks;} Spades11;
-
-typedef struct {
-  Card cards[12];
-  RankSet ranks;} Spades12;
-
-typedef struct {
-  Card cards[13];
-  RankSet ranks;} Spades13;
-
-typedef struct {
-  Card cards[4];
-  RankSet ranks;} Hearts4;
-
-typedef struct {
-  Card cards[5];
-  RankSet ranks;} Hearts5;
-
-typedef struct {
-  Card cards[6];
-  RankSet ranks;} Hearts6;
-
-typedef struct {
-  Card cards[7];
-  RankSet ranks;} Hearts7;
-
-typedef struct {
-  Card cards[8];
-  RankSet ranks;} Hearts8;
-
-typedef struct {
-  Card cards[9];
-  RankSet ranks;} Hearts9;
-
-typedef struct {
-  Card cards[10];
-  RankSet ranks;} Hearts10;
-
-typedef struct {
-  Card cards[11];
-  RankSet ranks;} Hearts11;
-
-typedef struct {
-  Card cards[12];
-  RankSet ranks;} Hearts12;
-
-typedef struct {
-  Card cards[1];
-  RankSet ranks;} Diamonds1;
-
-typedef struct {
-  Card cards[2];
-  RankSet ranks;} Diamonds2;
-
-typedef struct {
-  Card cards[3];
-  RankSet ranks;} Diamonds3;
-
-typedef struct {
-  Card cards[4];
-  RankSet ranks;} Diamonds4;
-
-typedef struct {
-  Card cards[5];
-  RankSet ranks;} Diamonds5;
-
-typedef struct {
-  Card cards[6];
-  RankSet ranks;} Diamonds6;
-
-typedef struct {
-  Card cards[7];
-  RankSet ranks;} Diamonds7;
-
-typedef struct {
-  Card cards[8];
-  RankSet ranks;} Diamonds8;
-
-typedef struct {
-  Card cards[1];
-  RankSet ranks;} Clubs1;
-
-typedef struct {
-  Card cards[2];
-  RankSet ranks;} Clubs2;
-
-typedef struct {
-  Card cards[3];
-  RankSet ranks;} Clubs3;
-
-typedef struct {
-  Card cards[4];
-  RankSet ranks;} Clubs4;
-
-typedef struct {
-  Card cards[5];
-  RankSet ranks;} Clubs5;
-
-typedef struct {
-  Card cards[6];
-  RankSet ranks;} Clubs6;
+#define ACE 1
+#define JACK 11
+#define QUEEN 12
+#define KING 13
+#define HIGH_ACE 14 
 
 #endif

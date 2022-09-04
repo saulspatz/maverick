@@ -10,7 +10,7 @@ My experience with the problem indicates that we need to use heuristics, where a
 
 I have a Maverick solitaire game that I've been playing in order to get an idea about the heuristics.  I should make a clone that allows me to set the suit distribution so that I can try to develop heuristics for specific distributions.
 
-Some distributions occur so rarely that it wouldn't be worthwhile to develop a heuristic; we'd go straight to exhaustive search.  In the past, I've tried two different exhaustive search method.  One was Knuth's dancing links.  The other was to count for each card, the number of pat hands in which it occurs.  Then I sorted the deal in increasing order of this number, and tried to find five pat hands that would over the deal.  I experimented with adjusting the counts and resorting the after each choice of a hand.  I think this turned out to be slower, but I was using quick sort.  Tim sort might give much better results.  
+Some distributions occur so rarely that it wouldn't be worthwhile to develop a heuristic; we'd go straight to exhaustive search.  In the past, I've tried two different exhaustive search method.  One was Knuth's dancing links.  The other was to count for each card, the number of pat hands in which it occurs.  Then I sorted the deal in increasing order of this number, and tried to find five pat hands that would over the deal.  I experimented with adjusting the counts and resorting the after each choice of a hand.  I think this turned out to be slower, but I was using quick sort.  Timsort might give much better results.  
 
 Both these methods require generating all possible pat hand that can be made from the deal, and if there is no solution, there's no way to avoid this.  But, of course, around 98% of the deals have a solution, so we should look for a less expensive way of looking for a pat hand if the heuristic fails.  For example, suppose I haven't been able to find a good heuristic for the 9-8-6-2 distribution.  Does it make sense to generate all the pat hands immediately?  Say that the 2 Clubs can't occur in the same straight.   Would it be better to construct all the pat hands that contain one of the clubs and check if any two containing both Clubs also comprise 4 Spades, 3 Hearts and a Diamond?
 
@@ -21,8 +21,9 @@ To allow for interruption, the workers will periodically log their progress.  Th
 
 The sleep interval for the parent should be a variable.  Early in the process, when the long taks are running, it will be fine if the parent wakes up once every few hours.  Later on, when smaller tasks are running, the interval should be much shorter.
 
-The big data strcutures, namely the suit distributions and the facilities for exhaustive search can be in globabl memory, since the children egt their own copies.  
+The big data strcutures, namely the suit distributions and the facilities for exhaustive search can be in global memory, since the children get their own copies.  
 
-Question: Since there is so little communication between parent and child, might it be better to use shared memory, rather than pipes?  What are the tradeoffs?
+Is it really necessary to have all these suits?  Can I make do with just the bitsets?  If so, all the suits for a particular distribution will easily fit in L1 D-cache which is 64 KiB on my laptop.  There would be a slowdown in the setup for exhaustive search, but the hope is to avoid this for the majority of deals.  If this turns out to be feasible, and more efficient, what about using pointers instead of array indices.  I couldn't use easily pointers when the suits were distinct, because determinig if the Hearts were better than the Diamonds say, when both suits had the same length would have been too expensive, but if they were the same suit, it would just be a pointer comparison.  It seems like switching to pointers is a no brainer. It certainly won't be slower, and it won't complicate the code much.
+
 
  

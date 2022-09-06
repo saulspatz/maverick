@@ -35,7 +35,7 @@ def genhands(s, h, d=0, c=0):
             fout.write(f'  RankSet *CLUBS_START = suit{c};\n')
         fout.write(f'  RankSet *SPADES_END  = SPADES_START + {count(s)-1};\n')
         if h != s:
-            fout.write(f'   RankSet *HEARTS_END  = HEARTS_START + {count(h)-1};\n')
+            fout.write(f'  RankSet *HEARTS_END  = HEARTS_START + {count(h)-1};\n')
         if d and d!= h:
             fout.write(f'  RankSet *DIAMONDS_END  = DIAMONDS_START + {count(d)-1};\n')
         if c and c!= d:
@@ -46,7 +46,7 @@ def genhands(s, h, d=0, c=0):
         else:
             fout.write('  RankSet *hearts = HEARTS_START-1;\n')
         if d and c:
-            fout.write('   RankSet *diamonds = DIAMONDS_START;\n')
+            fout.write('  RankSet *diamonds = DIAMONDS_START;\n')
         elif d:
             fout.write('  RankSet *diamonds = DIAMONDS_START-1;\n')
         if c:

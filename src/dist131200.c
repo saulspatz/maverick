@@ -9,7 +9,7 @@ void dist131200() {
   RankSet *SPADES_START = suit13;
   RankSet *HEARTS_START = suit12;
   RankSet *SPADES_END  = SPADES_START + 0;
-   RankSet *HEARTS_END  = HEARTS_START + 12;
+  RankSet *HEARTS_END  = HEARTS_START + 12;
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START-1;
   int factor;

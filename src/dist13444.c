@@ -13,10 +13,10 @@ void dist13444() {
   extern Cards4 clubs4[];
   RankSet *CLUBS_START = suit4;
   RankSet *SPADES_END  = SPADES_START + 0;
-   RankSet *HEARTS_END  = HEARTS_START + 714;
+  RankSet *HEARTS_END  = HEARTS_START + 714;
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
-   RankSet *diamonds = DIAMONDS_START;
+  RankSet *diamonds = DIAMONDS_START;
   RankSet *clubs = CLUBS_START-1;
   int factor;
   long total = 0L;

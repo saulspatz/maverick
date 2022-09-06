@@ -88,10 +88,15 @@ def main():
 
     The total should come out to the precomputed total.
     '''
-
+    def dist(p):
+        while len(p) < 4:
+            p += (0,)
+        return '-'.join(str(x) for x in p)
+    
     total = binomial(52, 25)
     found = 0
 
+    results = {}
     for p in partitions(25, 4, 13):
         match p:
             case (s, h):
@@ -124,7 +129,17 @@ def main():
                 hands += 4 * c1 * c3              # three suits identical
 
         found += hands
-        print(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%} ')
+        results[p] = hands
+    
+    # partitions.txt sorted lexicographically by partitons 
+    with open('partitions.txt', 'w') as fout:
+        for p, hands in sorted(list(results.items()), reverse=True):
+            fout.write(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%}\n')
+
+    # partitions2.txt is in the same format as test runs, for easy comaprison
+    with open('partitions2.txt', 'w') as fout:
+        for p, hands in sorted(list(results.items()), key = lambda x:x[1], reverse=True):
+            fout.write(f'{dist(p)}: {hands}\n')
 
     assert found == total
 

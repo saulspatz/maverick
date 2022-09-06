@@ -17,7 +17,7 @@ void dist8881() {
   RankSet *CLUBS_END  = CLUBS_START + 12;
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
-   RankSet *diamonds = DIAMONDS_START;
+  RankSet *diamonds = DIAMONDS_START;
   RankSet *clubs = CLUBS_START-1;
   int factor;
   long total = 0L;

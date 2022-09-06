@@ -3,7 +3,7 @@ from math import factorial
 from functools import reduce
 
 def bits(seq):
-    return reduce(lambda x,y: x | (1<<y), seq, 0)
+    return reduce(lambda x,y: x | (1<<(y-1)), seq, 0)
 
 def count(n):
     return factorial(13)//(factorial(n)*factorial(13-n))

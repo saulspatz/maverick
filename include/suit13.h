@@ -2,6 +2,6 @@
 #define SUIT13_H
 #include "types.h"
 RankSet suit13[1] = {
-  16382,
+  8191,
 };
 #endif

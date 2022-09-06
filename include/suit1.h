@@ -2,6 +2,7 @@
 #define SUIT1_H
 #include "types.h"
 RankSet suit1[13] = {
+  1,
   2,
   4,
   8,
@@ -14,6 +15,5 @@ RankSet suit1[13] = {
   1024,
   2048,
   4096,
-  8192,
 };
 #endif

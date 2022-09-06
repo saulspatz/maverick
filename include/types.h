@@ -16,7 +16,6 @@
 #define count12 count1
 #define count13 1
 
-typedef unsigned int Card;
 typedef unsigned short RankSet;
 
 typedef RankSet Suit1[count1];
@@ -32,6 +31,25 @@ typedef RankSet Suit10[count10];
 typedef RankSet Suit11[count11];
 typedef RankSet Suit12[count12];
 typedef RankSet Suit13[count13];
+
+typedef struct {
+    unsigned char rank;
+    unsigned char suit;
+} Card;
+
+typedef Card Cards1[count1];
+typedef Card Cards2[count2];
+typedef Card Cards3[count3];
+typedef Card Cards4[count4];
+typedef Card Cards5[count5];
+typedef Card Cards6[count6];
+typedef Card Cards7[count7];
+typedef Card Cards8[count8];
+typedef Card Cards9[count9];
+typedef Card Cards10[count10];
+typedef Card Cards11[count11];
+typedef Card Cards12[count12];
+typedef Card Cards13[count13];
 
 #define ACE 1
 #define JACK 11

@@ -1,102 +1,283 @@
-dist1312.o: ../include/suit13.h ../include/suit12.h ../include/types.h
-dist13111.o: ../include/suit13.h ../include/suit11.h ../include/suit1.h ../include/types.h
-dist13102.o: ../include/suit13.h ../include/suit10.h ../include/suit2.h ../include/types.h
-dist131011.o:../include/suit13.h ../include/suit10.h ../include/suit1.h ../include/suit1.h ../include/types.h
-dist1393.o: ../include/suit13.h ../include/suit9.h ../include/suit3.h ../include/types.h
-dist13921.o:../include/suit13.h ../include/suit9.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist1384.o: ../include/suit13.h ../include/suit8.h ../include/suit4.h ../include/types.h
-dist13831.o:../include/suit13.h ../include/suit8.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist13822.o:../include/suit13.h ../include/suit8.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1375.o: ../include/suit13.h ../include/suit7.h ../include/suit5.h ../include/types.h
-dist13741.o:../include/suit13.h ../include/suit7.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist13732.o:../include/suit13.h ../include/suit7.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1366.o: ../include/suit13.h ../include/suit6.h ../include/suit6.h ../include/types.h
-dist13651.o:../include/suit13.h ../include/suit6.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist13642.o:../include/suit13.h ../include/suit6.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist13633.o:../include/suit13.h ../include/suit6.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist13552.o:../include/suit13.h ../include/suit5.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist13543.o:../include/suit13.h ../include/suit5.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist13444.o:../include/suit13.h ../include/suit4.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist12121.o: ../include/suit12.h ../include/suit12.h ../include/suit1.h ../include/types.h
-dist12112.o: ../include/suit12.h ../include/suit11.h ../include/suit2.h ../include/types.h
-dist121111.o:../include/suit12.h ../include/suit11.h ../include/suit1.h ../include/suit1.h ../include/types.h
-dist12103.o: ../include/suit12.h ../include/suit10.h ../include/suit3.h ../include/types.h
-dist121021.o:../include/suit12.h ../include/suit10.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist1294.o: ../include/suit12.h ../include/suit9.h ../include/suit4.h ../include/types.h
-dist12931.o:../include/suit12.h ../include/suit9.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist12922.o:../include/suit12.h ../include/suit9.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1285.o: ../include/suit12.h ../include/suit8.h ../include/suit5.h ../include/types.h
-dist12841.o:../include/suit12.h ../include/suit8.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist12832.o:../include/suit12.h ../include/suit8.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1276.o: ../include/suit12.h ../include/suit7.h ../include/suit6.h ../include/types.h
-dist12751.o:../include/suit12.h ../include/suit7.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist12742.o:../include/suit12.h ../include/suit7.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist12733.o:../include/suit12.h ../include/suit7.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist12661.o:../include/suit12.h ../include/suit6.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist12652.o:../include/suit12.h ../include/suit6.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist12643.o:../include/suit12.h ../include/suit6.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist12553.o:../include/suit12.h ../include/suit5.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist12544.o:../include/suit12.h ../include/suit5.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist11113.o: ../include/suit11.h ../include/suit11.h ../include/suit3.h ../include/types.h
-dist111121.o:../include/suit11.h ../include/suit11.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist11104.o: ../include/suit11.h ../include/suit10.h ../include/suit4.h ../include/types.h
-dist111031.o:../include/suit11.h ../include/suit10.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist111022.o:../include/suit11.h ../include/suit10.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1195.o: ../include/suit11.h ../include/suit9.h ../include/suit5.h ../include/types.h
-dist11941.o:../include/suit11.h ../include/suit9.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist11932.o:../include/suit11.h ../include/suit9.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1186.o: ../include/suit11.h ../include/suit8.h ../include/suit6.h ../include/types.h
-dist11851.o:../include/suit11.h ../include/suit8.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist11842.o:../include/suit11.h ../include/suit8.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist11833.o:../include/suit11.h ../include/suit8.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist1177.o: ../include/suit11.h ../include/suit7.h ../include/suit7.h ../include/types.h
-dist11761.o:../include/suit11.h ../include/suit7.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist11752.o:../include/suit11.h ../include/suit7.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist11743.o:../include/suit11.h ../include/suit7.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist11662.o:../include/suit11.h ../include/suit6.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist11653.o:../include/suit11.h ../include/suit6.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist11644.o:../include/suit11.h ../include/suit6.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist11554.o:../include/suit11.h ../include/suit5.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist10105.o: ../include/suit10.h ../include/suit10.h ../include/suit5.h ../include/types.h
-dist101041.o:../include/suit10.h ../include/suit10.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist101032.o:../include/suit10.h ../include/suit10.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1096.o: ../include/suit10.h ../include/suit9.h ../include/suit6.h ../include/types.h
-dist10951.o:../include/suit10.h ../include/suit9.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist10942.o:../include/suit10.h ../include/suit9.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist10933.o:../include/suit10.h ../include/suit9.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist1087.o: ../include/suit10.h ../include/suit8.h ../include/suit7.h ../include/types.h
-dist10861.o:../include/suit10.h ../include/suit8.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist10852.o:../include/suit10.h ../include/suit8.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist10843.o:../include/suit10.h ../include/suit8.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist10771.o:../include/suit10.h ../include/suit7.h ../include/suit7.h ../include/suit1.h ../include/types.h
-dist10762.o:../include/suit10.h ../include/suit7.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist10753.o:../include/suit10.h ../include/suit7.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist10744.o:../include/suit10.h ../include/suit7.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist10663.o:../include/suit10.h ../include/suit6.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist10654.o:../include/suit10.h ../include/suit6.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist10555.o:../include/suit10.h ../include/suit5.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist997.o: ../include/suit9.h ../include/suit9.h ../include/suit7.h ../include/types.h
-dist9961.o:../include/suit9.h ../include/suit9.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist9952.o:../include/suit9.h ../include/suit9.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist9943.o:../include/suit9.h ../include/suit9.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist988.o: ../include/suit9.h ../include/suit8.h ../include/suit8.h ../include/types.h
-dist9871.o:../include/suit9.h ../include/suit8.h ../include/suit7.h ../include/suit1.h ../include/types.h
-dist9862.o:../include/suit9.h ../include/suit8.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist9853.o:../include/suit9.h ../include/suit8.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist9844.o:../include/suit9.h ../include/suit8.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist9772.o:../include/suit9.h ../include/suit7.h ../include/suit7.h ../include/suit2.h ../include/types.h
-dist9763.o:../include/suit9.h ../include/suit7.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist9754.o:../include/suit9.h ../include/suit7.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist9664.o:../include/suit9.h ../include/suit6.h ../include/suit6.h ../include/suit4.h ../include/types.h
-dist9655.o:../include/suit9.h ../include/suit6.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist8881.o:../include/suit8.h ../include/suit8.h ../include/suit8.h ../include/suit1.h ../include/types.h
-dist8872.o:../include/suit8.h ../include/suit8.h ../include/suit7.h ../include/suit2.h ../include/types.h
-dist8863.o:../include/suit8.h ../include/suit8.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist8854.o:../include/suit8.h ../include/suit8.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist8773.o:../include/suit8.h ../include/suit7.h ../include/suit7.h ../include/suit3.h ../include/types.h
-dist8764.o:../include/suit8.h ../include/suit7.h ../include/suit6.h ../include/suit4.h ../include/types.h
-dist8755.o:../include/suit8.h ../include/suit7.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist8665.o:../include/suit8.h ../include/suit6.h ../include/suit6.h ../include/suit5.h ../include/types.h
-dist7774.o:../include/suit7.h ../include/suit7.h ../include/suit7.h ../include/suit4.h ../include/types.h
-dist7765.o:../include/suit7.h ../include/suit7.h ../include/suit6.h ../include/suit5.h ../include/types.h
-dist7666.o:../include/suit7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h ../include/types.h
+dist1312.o: ../include/suit13.h ../include/suit12.h ../include/spades13.h ../include/hearts12.h\
+    ../include/types.h
+dist13111.o: ../include/suit13.h ../include/suit11.h ../include/suit1.h \
+   ../include/spades13.h    ../include/hearts11.h    ../include/diamonds1.h    ../include/types.h
+dist13102.o: ../include/suit13.h ../include/suit10.h ../include/suit2.h \
+   ../include/spades13.h    ../include/hearts10.h    ../include/diamonds2.h    ../include/types.h
+dist131011.o:../include/suit13.h ../include/suit10.h ../include/suit1.h ../include/suit1.h \
+    ../include/spades13.h     ../include/hearts10.h     ../include/diamonds1.h     ../include/clubs1.h \
+    ../include/types.h
+dist1393.o: ../include/suit13.h ../include/suit9.h ../include/suit3.h \
+   ../include/spades13.h    ../include/hearts9.h    ../include/diamonds3.h    ../include/types.h
+dist13921.o:../include/suit13.h ../include/suit9.h ../include/suit2.h ../include/suit1.h \
+    ../include/spades13.h     ../include/hearts9.h     ../include/diamonds2.h     ../include/clubs1.h \
+    ../include/types.h
+dist1384.o: ../include/suit13.h ../include/suit8.h ../include/suit4.h \
+   ../include/spades13.h    ../include/hearts8.h    ../include/diamonds4.h    ../include/types.h
+dist13831.o:../include/suit13.h ../include/suit8.h ../include/suit3.h ../include/suit1.h \
+    ../include/spades13.h     ../include/hearts8.h     ../include/diamonds3.h     ../include/clubs1.h \
+    ../include/types.h
+dist13822.o:../include/suit13.h ../include/suit8.h ../include/suit2.h ../include/suit2.h \
+    ../include/spades13.h     ../include/hearts8.h     ../include/diamonds2.h     ../include/clubs2.h \
+    ../include/types.h
+dist1375.o: ../include/suit13.h ../include/suit7.h ../include/suit5.h \
+   ../include/spades13.h    ../include/hearts7.h    ../include/diamonds5.h    ../include/types.h
+dist13741.o:../include/suit13.h ../include/suit7.h ../include/suit4.h ../include/suit1.h \
+    ../include/spades13.h     ../include/hearts7.h     ../include/diamonds4.h     ../include/clubs1.h \
+    ../include/types.h
+dist13732.o:../include/suit13.h ../include/suit7.h ../include/suit3.h ../include/suit2.h \
+    ../include/spades13.h     ../include/hearts7.h     ../include/diamonds3.h     ../include/clubs2.h \
+    ../include/types.h
+dist1366.o: ../include/suit13.h ../include/suit6.h ../include/suit6.h \
+   ../include/spades13.h    ../include/hearts6.h    ../include/diamonds6.h    ../include/types.h
+dist13651.o:../include/suit13.h ../include/suit6.h ../include/suit5.h ../include/suit1.h \
+    ../include/spades13.h     ../include/hearts6.h     ../include/diamonds5.h     ../include/clubs1.h \
+    ../include/types.h
+dist13642.o:../include/suit13.h ../include/suit6.h ../include/suit4.h ../include/suit2.h \
+    ../include/spades13.h     ../include/hearts6.h     ../include/diamonds4.h     ../include/clubs2.h \
+    ../include/types.h
+dist13633.o:../include/suit13.h ../include/suit6.h ../include/suit3.h ../include/suit3.h \
+    ../include/spades13.h     ../include/hearts6.h     ../include/diamonds3.h     ../include/clubs3.h \
+    ../include/types.h
+dist13552.o:../include/suit13.h ../include/suit5.h ../include/suit5.h ../include/suit2.h \
+    ../include/spades13.h     ../include/hearts5.h     ../include/diamonds5.h     ../include/clubs2.h \
+    ../include/types.h
+dist13543.o:../include/suit13.h ../include/suit5.h ../include/suit4.h ../include/suit3.h \
+    ../include/spades13.h     ../include/hearts5.h     ../include/diamonds4.h     ../include/clubs3.h \
+    ../include/types.h
+dist13444.o:../include/suit13.h ../include/suit4.h ../include/suit4.h ../include/suit4.h \
+    ../include/spades13.h     ../include/hearts4.h     ../include/diamonds4.h     ../include/clubs4.h \
+    ../include/types.h
+dist12121.o: ../include/suit12.h ../include/suit12.h ../include/suit1.h \
+   ../include/spades12.h    ../include/hearts12.h    ../include/diamonds1.h    ../include/types.h
+dist12112.o: ../include/suit12.h ../include/suit11.h ../include/suit2.h \
+   ../include/spades12.h    ../include/hearts11.h    ../include/diamonds2.h    ../include/types.h
+dist121111.o:../include/suit12.h ../include/suit11.h ../include/suit1.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts11.h     ../include/diamonds1.h     ../include/clubs1.h \
+    ../include/types.h
+dist12103.o: ../include/suit12.h ../include/suit10.h ../include/suit3.h \
+   ../include/spades12.h    ../include/hearts10.h    ../include/diamonds3.h    ../include/types.h
+dist121021.o:../include/suit12.h ../include/suit10.h ../include/suit2.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts10.h     ../include/diamonds2.h     ../include/clubs1.h \
+    ../include/types.h
+dist1294.o: ../include/suit12.h ../include/suit9.h ../include/suit4.h \
+   ../include/spades12.h    ../include/hearts9.h    ../include/diamonds4.h    ../include/types.h
+dist12931.o:../include/suit12.h ../include/suit9.h ../include/suit3.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts9.h     ../include/diamonds3.h     ../include/clubs1.h \
+    ../include/types.h
+dist12922.o:../include/suit12.h ../include/suit9.h ../include/suit2.h ../include/suit2.h \
+    ../include/spades12.h     ../include/hearts9.h     ../include/diamonds2.h     ../include/clubs2.h \
+    ../include/types.h
+dist1285.o: ../include/suit12.h ../include/suit8.h ../include/suit5.h \
+   ../include/spades12.h    ../include/hearts8.h    ../include/diamonds5.h    ../include/types.h
+dist12841.o:../include/suit12.h ../include/suit8.h ../include/suit4.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts8.h     ../include/diamonds4.h     ../include/clubs1.h \
+    ../include/types.h
+dist12832.o:../include/suit12.h ../include/suit8.h ../include/suit3.h ../include/suit2.h \
+    ../include/spades12.h     ../include/hearts8.h     ../include/diamonds3.h     ../include/clubs2.h \
+    ../include/types.h
+dist1276.o: ../include/suit12.h ../include/suit7.h ../include/suit6.h \
+   ../include/spades12.h    ../include/hearts7.h    ../include/diamonds6.h    ../include/types.h
+dist12751.o:../include/suit12.h ../include/suit7.h ../include/suit5.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts7.h     ../include/diamonds5.h     ../include/clubs1.h \
+    ../include/types.h
+dist12742.o:../include/suit12.h ../include/suit7.h ../include/suit4.h ../include/suit2.h \
+    ../include/spades12.h     ../include/hearts7.h     ../include/diamonds4.h     ../include/clubs2.h \
+    ../include/types.h
+dist12733.o:../include/suit12.h ../include/suit7.h ../include/suit3.h ../include/suit3.h \
+    ../include/spades12.h     ../include/hearts7.h     ../include/diamonds3.h     ../include/clubs3.h \
+    ../include/types.h
+dist12661.o:../include/suit12.h ../include/suit6.h ../include/suit6.h ../include/suit1.h \
+    ../include/spades12.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs1.h \
+    ../include/types.h
+dist12652.o:../include/suit12.h ../include/suit6.h ../include/suit5.h ../include/suit2.h \
+    ../include/spades12.h     ../include/hearts6.h     ../include/diamonds5.h     ../include/clubs2.h \
+    ../include/types.h
+dist12643.o:../include/suit12.h ../include/suit6.h ../include/suit4.h ../include/suit3.h \
+    ../include/spades12.h     ../include/hearts6.h     ../include/diamonds4.h     ../include/clubs3.h \
+    ../include/types.h
+dist12553.o:../include/suit12.h ../include/suit5.h ../include/suit5.h ../include/suit3.h \
+    ../include/spades12.h     ../include/hearts5.h     ../include/diamonds5.h     ../include/clubs3.h \
+    ../include/types.h
+dist12544.o:../include/suit12.h ../include/suit5.h ../include/suit4.h ../include/suit4.h \
+    ../include/spades12.h     ../include/hearts5.h     ../include/diamonds4.h     ../include/clubs4.h \
+    ../include/types.h
+dist11113.o: ../include/suit11.h ../include/suit11.h ../include/suit3.h \
+   ../include/spades11.h    ../include/hearts11.h    ../include/diamonds3.h    ../include/types.h
+dist111121.o:../include/suit11.h ../include/suit11.h ../include/suit2.h ../include/suit1.h \
+    ../include/spades11.h     ../include/hearts11.h     ../include/diamonds2.h     ../include/clubs1.h \
+    ../include/types.h
+dist11104.o: ../include/suit11.h ../include/suit10.h ../include/suit4.h \
+   ../include/spades11.h    ../include/hearts10.h    ../include/diamonds4.h    ../include/types.h
+dist111031.o:../include/suit11.h ../include/suit10.h ../include/suit3.h ../include/suit1.h \
+    ../include/spades11.h     ../include/hearts10.h     ../include/diamonds3.h     ../include/clubs1.h \
+    ../include/types.h
+dist111022.o:../include/suit11.h ../include/suit10.h ../include/suit2.h ../include/suit2.h \
+    ../include/spades11.h     ../include/hearts10.h     ../include/diamonds2.h     ../include/clubs2.h \
+    ../include/types.h
+dist1195.o: ../include/suit11.h ../include/suit9.h ../include/suit5.h \
+   ../include/spades11.h    ../include/hearts9.h    ../include/diamonds5.h    ../include/types.h
+dist11941.o:../include/suit11.h ../include/suit9.h ../include/suit4.h ../include/suit1.h \
+    ../include/spades11.h     ../include/hearts9.h     ../include/diamonds4.h     ../include/clubs1.h \
+    ../include/types.h
+dist11932.o:../include/suit11.h ../include/suit9.h ../include/suit3.h ../include/suit2.h \
+    ../include/spades11.h     ../include/hearts9.h     ../include/diamonds3.h     ../include/clubs2.h \
+    ../include/types.h
+dist1186.o: ../include/suit11.h ../include/suit8.h ../include/suit6.h \
+   ../include/spades11.h    ../include/hearts8.h    ../include/diamonds6.h    ../include/types.h
+dist11851.o:../include/suit11.h ../include/suit8.h ../include/suit5.h ../include/suit1.h \
+    ../include/spades11.h     ../include/hearts8.h     ../include/diamonds5.h     ../include/clubs1.h \
+    ../include/types.h
+dist11842.o:../include/suit11.h ../include/suit8.h ../include/suit4.h ../include/suit2.h \
+    ../include/spades11.h     ../include/hearts8.h     ../include/diamonds4.h     ../include/clubs2.h \
+    ../include/types.h
+dist11833.o:../include/suit11.h ../include/suit8.h ../include/suit3.h ../include/suit3.h \
+    ../include/spades11.h     ../include/hearts8.h     ../include/diamonds3.h     ../include/clubs3.h \
+    ../include/types.h
+dist1177.o: ../include/suit11.h ../include/suit7.h ../include/suit7.h \
+   ../include/spades11.h    ../include/hearts7.h    ../include/diamonds7.h    ../include/types.h
+dist11761.o:../include/suit11.h ../include/suit7.h ../include/suit6.h ../include/suit1.h \
+    ../include/spades11.h     ../include/hearts7.h     ../include/diamonds6.h     ../include/clubs1.h \
+    ../include/types.h
+dist11752.o:../include/suit11.h ../include/suit7.h ../include/suit5.h ../include/suit2.h \
+    ../include/spades11.h     ../include/hearts7.h     ../include/diamonds5.h     ../include/clubs2.h \
+    ../include/types.h
+dist11743.o:../include/suit11.h ../include/suit7.h ../include/suit4.h ../include/suit3.h \
+    ../include/spades11.h     ../include/hearts7.h     ../include/diamonds4.h     ../include/clubs3.h \
+    ../include/types.h
+dist11662.o:../include/suit11.h ../include/suit6.h ../include/suit6.h ../include/suit2.h \
+    ../include/spades11.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs2.h \
+    ../include/types.h
+dist11653.o:../include/suit11.h ../include/suit6.h ../include/suit5.h ../include/suit3.h \
+    ../include/spades11.h     ../include/hearts6.h     ../include/diamonds5.h     ../include/clubs3.h \
+    ../include/types.h
+dist11644.o:../include/suit11.h ../include/suit6.h ../include/suit4.h ../include/suit4.h \
+    ../include/spades11.h     ../include/hearts6.h     ../include/diamonds4.h     ../include/clubs4.h \
+    ../include/types.h
+dist11554.o:../include/suit11.h ../include/suit5.h ../include/suit5.h ../include/suit4.h \
+    ../include/spades11.h     ../include/hearts5.h     ../include/diamonds5.h     ../include/clubs4.h \
+    ../include/types.h
+dist10105.o: ../include/suit10.h ../include/suit10.h ../include/suit5.h \
+   ../include/spades10.h    ../include/hearts10.h    ../include/diamonds5.h    ../include/types.h
+dist101041.o:../include/suit10.h ../include/suit10.h ../include/suit4.h ../include/suit1.h \
+    ../include/spades10.h     ../include/hearts10.h     ../include/diamonds4.h     ../include/clubs1.h \
+    ../include/types.h
+dist101032.o:../include/suit10.h ../include/suit10.h ../include/suit3.h ../include/suit2.h \
+    ../include/spades10.h     ../include/hearts10.h     ../include/diamonds3.h     ../include/clubs2.h \
+    ../include/types.h
+dist1096.o: ../include/suit10.h ../include/suit9.h ../include/suit6.h \
+   ../include/spades10.h    ../include/hearts9.h    ../include/diamonds6.h    ../include/types.h
+dist10951.o:../include/suit10.h ../include/suit9.h ../include/suit5.h ../include/suit1.h \
+    ../include/spades10.h     ../include/hearts9.h     ../include/diamonds5.h     ../include/clubs1.h \
+    ../include/types.h
+dist10942.o:../include/suit10.h ../include/suit9.h ../include/suit4.h ../include/suit2.h \
+    ../include/spades10.h     ../include/hearts9.h     ../include/diamonds4.h     ../include/clubs2.h \
+    ../include/types.h
+dist10933.o:../include/suit10.h ../include/suit9.h ../include/suit3.h ../include/suit3.h \
+    ../include/spades10.h     ../include/hearts9.h     ../include/diamonds3.h     ../include/clubs3.h \
+    ../include/types.h
+dist1087.o: ../include/suit10.h ../include/suit8.h ../include/suit7.h \
+   ../include/spades10.h    ../include/hearts8.h    ../include/diamonds7.h    ../include/types.h
+dist10861.o:../include/suit10.h ../include/suit8.h ../include/suit6.h ../include/suit1.h \
+    ../include/spades10.h     ../include/hearts8.h     ../include/diamonds6.h     ../include/clubs1.h \
+    ../include/types.h
+dist10852.o:../include/suit10.h ../include/suit8.h ../include/suit5.h ../include/suit2.h \
+    ../include/spades10.h     ../include/hearts8.h     ../include/diamonds5.h     ../include/clubs2.h \
+    ../include/types.h
+dist10843.o:../include/suit10.h ../include/suit8.h ../include/suit4.h ../include/suit3.h \
+    ../include/spades10.h     ../include/hearts8.h     ../include/diamonds4.h     ../include/clubs3.h \
+    ../include/types.h
+dist10771.o:../include/suit10.h ../include/suit7.h ../include/suit7.h ../include/suit1.h \
+    ../include/spades10.h     ../include/hearts7.h     ../include/diamonds7.h     ../include/clubs1.h \
+    ../include/types.h
+dist10762.o:../include/suit10.h ../include/suit7.h ../include/suit6.h ../include/suit2.h \
+    ../include/spades10.h     ../include/hearts7.h     ../include/diamonds6.h     ../include/clubs2.h \
+    ../include/types.h
+dist10753.o:../include/suit10.h ../include/suit7.h ../include/suit5.h ../include/suit3.h \
+    ../include/spades10.h     ../include/hearts7.h     ../include/diamonds5.h     ../include/clubs3.h \
+    ../include/types.h
+dist10744.o:../include/suit10.h ../include/suit7.h ../include/suit4.h ../include/suit4.h \
+    ../include/spades10.h     ../include/hearts7.h     ../include/diamonds4.h     ../include/clubs4.h \
+    ../include/types.h
+dist10663.o:../include/suit10.h ../include/suit6.h ../include/suit6.h ../include/suit3.h \
+    ../include/spades10.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs3.h \
+    ../include/types.h
+dist10654.o:../include/suit10.h ../include/suit6.h ../include/suit5.h ../include/suit4.h \
+    ../include/spades10.h     ../include/hearts6.h     ../include/diamonds5.h     ../include/clubs4.h \
+    ../include/types.h
+dist10555.o:../include/suit10.h ../include/suit5.h ../include/suit5.h ../include/suit5.h \
+    ../include/spades10.h     ../include/hearts5.h     ../include/diamonds5.h     ../include/clubs5.h \
+    ../include/types.h
+dist997.o: ../include/suit9.h ../include/suit9.h ../include/suit7.h \
+   ../include/spades9.h    ../include/hearts9.h    ../include/diamonds7.h    ../include/types.h
+dist9961.o:../include/suit9.h ../include/suit9.h ../include/suit6.h ../include/suit1.h \
+    ../include/spades9.h     ../include/hearts9.h     ../include/diamonds6.h     ../include/clubs1.h \
+    ../include/types.h
+dist9952.o:../include/suit9.h ../include/suit9.h ../include/suit5.h ../include/suit2.h \
+    ../include/spades9.h     ../include/hearts9.h     ../include/diamonds5.h     ../include/clubs2.h \
+    ../include/types.h
+dist9943.o:../include/suit9.h ../include/suit9.h ../include/suit4.h ../include/suit3.h \
+    ../include/spades9.h     ../include/hearts9.h     ../include/diamonds4.h     ../include/clubs3.h \
+    ../include/types.h
+dist988.o: ../include/suit9.h ../include/suit8.h ../include/suit8.h \
+   ../include/spades9.h    ../include/hearts8.h    ../include/diamonds8.h    ../include/types.h
+dist9871.o:../include/suit9.h ../include/suit8.h ../include/suit7.h ../include/suit1.h \
+    ../include/spades9.h     ../include/hearts8.h     ../include/diamonds7.h     ../include/clubs1.h \
+    ../include/types.h
+dist9862.o:../include/suit9.h ../include/suit8.h ../include/suit6.h ../include/suit2.h \
+    ../include/spades9.h     ../include/hearts8.h     ../include/diamonds6.h     ../include/clubs2.h \
+    ../include/types.h
+dist9853.o:../include/suit9.h ../include/suit8.h ../include/suit5.h ../include/suit3.h \
+    ../include/spades9.h     ../include/hearts8.h     ../include/diamonds5.h     ../include/clubs3.h \
+    ../include/types.h
+dist9844.o:../include/suit9.h ../include/suit8.h ../include/suit4.h ../include/suit4.h \
+    ../include/spades9.h     ../include/hearts8.h     ../include/diamonds4.h     ../include/clubs4.h \
+    ../include/types.h
+dist9772.o:../include/suit9.h ../include/suit7.h ../include/suit7.h ../include/suit2.h \
+    ../include/spades9.h     ../include/hearts7.h     ../include/diamonds7.h     ../include/clubs2.h \
+    ../include/types.h
+dist9763.o:../include/suit9.h ../include/suit7.h ../include/suit6.h ../include/suit3.h \
+    ../include/spades9.h     ../include/hearts7.h     ../include/diamonds6.h     ../include/clubs3.h \
+    ../include/types.h
+dist9754.o:../include/suit9.h ../include/suit7.h ../include/suit5.h ../include/suit4.h \
+    ../include/spades9.h     ../include/hearts7.h     ../include/diamonds5.h     ../include/clubs4.h \
+    ../include/types.h
+dist9664.o:../include/suit9.h ../include/suit6.h ../include/suit6.h ../include/suit4.h \
+    ../include/spades9.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs4.h \
+    ../include/types.h
+dist9655.o:../include/suit9.h ../include/suit6.h ../include/suit5.h ../include/suit5.h \
+    ../include/spades9.h     ../include/hearts6.h     ../include/diamonds5.h     ../include/clubs5.h \
+    ../include/types.h
+dist8881.o:../include/suit8.h ../include/suit8.h ../include/suit8.h ../include/suit1.h \
+    ../include/spades8.h     ../include/hearts8.h     ../include/diamonds8.h     ../include/clubs1.h \
+    ../include/types.h
+dist8872.o:../include/suit8.h ../include/suit8.h ../include/suit7.h ../include/suit2.h \
+    ../include/spades8.h     ../include/hearts8.h     ../include/diamonds7.h     ../include/clubs2.h \
+    ../include/types.h
+dist8863.o:../include/suit8.h ../include/suit8.h ../include/suit6.h ../include/suit3.h \
+    ../include/spades8.h     ../include/hearts8.h     ../include/diamonds6.h     ../include/clubs3.h \
+    ../include/types.h
+dist8854.o:../include/suit8.h ../include/suit8.h ../include/suit5.h ../include/suit4.h \
+    ../include/spades8.h     ../include/hearts8.h     ../include/diamonds5.h     ../include/clubs4.h \
+    ../include/types.h
+dist8773.o:../include/suit8.h ../include/suit7.h ../include/suit7.h ../include/suit3.h \
+    ../include/spades8.h     ../include/hearts7.h     ../include/diamonds7.h     ../include/clubs3.h \
+    ../include/types.h
+dist8764.o:../include/suit8.h ../include/suit7.h ../include/suit6.h ../include/suit4.h \
+    ../include/spades8.h     ../include/hearts7.h     ../include/diamonds6.h     ../include/clubs4.h \
+    ../include/types.h
+dist8755.o:../include/suit8.h ../include/suit7.h ../include/suit5.h ../include/suit5.h \
+    ../include/spades8.h     ../include/hearts7.h     ../include/diamonds5.h     ../include/clubs5.h \
+    ../include/types.h
+dist8665.o:../include/suit8.h ../include/suit6.h ../include/suit6.h ../include/suit5.h \
+    ../include/spades8.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs5.h \
+    ../include/types.h
+dist7774.o:../include/suit7.h ../include/suit7.h ../include/suit7.h ../include/suit4.h \
+    ../include/spades7.h     ../include/hearts7.h     ../include/diamonds7.h     ../include/clubs4.h \
+    ../include/types.h
+dist7765.o:../include/suit7.h ../include/suit7.h ../include/suit6.h ../include/suit5.h \
+    ../include/spades7.h     ../include/hearts7.h     ../include/diamonds6.h     ../include/clubs5.h \
+    ../include/types.h
+dist7666.o:../include/suit7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h \
+    ../include/spades7.h     ../include/hearts6.h     ../include/diamonds6.h     ../include/clubs6.h \
+    ../include/types.h

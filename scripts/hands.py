@@ -19,6 +19,8 @@ def genhands(s, h, d=0, c=0):
         fout.write(f'\nvoid {name}() {{\n')
         fout.write(f'  extern RankSet suit{s}[];\n')
         fout.write(f'  extern RankSet suit{h}[];\n')
+        fout.write(f'  extern Cards{s} spades{s}[];\n')
+        fout.write(f'  extern Cards{h} hearts{h}[];\n')
         if h>d>0: 
             fout.write(f'  extern RankSet suit{d}[];\n')
         if d > c > 0:
@@ -26,8 +28,10 @@ def genhands(s, h, d=0, c=0):
         fout.write(f'  RankSet *SPADES_START = suit{s};\n')
         fout.write(f'  RankSet *HEARTS_START = suit{h};\n')
         if d:
+            fout.write(f'  extern Cards{d} diamonds{d}[];\n')
             fout.write(f'  RankSet *DIAMONDS_START = suit{d};\n')
         if c:
+            fout.write(f'  extern Cards{c} clubs{c}[];\n')
             fout.write(f'  RankSet *CLUBS_START = suit{c};\n')
         fout.write(f'  RankSet *SPADES_END  = SPADES_START + {count(s)-1};\n')
         if h != s:

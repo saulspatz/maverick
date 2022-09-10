@@ -19,19 +19,19 @@
 * Each node contains five fields. Four are the pointers of doubly linked lists,
 * already mentioned; the fifth points to the column containing the node.
 */
-struct Column;      // Forward declaration needed because Node 
-                    // and Column refer to one another. 
+struct col_struct;          // Forward declaration needed because Node 
+                        // and Column refer to one another. 
 
 typedef struct node_struct {
   struct node_struct *left,*right;  /* predecessor and successor in row */
   struct node_struct *up,*down;     /* predecessor and successor in column */
-  struct Column *col;               /* the column containing this node */
+  struct col_struct *col;                      /* the column containing this node */
 } Node; 
 
 typedef struct col_struct {
   Node head;                        // the list header 
   int len;                          // the number of non-header items currently in this column's list 
-  char name[4];                     // symbolic identification of the column, for printing 
+  int name;                         // symbolic identification of the column, for printing 
   struct col_struct *prev,*next;    // neighbors of this column 
 } Column;
 
@@ -39,8 +39,9 @@ typedef struct col_struct {
 #define root columns[0] 
 
 Column columns[26];             // one extra for the root
-Node nodes[16384];              // the ones in the matrix
+Node nodes[26000];              // the ones in the matrix
 Node *curNode;                  // next node to allocate
 Node *choice[5];                // the row and column chosen on each level
-char ranks[] = " A23456789TJQK";
+char rankCodes[] = " A23456789TJQK";
+char suitCodes[] = "CDHS";
  

@@ -18,7 +18,7 @@ for n in range(1,14):
         typedefs(fout, n)
         fout.write(f'RankSet suit{n}[{count(n)}] = {{\n')
         for idx, c in enumerate(combinations(range(1,14), n)):
-            fout.write(f'  {bits(c)},\n')
+            fout.write(f'  {hex(bits(c))},\n')
         assert idx ==count(n)-1
         fout.write('};')
         fout.write('\n#endif\n')

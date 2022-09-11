@@ -1,23 +1,20 @@
 #include <stdio.h>
 #include "types.h"
 
-void dist13921() {
-  extern RankSet ranks13[];
-  extern RankSet suit9[];
-  extern Cards13 swords13[];
-  extern Cards9 hearts9[];
-  extern RankSet suit2[];
+void dist10771() {
+  extern RankSet suit10[];
+  extern RankSet suit7[];
+  extern Cards10 spades10[];
+  extern Cards7 hearts7[];
   extern RankSet suit1[];
-  RankSet *SPADES_START = ranks13;
-  RankSet *HEARTS_START = suit9;
-  extern Cards2 diamonds2[];
-  RankSet *DIAMONDS_START = suit2;
+  RankSet *SPADES_START = suit10;
+  RankSet *HEARTS_START = suit7;
+  extern Cards7 diamonds7[];
+  RankSet *DIAMONDS_START = suit7;
   extern Cards1 clubs1[];
   RankSet *CLUBS_START = suit1;
-  RankSet *SPADES_END  = SPADES_START + 1;
-  RankSet *SYM_START = SPADES_START +0;
-  RankSet *HEARTS_END  = HEARTS_START + 714;
-  RankSet *DIAMONDS_END  = DIAMONDS_START + 77;
+  RankSet *SPADES_END  = SPADES_START + 285;
+  RankSet *HEARTS_END  = HEARTS_START + 1715;
   RankSet *CLUBS_END  = CLUBS_START + 12;
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
@@ -29,28 +26,28 @@ void dist13921() {
   while(1) {
     if (clubs < CLUBS_END) {
       clubs++;
-      factor = spades < SYM_START ? 48 : 24;
+      factor = (diamonds==hearts) ? 12 : 24;
       goto compute;
     }
-    if (diamonds < DIAMONDS_END) {
+    if (diamonds < hearts) {
       diamonds++;
       clubs = CLUBS_START;
-      factor = spades < SYM_START ? 48 : 24;
+      factor = (diamonds==hearts) ? 12 : 24;
       goto compute;
     }
     if (hearts < HEARTS_END) {
       hearts++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
-      factor = spades < SYM_START ? 48 : 24;
+      factor = (diamonds==hearts) ? 12 : 24;
       goto compute;
-    };
+    }
     if (spades < SPADES_END) {
       spades++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
       hearts = HEARTS_START;
-      factor = spades < SYM_START ? 48 : 24;
+      factor = 12;
     } else break;
 
 compute:
@@ -59,6 +56,6 @@ compute:
     Phony |= *spades & *hearts & *diamonds & *clubs;
   }
 
-  printf("13-9-2-1: %ld\n", total);
+  printf("10-7-7-1: %ld\n", total);
   fprintf(stderr, "%d", Phony);
 }

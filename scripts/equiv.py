@@ -1,47 +1,52 @@
 # equiv.py
 '''
-Compute exactly how many hands would have to be generated, 
+Compute exactly how many deals would have to be generated, 
 taking account of symmetries. 
 '''
 from partitions import partitions, product, binomial
 
-suits = {n: binomial(13,n) for n in range(14)}
-total = 19906139282588  # computed in earlier run
+fout = open('equiv.txt', 'w')
 
-classes = 0
+suits = {n: binomial(13,n) for n in range(14)}
+equal = {n: binomial(6, n//2) for n in range(14)}
+swords = {n: (suits[n]+equal[n])//2 for n in range(14)}
+
+deals = {}
 for p in partitions(25, 4, 13):
     match p:
         case (s,h):
-            hands = product(suits[n] for n in p)
+            deals[p] = swords[s]*suits[h]
         case (s,h,d) if s > h > d:
-            hands = product(suits[n] for n in p)
+            deals[p] = swords[s]* product(suits[n] for n in p[1:])
         case (s,h,d,c) if s > h > d > c:
-            hands = product(suits[n] for n in p)
+            deals[p] = swords[s]*product(suits[n] for n in p[1:])
         case (s, h, d) if h == s:
             k = suits[h]
-            hands = sum(suits[d]*binomial(k,j) for j in (1,2))
+            deals[p] = sum(suits[d]*binomial(k,j) for j in (1,2))
         case (s, h, d) if h == d:
             k = suits[h]
-            hands = sum(suits[s]*binomial(k,j) for j in (1,2))
+            deals[p] = sum(suits[s]*binomial(k,j) for j in (1,2))
         case (s,h,d,c) if s==h>d:
             k = suits[h]
-            hands = sum(suits[d]*suits[c]*binomial(k,j) for j in (1,2))
+            deals[p] = sum(suits[d]*suits[c]*binomial(k,j) for j in (1,2))
         case (s,h,d,c) if s > h == d > c:
             k = suits[h]
-            hands = sum(suits[s]*suits[c]*binomial(k,j) for j in (1,2))
+            deals[p] = sum(suits[s]*suits[c]*binomial(k,j) for j in (1,2))
         case (s,h,d,c) if h > d == c:
             k = suits[d]
-            hands = sum(suits[s]*suits[h]*binomial(k,j) for j in (1,2))
+            deals[p] = sum(suits[s]*suits[h]*binomial(k,j) for j in (1,2))
         case (s,h,d,c) if s == d:
             k = suits[s]
-            hands = sum(suits[c]*binomial(k,j) for j in (1,2,3))
+            deals[p] = sum(suits[c]*binomial(k,j) for j in (1,2,3))
         case (s,h,d,c) if h == c:
             k = suits[h]
-            hands = sum(suits[s]*binomial(k,j) for j in (1,2,3))
+            deals[p] = sum(suits[s]*binomial(k,j) for j in (1,2,3))
         case _:
             print(f'{p} not matched')
-    classes += hands
-    print(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%} ')
+classes = sum(deals.values())
+for p in deals:
+    fout.write(f'{str(p):14} {"{:,}".format(deals[p]):>18} {deals[p]/classes:>9.5%}\n')
 
-print('\n{:,} equivalence classes'.format(classes))
+fout.write('\n{:,} equivalence classes\n'.format(classes))
+fout.close()
 

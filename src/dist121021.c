@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include "types.h"
 
-void dist13921() {
-  extern RankSet ranks13[];
-  extern RankSet suit9[];
-  extern Cards13 swords13[];
-  extern Cards9 hearts9[];
+void dist121021() {
+  extern RankSet ranks12[];
+  extern RankSet suit10[];
+  extern Cards12 swords12[];
+  extern Cards10 hearts10[];
   extern RankSet suit2[];
   extern RankSet suit1[];
-  RankSet *SPADES_START = ranks13;
-  RankSet *HEARTS_START = suit9;
+  RankSet *SPADES_START = ranks12;
+  RankSet *HEARTS_START = suit10;
   extern Cards2 diamonds2[];
   RankSet *DIAMONDS_START = suit2;
   extern Cards1 clubs1[];
   RankSet *CLUBS_START = suit1;
-  RankSet *SPADES_END  = SPADES_START + 1;
-  RankSet *SYM_START = SPADES_START +0;
-  RankSet *HEARTS_END  = HEARTS_START + 714;
+  RankSet *SPADES_END  = SPADES_START + 7;
+  RankSet *SYM_START = SPADES_START +6;
+  RankSet *HEARTS_END  = HEARTS_START + 285;
   RankSet *DIAMONDS_END  = DIAMONDS_START + 77;
   RankSet *CLUBS_END  = CLUBS_START + 12;
   RankSet *spades = SPADES_START;
@@ -59,6 +59,6 @@ compute:
     Phony |= *spades & *hearts & *diamonds & *clubs;
   }
 
-  printf("13-9-2-1: %ld\n", total);
+  printf("12-10-2-1: %ld\n", total);
   fprintf(stderr, "%d", Phony);
 }

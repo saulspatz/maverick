@@ -8,18 +8,21 @@
 
 from partitions import partitions, product, binomial
 from hands import genhands
+import rankSym
 
 suits = {n: binomial(13,n) for n in range(14)}
+equal = {n: binomial(6, n//2) for n in range(14)}
+swords = {n: (suits[n]+equal[n])//2 for n in range(14)}
 
 classes = []
 for p in partitions(25, 4, 13):
     match p:
         case (s,h):
-            hands = product(suits[n] for n in p)
+            hands = swords[s] * suits[h]
         case (s,h,d) if s > h > d:
-            hands = product(suits[n] for n in p)
+            hands = swords[s]*product(suits[n] for n in p[1:])
         case (s,h,d,c) if s > h > d > c:
-            hands = product(suits[n] for n in p)
+            hands =  swords[s]*product(suits[n] for n in p[1:])
         case (s, h, d) if h == s:
             k = suits[h]
             hands = sum(suits[d]*binomial(k,j) for j in (1,2))
@@ -44,7 +47,10 @@ for p in partitions(25, 4, 13):
         case _:
             print(f'{p} not matched')
     classes.append((hands, p))
-    genhands(*p)
+    if len(p) == len(set(p)):
+        rankSym.genhands(*p)
+    else:
+        genhands(*p)
 classes.sort(reverse = True)
 
 def compact(t):
@@ -75,3 +81,5 @@ with open("../include/tasks.h",'w') as fout:
 		fout.write(f'  {compact(p)},\n')
 	fout.write('};\n')  
 	fout.write('#endif\n')
+
+print('You must MANUALLY adjust num_taks in maverick.c')

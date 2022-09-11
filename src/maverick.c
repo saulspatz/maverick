@@ -3,7 +3,7 @@
 #include "tasks.h"   // task list
 
 int main() {
-	const int numTasks = 10;
+	const int numTasks = 102;
 	for (int i = 0; i < numTasks; ++i)
 		tasks[i]();  
 }

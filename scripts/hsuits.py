@@ -14,6 +14,9 @@ with open("../include/suits.h",'w') as fout:
 		for s,l,h in z:
 			for n in range(l,h):
 				fout.write(f'#include "{s}{n}.h"\n')
+	for n in range(7,14):
+		fout.write(f'#include "ranks{n}.h"\n')
+		fout.write(f'#include "swords{n}.h"\n')
 	fout.write('#endif\n')
 
 	

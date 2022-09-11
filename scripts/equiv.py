@@ -1,4 +1,4 @@
-# exact.py
+# equiv.py
 '''
 Compute exactly how many hands would have to be generated, 
 taking account of symmetries. 

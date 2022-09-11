@@ -4,6 +4,9 @@ by generating the equivalence classes one-by-one and
 mutliplying by the appropriate factors.
 
 There are 10 patterns that the distribution can have.
+This script deals with the 7 patterns where two non-void
+suits are of the same length.  See rankSym.py for the
+case of distinct lengths. 
 '''
 
 from math import factorial
@@ -55,72 +58,72 @@ def genhands(s, h, d=0, c=0):
         fout.write('  long total = 0L;\n')
         fout.write('  RankSet Phony = 0;\n')
 
-        if s > h > d > c > 0:                                   #abcd
-            fout.write('  while(1) {\n')
-            fout.write('    if (clubs < CLUBS_END) {\n')
-            fout.write('      clubs++;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    }\n')
+        # if s > h > d > c > 0:                                   #abcd
+        #     fout.write('  while(1) {\n')
+        #     fout.write('    if (clubs < CLUBS_END) {\n')
+        #     fout.write('      clubs++;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    }\n')
 
-            fout.write('    if (diamonds < DIAMONDS_END) {\n')
-            fout.write('      diamonds++;\n')
-            fout.write('      clubs = CLUBS_START;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    }\n')
+        #     fout.write('    if (diamonds < DIAMONDS_END) {\n')
+        #     fout.write('      diamonds++;\n')
+        #     fout.write('      clubs = CLUBS_START;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    }\n')
 
-            fout.write('    if (hearts < HEARTS_END) {\n')
-            fout.write('      hearts++;\n')
-            fout.write('      clubs = CLUBS_START;\n') 
-            fout.write('      diamonds = DIAMONDS_START;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    };\n') 
+        #     fout.write('    if (hearts < HEARTS_END) {\n')
+        #     fout.write('      hearts++;\n')
+        #     fout.write('      clubs = CLUBS_START;\n') 
+        #     fout.write('      diamonds = DIAMONDS_START;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    };\n') 
 
-            fout.write('    if (spades < SPADES_END) {\n')
-            fout.write('      spades++;\n')
-            fout.write('      clubs = CLUBS_START;\n')
-            fout.write('      diamonds = DIAMONDS_START;\n') 
-            fout.write('      hearts = HEARTS_START;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('    } else break;\n') 
+        #     fout.write('    if (spades < SPADES_END) {\n')
+        #     fout.write('      spades++;\n')
+        #     fout.write('      clubs = CLUBS_START;\n')
+        #     fout.write('      diamonds = DIAMONDS_START;\n') 
+        #     fout.write('      hearts = HEARTS_START;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('    } else break;\n') 
 
-        if s > h > d > c == 0:                         # abc
-            fout.write('  while(1) {\n')
-            fout.write('    if (diamonds < DIAMONDS_END) {\n')
-            fout.write('      diamonds++;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    }\n')
+        # if s > h > d > c == 0:                         # abc
+        #     fout.write('  while(1) {\n')
+        #     fout.write('    if (diamonds < DIAMONDS_END) {\n')
+        #     fout.write('      diamonds++;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    }\n')
 
-            fout.write('    if (hearts < HEARTS_END) {\n')
-            fout.write('      hearts++;\n')
-            fout.write('      diamonds = DIAMONDS_START;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    }\n')
+        #     fout.write('    if (hearts < HEARTS_END) {\n')
+        #     fout.write('      hearts++;\n')
+        #     fout.write('      diamonds = DIAMONDS_START;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    }\n')
 
-            fout.write('    if (spades < SPADES_END) {\n')
-            fout.write('      spades++;\n')
-            fout.write('      diamonds = DIAMONDS_START;\n')
-            fout.write('      hearts= HEARTS_START;\n')
-            fout.write('      factor = 24;\n')
-            fout.write('    } else break;\n')
+        #     fout.write('    if (spades < SPADES_END) {\n')
+        #     fout.write('      spades++;\n')
+        #     fout.write('      diamonds = DIAMONDS_START;\n')
+        #     fout.write('      hearts= HEARTS_START;\n')
+        #     fout.write('      factor = 24;\n')
+        #     fout.write('    } else break;\n')
 
-        if s > h and d == c == 0:
-            fout.write('  while(1) {\n')                                  # ab
-            fout.write('    if (hearts < HEARTS_END) {\n')
-            fout.write('      hearts++;\n')
-            fout.write('      factor = 12;\n')
-            fout.write('      goto compute;\n')
-            fout.write('    }\n')
+        # if s > h and d == c == 0:
+        #     fout.write('  while(1) {\n')                                  # ab
+        #     fout.write('    if (hearts < HEARTS_END) {\n')
+        #     fout.write('      hearts++;\n')
+        #     fout.write('      factor = 12;\n')
+        #     fout.write('      goto compute;\n')
+        #     fout.write('    }\n')
 
-            fout.write('    if (spades < SPADES_END) {\n')
-            fout.write('      spades++;\n')
-            fout.write('      hearts = HEARTS_START;\n')
-            fout.write('      factor = 12;\n')
-            fout.write('    } else break;\n')
+        #     fout.write('    if (spades < SPADES_END) {\n')
+        #     fout.write('      spades++;\n')
+        #     fout.write('      hearts = HEARTS_START;\n')
+        #     fout.write('      factor = 12;\n')
+        #     fout.write('    } else break;\n')
     
         if s == h > d > c > 0:                             # aabc
             fout.write('  while(1) {\n')

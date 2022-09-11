@@ -1,7 +1,7 @@
 #ifndef RANKS7_H
 #define RANKS7_H
 #include "types.h"
-RankSet rank7[868] = {
+RankSet ranks7[868] = {
   0x1c17,
   0x1a27,
   0x1c27,

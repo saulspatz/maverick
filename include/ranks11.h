@@ -1,7 +1,7 @@
 #ifndef RANKS11_H
 #define RANKS11_H
 #include "types.h"
-RankSet rank11[42] = {
+RankSet ranks11[42] = {
   0x1f5f,
   0x1f9f,
   0x1eef,

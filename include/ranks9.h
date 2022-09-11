@@ -1,7 +1,7 @@
 #ifndef RANKS9_H
 #define RANKS9_H
 #include "types.h"
-RankSet rank9[365] = {
+RankSet ranks9[365] = {
   0x1e2f,
   0x1d4f,
   0x1e4f,

@@ -9,7 +9,7 @@ with open("../build/includes.txt", 'w') as fout:
         match p:
             case (s,h,d,c) if s > h > d > c:
                 text =  f'dist{s}{h}{d}{c}.o:'
-                text += f'../include/rank{s}.h '
+                text += f'../include/ranks{s}.h '
                 text += f'../include/suit{h}.h '
                 text += f'../include/suit{d}.h '
                 text += f'../include/suit{c}.h \\\n'

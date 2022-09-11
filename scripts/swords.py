@@ -34,11 +34,11 @@ for n in range(7, 14):
     fout1.write(f'#ifndef RANKS{n}_H\n')
     fout1.write(f'#define RANKS{n}_H\n')
     fout1.write('#include "types.h"\n')
-    fout1.write(f'RankSet rank{n}[{(count(n)+eq)//2}] = {{\n')
+    fout1.write(f'RankSet ranks{n}[{(count(n)+eq)//2}] = {{\n')
     fout2.write(f'#ifndef SWORDS{n}_H\n')
     fout2.write(f'#define SWORDS{n}_H\n')
     fout2.write('#include "types.h"\n')
-    fout2.write(f'Cards{n} rank{n}[{(count(n)+eq)//2}] = {{\n')
+    fout2.write(f'Cards{n} swords{n}[{(count(n)+eq)//2}] = {{\n')
     for c in combinations(range(1,14), n):
         b = bits(c)
         flip = flipped(b)

@@ -1,7 +1,7 @@
 #ifndef RANKS8_H
 #define RANKS8_H
 #include "types.h"
-RankSet rank8[651] = {
+RankSet ranks8[651] = {
   0x1c8f,
   0x1d0f,
   0x1e0f,

@@ -49,8 +49,10 @@ for p in partitions(25, 4, 13):
     classes.append((hands, p))
     if len(p) == len(set(p)):
         rankSym.genhands(*p)
+        print(f'{p} rankSym')
     else:
         genhands(*p)
+        print(f'{p} hands')
 classes.sort(reverse = True)
 
 def compact(t):

@@ -39,7 +39,7 @@ def genhands(s, h, d=0, c=0):
         if c:
             fout.write(f'  extern Cards{c} clubs{c}[];\n')
             fout.write(f'  RankSet *CLUBS_START = suit{c};\n')
-        fout.write(f'  RankSet *SPADES_END  = SPADES_START + {(count(s)+eq)//2};\n')
+        fout.write(f'  RankSet *SPADES_END  = SPADES_START + {(count(s)+eq)//2-1};\n')
         fout.write(f'  RankSet *SYM_START = SPADES_START +{(count(s)-eq)//2};\n')
         fout.write(f'  RankSet *HEARTS_END  = HEARTS_START + {count(h)-1};\n')
         if d:
@@ -140,9 +140,9 @@ def genhands(s, h, d=0, c=0):
         fout.write(f'  fprintf(stderr, "%d", Phony);\n')
         fout.write('}')    
         
-
-genhands(13, 9, 2, 1)
-genhands(13,10,2)
-genhands(13,12)
+if __name__ == '__main__':
+    genhands(13, 9, 2, 1)
+    genhands(13,10,2)
+    genhands(13,12)
 
 

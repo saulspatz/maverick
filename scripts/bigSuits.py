@@ -28,7 +28,7 @@ for h in range(4, 13):
         fout.write('};\n')
         fout.write('#endif')
 
-for d in range(9):
+for d in range(1,9):
     with open(f'../include/diamonds{d}.h','w') as fout:
         fout.write(f'#ifndef DIAMONDS{d}_H\n')
         fout.write(f'#define DIAMONDS{d}_H\n')
@@ -42,7 +42,7 @@ for d in range(9):
         fout.write('};\n')
         fout.write('#endif')
 
-for c in range(7):
+for c in range(1,7):
     with open(f'../include/clubs{c}.h','w') as fout:
         fout.write(f'#ifndef CLUBS{c}_H\n')
         fout.write(f'#define CLUBS{c}_H\n')

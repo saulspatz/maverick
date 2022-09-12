@@ -14,7 +14,7 @@ void dist9754() {
   RankSet *DIAMONDS_START = suit5;
   extern Cards4 clubs4[];
   RankSet *CLUBS_START = suit4;
-  RankSet *SPADES_END  = SPADES_START + 365;
+  RankSet *SPADES_END  = SPADES_START + 364;
   RankSet *SYM_START = SPADES_START +350;
   RankSet *HEARTS_END  = HEARTS_START + 1715;
   RankSet *DIAMONDS_END  = DIAMONDS_START + 1286;

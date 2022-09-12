@@ -33,6 +33,7 @@ void dist9880() {
     if (spades < SPADES_END) {
       spades++;
       diamonds = DIAMONDS_START;
+      hearts = HEARTS_START;
       factor = 12;
     } else break;
 

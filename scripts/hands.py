@@ -236,6 +236,7 @@ def genhands(s, h, d=0, c=0):
             fout.write('    if (spades < SPADES_END) {\n')
             fout.write('      spades++;\n')
             fout.write('      diamonds = DIAMONDS_START;\n')
+            fout.write('      hearts = HEARTS_START;\n')
             fout.write('      factor = 12;\n')
             fout.write('    } else break;\n')
 

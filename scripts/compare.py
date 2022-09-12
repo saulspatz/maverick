@@ -1,4 +1,4 @@
-log = open('../results.log').readlines()
+log = open('../build/results.log').readlines()
 part = open('partitions2.txt').readlines()
 
 log = [line.strip().split() for line in log]
@@ -14,9 +14,8 @@ log = {item[0] : item[1] for item in log}
 part = {item[0] : item[1] for item in part}
 
 for p in log:
-    q = p.split('-')
-    if len(q) == len(set(q)) and log[p] != 2*part[p]:
-        print(f'{p} not twice')
+    if log[p] != part[p]:
+        print(p, log[p], part[p])
+    else: print(p, ' correct')
    
-
-print(sum(part.values()))
+print(sum(log.values()), sum(part.values()))

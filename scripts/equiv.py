@@ -44,8 +44,10 @@ for p in partitions(25, 4, 13):
         case _:
             print(f'{p} not matched')
 classes = sum(deals.values())
-for p in deals:
-    fout.write(f'{str(p):14} {"{:,}".format(deals[p]):>18} {deals[p]/classes:>9.5%}\n')
+for p, deal in sorted(deals.items(), key=lambda x:x[1], reverse=True):
+    while len(p) < 4:
+        p+= (0,)
+    fout.write(f'{"-".join(str(x) for x in p)} : {deal}\n')
 
 fout.write('\n{:,} equivalence classes\n'.format(classes))
 fout.close()

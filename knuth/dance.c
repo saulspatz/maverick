@@ -121,25 +121,14 @@ void addHand(int hand[]) {
     currentNode += 5;
 }
 
-bool solver(Card deal[], RankSet spades, RankSet hearts,
+bool solver(RankSet spades, RankSet hearts,
             RankSet diamonds, RankSet clubs) {
-    Column *currentColumn;
-    Node *currentNode;
 
-    // Make the column headers
-    for (int i = 0; i < 25; i++) {   
-        currentColumn->head.up = currentColumn->head.down = &currentColumn->head;
-        currentColumn->len = 0;
-        currentColumn->prev = currentColumn - 1;
-        currentColumn->name = index(deal[i]);
-        (currentColumn - 1)->next = currentColumn;
-        currentColumn++;
-        i++;
-    }
-    (currentColumn - 1)->next = &root;
-    root.prev = currentColumn - 1;
-    currentColumn = columns + 1;
-    currentNode = nodes;
+    RankSet suits[4];
+    suits[0] = clubs;
+    suits[1] = diamonds;
+    suits[2] = hearts;
+    suits[3] = spades;
 
     int cards[16][5]; // no rank 0; room for high Ace, rank and suit totals
     #define SUIT_TOTAL 15
@@ -147,13 +136,35 @@ bool solver(Card deal[], RankSet spades, RankSet hearts,
 
     memset(cards, 0, sizeof(cards));
 
-    for (int i = 0; i < 25; ++i) {
-        int rank = deal[i].rank;
-        int suit = deal[i].suit;
-        cards[rank][suit] = index(deal[i]);
-        cards[rank][RANK_TOTAL] += 1;
-        cards[SUIT_TOTAL][suit] += 1;
+    for (int s = CLUBS; s <= SPADES; s++) {
+        int mask = 1;
+        for (int r = ACE; r <= KING; r++) {
+            if (mask & suits[s]) {
+                cards[r][s] = 13*s + r;
+                cards[r][RANK_TOTAL] += 1;
+                cards[SUIT_TOTAL][s] += 1;
+            }
+        }
     }
+
+    // Make the column headers
+
+    Column *currentColumn = columns + 1;
+    Node *currentNode = nodes;
+    for (int s = CLUBS; s <= SPADES; s++) 
+    for (int r = ACE; r <= KING; r++){
+        if (cards[r][s] == 0)
+            continue;   
+        currentColumn->head.up = currentColumn->head.down = &currentColumn->head;
+        currentColumn->len = 0;
+        currentColumn->prev = currentColumn - 1;
+        currentColumn->name = cards[r][s];
+        (currentColumn - 1)->next = currentColumn;
+        currentColumn++;
+    }
+
+    (currentColumn - 1)->next = &root;
+    root.prev = currentColumn - 1;
 
     // find all flushes
     for (int s = CLUBS; s <= SPADES; ++s) {

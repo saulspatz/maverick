@@ -1,0 +1,124 @@
+\documentclass [12pt, letterpaper] {article}
+\title {Maverick Solitaire}
+\author {Saul Spatz}
+\date {\today}
+\usepackage {geometry}
+\usepackage {fancyhdr}
+\usepackage {amsmath , amsthm , amssymb}
+\usepackage {graphicx}
+\usepackage {hyperref}
+\usepackage [english]{babel}
+\usepackage [autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+\begin {document}
+\maketitle
+\begin {abstract}
+In Maverick solitaire, 25 cards are dealt at random, 
+and the player attempts to partition them into five pat 
+poker hands.  I have computed the exact probability of
+winning, or rather, of the existence of a solution.  
+The exact probability is ????.  In the remainder of this
+article I describe how the background of the problem, and
+how the computation was performed.   
+\end {abstract}
+\section{Introduction}
+On January 19, 1958, when I was 11 years old, the popular television program 
+\textit{Maverick} aired an episode titled 
+\href{https://www.imdb.com/title/tt0644480/}{``Rope of Cards."} 
+Bret Maverick, a gambler played by James Garner, bets that 
+he can separate 25 randomly dealt cards from the ordinary 52-card 
+French deck into five pat poker hands, where a pat hand is a 
+straight, a flush, or a full house.  (Straight flushes and royal
+flushes are considered special kinds of flushes in this game.)
+He wins the bet, and later  states that the game can be won
+"practically every time."  My personal recollection is that
+he said "49 times out of 50," but I cannot find any support
+for this, so I believe he must have said it in a later episode.
+
+The story goes that the following day, novelty shops all over the
+United States sold out of playing cards, as people tried the 
+proposition for themselves.  In my home, card-playing was a popular
+recreation, so we tried it out immediately after the show.  I have been
+fascinated by this game ever since.  
+
+Sometime time in the mid 1990's I did a statistical study of the game, and
+found with a 99\% confidence level that the probability of winning 
+(with perfect play,) is indeeed a bit more than 98\%.  I've always wanted 
+to know the exact probability, and this article describes how I've computed it.
+
+\section {The Rules}
+Poker is played with a 52-card deck, with four suits (Clubs, Diamonds, Hearts, and Spades)
+of 13 cards each.  The cards in each suit have ranks 
+\begin{center}
+         2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, King ,Ace.
+\end{center}
+In what follows, Jack, Queen, King, and Ace will be abbrevaited as J, Q, K, A, respectively. 
+
+A poker hand contains five cards, and the hands have certain values, of which only three concern us.
+Five cards of consecutive ranks constitute a \textit{straight}.  While the Ace is normally the highest 
+card of a suit, for this purpose it can also be considered the lowest card, so that 10 J Q K A and A 2 3 4 5
+are straights.  Five cards of the same suit  constitute a \textit{flush}.  In poker a hand that is both a
+flush and a straight, that is five consecutive ranks of the same suit is called a \textit{straight flush}, 
+and is a very good hand indeed, but for our purposes it's just another flush.  The third type
+of "pat hand" is called a \textit{full house}, and consists of three cards of one rank and two cards of another rank.
+These are presumably called "pat hands" because in draw poker, a player holding one of these
+hands must normally "stand pat", holding all five cards, for to draw a card is to destroy the 
+value of the hand.
+
+In Maverick poker, the player deals 25 cards at random, and attempts to separate them into five disjoint pat hands.
+Of course, sometimes this is possible, but the solution is recondite, and the player may not find it.
+We shall assume however, that the player plays perfectly, always solving the problem if a solution exists.  
+Alternatively, we may just ask for the probability that a solution exists.
+
+\section{Equivalence Classes}
+There are \[\binom{52}{25}=477,551,179,875,952\] possible deals of 25 cards.  The suits don't really matter.  
+If we permute the suits in a deal, the resulting deal has a solution if and only if the original deal did.  There are usually $4! =24$ ways to 
+permute the suits, though sometimes there are fewer.  If two suits have exactly the same ranks, then interchanging those
+two suits will not affect the deal at all.  In this case, there are only 12 equivalent deals, and if there are three identical suits, 
+there are only four equivalent deal, since the only choice is which suit is the inequivalent one.
+
+The plan is to generate one deal from each equivalence class, and determine whether it has a solution and how many deals it represents.
+Then we need only consider about one tweny-fourth of the deals.  I did this by deciding that there would always be at least
+as many Spades as Hearts, at least as many Hearts as Diamonds, and at least as many Diamonds as Clubs.  Furthermore,
+if two of the suits had the same number of cards, then the suit that would normally be longer
+will have the higher cards.  In poker, hand are compared lexicographically.  The highest cards in each hand are compared; the higher one belongs to the 
+better had.  If the highest cards are the same, then the second-highest cards are compared, and so on.  Only
+in the case where we have a tie all the way down the line do we have to adjust the number ofhands represented.
+
+This is a substantial reduction, but we can do even better.  Besides the symmetry of suits, there is a symmetry of ranks.
+Suppose we alter a hand by replacing every 2 by the K of the same suit, and every K by the 2 of the same suit; replacing
+every 3 by the Q of the same suit, and every Q by the 4 of the same suit, and similarly exchanging 4 and J, 5 and 10, 6 and 9, and 7 and 8.
+Aces are unchanged.  Clearly, the new deal has a solution if and only if the original deal has one.  The transformation takes flushes to 
+flushes, full houses to full houses, and straights to straights (because the Ace can be high or low.)  
+Now we need only consider about half the possible Spade suits.  We don't need to consider both a
+suit and its "mirror image."  If the suit has a King but not a 2, we accept it; if it has a 2 but not a K, we reject it; if it has neitehr or both, 
+we look to the 3 and Q to decide, and so on.  Again, it is possible that there are ties all the way down the line, and then we 
+don't get a doubling.
+
+Unfortunately, the rank and suit symmetries conflict, because transforming the ranks by reflection may change the ordering of the suits.  After relection
+the suit that originally had the lowest low card will now have the highest high card, and the low cards probably had no role in determining
+which of the original suits was better.  So, for example, if the Spades and Hearts have the same length, there is no way to combine the rule 
+that the Spades are at least as good as the Hearts with the rank symmetry.  Still when all the suits have different lengths, we can use the rank symmetry.
+This occurs in about 30\% of the deals, so we get a very worthwhile reduction.  Suit symmetries alone produced about 19.9 trillion equivalence 
+classes.  Applying the rank symmetry reduces this number to 17,023,704,173,138.  Still a formidable number, but 460 trillion less than we started with.
+
+\section{Exhaustive Search}
+
+In mathematical terms, this is a "set exact cover" problem.  We are given a set (the 25 cards of the deal,) 
+and a family of subsets of the set (all the pat hands that can be constructed from those cards).  The problem is 
+to find a subfamily that will exactly "cover" the set, that is such that each element of the set belongs to exacly 
+one member of the subfamily.  In Maverick solitaire, we must select five pat hands so that each card occurs 
+in exactly one of the pat hands.
+
+Problem like this are usually solve by "backtracking."  Pick one of the cards, and make a list of all the pat
+nahs that include it.  Choose one of them, and the choose a card that is not covered by that hand.  Now make a
+list of all the pat hands that include the second card, but no card in the first hand.  Choose one of of these,
+and then choose another card that hasn't be covered yet, and make a list of all the pat hands that cover the th 
+
+
+
+
+
+
+
+\end {document}

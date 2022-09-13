@@ -4,13 +4,10 @@
 void dist10870() {
   extern RankSet ranks10[];
   extern RankSet suit8[];
-  extern Cards10 swords10[];
-  extern Cards8 hearts8[];
   extern RankSet suit7[];
+  RankSet *DIAMONDS_START = suit7;
   RankSet *SPADES_START = ranks10;
   RankSet *HEARTS_START = suit8;
-  extern Cards7 diamonds7[];
-  RankSet *DIAMONDS_START = suit7;
   RankSet *SPADES_END  = SPADES_START + 145;
   RankSet *SYM_START = SPADES_START +140;
   RankSet *HEARTS_END  = HEARTS_START + 1286;

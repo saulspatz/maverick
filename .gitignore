@@ -3,6 +3,9 @@ __pycache__
 a.out
 *.o
 maverick
+doc/maverick.out
+doc/maverick.aux
+doc/maverick.log
 
 
 

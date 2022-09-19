@@ -66,7 +66,6 @@ class Solver:
                 patHands.append(T+P)
 
         tp = len(patHands) -straights - flushes
-        print("tp", tp)
 
         for f in fours:
             F = ranks[f]
@@ -75,7 +74,6 @@ class Solver:
                 patHands += [P + s for s in combinations(F, 3)]
 
         fp = len(patHands) -straights - flushes -tp
-        print("fp", fp)
 
         for f in fours:
             F = ranks[f]
@@ -86,7 +84,6 @@ class Solver:
                 patHands += [T +  s2 for s2 in combinations(F, 2)]
 
         ft = len(patHands) -straights - flushes -tp -fp
-        print("ft", ft)
 
         for t1 in trips:
             T1 = ranks[t1]
@@ -96,7 +93,6 @@ class Solver:
                     patHands += [T1 + p for p in combinations(T2, 2)]
 
         tt = len(patHands) -straights - flushes -tp -fp -ft
-        print("tt", tt)
 
         for f1 in fours:
             F1 = ranks[f1]
@@ -106,7 +102,6 @@ class Solver:
                     patHands += [t + p for t in combinations(F1, 3)
                                  for p in combinations(F2, 2)]
         ff = len(patHands) -straights - flushes -tp -fp -ft -tt
-        print("ff", ff)
 
         self.fullHouses = len(patHands) - flushes - straights
         self.patHands = patHands

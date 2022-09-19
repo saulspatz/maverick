@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <assert.h>
 #include "dance.h"
 #include "types.h" //for RankSet
+
 
 int maxb = 0;
 int maxl = 0;
@@ -43,6 +45,16 @@ void print_row(Node *p) {
     printf(" (%d of %d)\n", k, p->col->len);
 }
 
+void print_columns() {
+    Column *c = root.next;
+    while (c != &root) {
+        printf("%d (%d) ", c->name, c->len);
+        c = c->next;
+    }
+    printf("\n\n");
+    
+ }
+
 int bitsum(int x) {
     // count the 1 bits in x
     int answer = 0;
@@ -73,32 +85,39 @@ void cover(Column *c) {
     r = c->next;
     l->next = r;
     r->prev = l;
-    for (rr = c->head.down; rr != &(c->head); rr = rr->down) {
-        for (nn = rr->right; nn != rr; nn = nn->right) {
-            uu = nn->up;
-            dd = nn->down;
-            uu->down = dd;
-            dd->up = uu;
-            nn->col->len--;
-        }
+    for (rr = c->head.down; rr != &(c->head); rr = rr->down) 
+    for (nn = rr->right; nn != rr; nn = nn->right) {
+        uu = nn->up;
+        dd = nn->down;
+        uu->down = dd;
+        dd->up = uu;
+        nn->col->len--;
     }
 }
 
 void uncover(Column *c) {
     Column *l, *r;
     Node *rr, *nn, *uu, *dd;
-    for (rr = c->head.up; rr != &(c->head); rr = rr->up) {
-        for (nn = rr->left; nn != rr; nn = nn->left) {
-            uu = nn->up;
-            dd = nn->down;
-            uu->down = dd->up = nn;
-            nn->col->len++;
-        }
+    for (rr = c->head.up; rr != &(c->head); rr = rr->up) 
+    for (nn = rr->left; nn != rr; nn = nn->left) {
+        uu = nn->up;
+        dd = nn->down;
+        uu->down = dd->up = nn;
+        nn->col->len++;
     }
     l = c->prev;
     r = c->next;
     l->next = r->prev = c;
 }
+
+void pip(int code, char buffer[]){
+    // for debugging
+    int rank = (code-1)%13 + 1;
+    int suit = (code-1)/13;
+    buffer[0] = rankCode[rank];
+    buffer[1] = suitCode[suit];
+    buffer[2] = '\0';
+} 
 
 void addHand(int hand[]) {
     // Pre: The cards in both the deal and the hand are sorted in increasing
@@ -111,7 +130,7 @@ void addHand(int hand[]) {
         if (k != 0) 
             theNode->left = theNode - 1;
         if (k != 4)
-        theNode->right = theNode + 1;
+            theNode->right = theNode + 1;
         while (currentColumn->name != hand[k])
             currentColumn++;
         theNode->col = currentColumn;
@@ -127,6 +146,9 @@ void addHand(int hand[]) {
     theNode -= 1;
     theNode->right = currentNode;
     currentNode->left = theNode;
+    theNode = currentNode;
+    for (int k = 0; k < 5; k++) 
+        theNode = theNode->right;
     currentNode += 5;
 }
 
@@ -162,7 +184,23 @@ int findFlushes() {
 }
 
 int findFullHouses() {
-        // find all full houses
+    // find all full houses
+
+    // Bring all cards to the front of the row
+    for (int r = ACE; r <= KING; r++) {
+        if (cards[r][RANK_TOTAL]==0) continue;
+        for (int k = 2; k >=0; k--) {
+            if (cards[r][k]==0 && cards[r][k+1] != 0) {
+                for (int j = k; j < 3; j++)
+                    cards[r][j] = cards[r][j+1];
+            }
+        }
+        // Don't have to worry about duplicates left behind,
+        // because cards[RANK_TOTAL] tells us how many cards 
+        // of rank r there are in the deal. 
+    }
+
+
     int f = 0; // number of fours of a kind
     int t = 0; // number of trips
     int p = 0; // number of pairs
@@ -175,177 +213,66 @@ int findFullHouses() {
         else if (cards[k][RANK_TOTAL] == 2)
             p++;
     }
-    int fours[f][4];
-    int trips[t][3];
-    int pairs[p][2];
-    memset(fours, 0, sizeof(fours));
+    int T = 4*f + t;
+    int P = 6*f + 3*t + p;
+    int trips[T][3];
+    int pairs[P][2];
+
     memset(trips, 0, sizeof(trips));
     memset(pairs, 0, sizeof(pairs));
-    int f1 = 0;
-    int t1 = 0;
-    int p1 = 0;
+
+    t = 0;
+    p = 0;
     for (int r = ACE; r <= KING; r++) {
         int length = cards[r][RANK_TOTAL];
         if (length == 4) {
-            for (int j = 0; j < 4; j++)
-                fours[f1][j] = cards[r][j];
-            f1++;
+            for (int j0 = 0; j0<2; j0++)
+            for (int j1 = j0+1; j1 < 3; j1++)
+            for( int j2 = j1+1; j2 < 4; j2++) {
+                trips[t][0] = cards[r][j0];
+                trips[t][1] = cards[r][j1];
+                trips[t][2] = cards[r][j2];
+                t++;
+            }
+            for (int j0 = 0; j0<3; j0++)
+            for (int j1 = j0+1; j1 < 4; j1++) {
+                pairs[p][0] = cards[r][j0];
+                pairs[p][1] = cards[r][j1];
+                p++;
+            }
         }
         else if (length == 3) {
-            int j1 = 0;
-            for (int j = 0; j < 4; j++) {
-                if (cards[r][j]) {
-                    trips[t1][j1] = cards[r][j];
-                    j1++;
-                }
-            }
-            t1++;
+            for (int j = 0; j < 3; j++) 
+                trips[t][j] = cards[r][j];
+            t++;
+            for (int j0 = 0; j0 < 2; j0++)
+            for (int j1 = j0+1; j1 < 3; j1++) {
+                pairs[p][0] = cards[r][j0];
+                pairs[p][1] = cards[r][j1];
+                p++;
+            }                
         }
-
         else if (length == 2) {
-            int j1 = 0;
-            for (int j = 0; j < 4; j++) {
-                if (cards[r][j]) {
-                    pairs[p1][j1] = cards[r][j];
-                    j1++;
-                }
-            }
-            p1++;
+            for (int j = 0; j < 2; j++) 
+                pairs[p][j] = cards[r][j];
+            p++;
         }
     }
-
-    // Find the full houses where 
-    //the three-of-a-kind comes from trips
-    // and the pair from pairs
-
-    for (int t1 = 0; t1 < t; t1++)
-        for (int p1 = 0; p1 < p; p1++) {
-            int hand[5];
-            for (int k = 0; k < 3; k++)
-                hand[k] = trips[t1][k];
-            for (int j = 0; j < 2; j++)
-                hand[j + 3] = pairs[p1][j];
-            isort(hand);
-            addHand(hand);
-            fulls++;
-        }
-
-    // Find the full houses where 
-    // the three-of a kind comes from fours
-    // and the pair from pairs
-
-    for (int f1 = 0; f1 < f; f1++)
-        for (int p1 = 0; p1 < p; p1++) {
-            int hand[5];
-            for (int s = 0; s < 4; s++) {
-                int k1 = 0;
-                for (int k = 0; k < 4; k++) {
-                    if (k == s)
-                        continue;
-                    hand[k1] = fours[f1][k];
-                    k1++;
-                }
-                for (int j = 0; j < 2; j++)
-                    hand[j + 3] = pairs[p1][j];
-                isort(hand);
-                addHand(hand);
-                fulls++;
-            }
-        }
-
-    // Find the full houses where the 
-    // three-of-a-kind comes from fours
-    // and the pair from trips
-
-    for (int f1 = 0; f1 < f; f1++)
-    for (int t1 = 0; t1 < t; t1++) {
+    assert(t==T && p==P);
+    
+    for (int t = 0; t < T; t++)
+    for (int p = 0; p < P; p++) {
+        if ((trips[t][0] - pairs[p][0]) % 13 == 0)
+            continue;  // trips and pair can't have same rank
         int hand[5];
-        for (int s = 0; s < 4; s++) {
-            int k1 = 0;
-            for (int k = 0; k < 4; k++) {
-                if (k == s)
-                    continue;
-                hand[k1] = fours[f1][k];
-                k1++;
-            }
-            for (int s = 0; s < 3; s++) {
-                int k1 = 0;
-                for (int j = 0; j < 2; j++) {
-                    if (j == s)
-                        continue;
-                    hand[k1 + 3] = trips[t1][j];
-                    k1++;
-                }
-                isort(hand);
-                addHand(hand);
-                fulls++;
-            }
-        }
-    }
 
-    // Find the full houses where 
-    // the three-of-a-kind comes from trips
-    // and the pair from fours
-
-    for (int t1 = 0; t1 < t; t1++)
-    for (int f1 = 0; f1 < f; f1++)
-    for (int k1 = 0; k1 < 3; k1++)
-    for (int k2 = k1 + 1; k2 < 4; k2++) {
-        int hand[5];
         for (int k = 0; k < 3; k++)
-            hand[k] = trips[t1][k];
-        hand[3] = fours[f1][k1];
-        hand[4] = fours[f1][k2];
+            hand[k] = trips[t][k];
+        for (int j = 0; j < 2; j++)
+            hand[j + 3] = pairs[p][j];
         isort(hand);
         addHand(hand);
         fulls++;
-    }
-
-    // Find the full houses where 
-    // both the three-of-a-kind and 
-    // pair come from trips 
-
-    for (int t1 = 0; t1 < t; t1++)
-    for (int t2 = 0; t2 < t; t2++) {
-        if (t1 == t2) continue;
-        int hand[5];
-        for (int k = 0; k < 3; k++)
-            hand[k] = trips[t1][k];
-        for (int k1 = 0; k1 <2; k1++)
-        for (int k2 = k1 +1; k2 <3; k2++) {
-            hand[3] = trips[t2][k1];
-            hand[4] = trips[t2][k2];
-            isort(hand);
-            addHand(hand);
-            fulls++;
-        }
-    }
-
-    // Find the full houses where 
-    // both the three-of-a-kind and 
-    // pair come from fours
- 
-    for (int f1 = 0; f1 < f; f1++)
-    for (int f2 = 0; f2 < f; f2++) {
-        if (f1 == f2) continue;
-        int hand[5];
-        for (int s = 0; s < 4; s++) {
-            int k1 = 0;
-            for (int k = 0; k < 4; k++) {
-                if (k == s)
-                    continue;
-                hand[k1] = fours[f1][k];
-                k1++;
-            }
-            for (int g1 = 0; g1 < 3; g1++)
-            for (int g2 = g1+1; g1 < 4; g1++) {
-                hand[3] = fours[f2][g1];
-                hand[4] = fours[f2][g2];
-                isort(hand);
-                addHand(hand);
-                fulls++;
-            } 
-        }       
     }
     return fulls;
 }
@@ -359,47 +286,30 @@ int findStraights() {
         cards[14][s] = cards[ACE][s];
     cards[14][RANK_TOTAL] = cards[ACE][RANK_TOTAL];
 
-    // Bring all cards to the front of the row
-    for (int r = ACE; r <= (KING+1); r++) {
-        if (cards[r][RANK_TOTAL]==0) continue;
-        for (int k = 2; k >=0; k--) {
-            if (cards[r][k]==0 && cards[r][k+1] != 0) {
-                for (int j = k; j < 3; j++)
-                    cards[r][j] = cards[r][j+1];
-            }
-        }
-        // Don't have to worry about duplicates left behind,
-        // because cards[RANK_TOTAL] tells us how many cards 
-        // of rank r there are in the deal. 
-    }
-
     #define none(r) (cards[(r)][RANK_TOTAL]==0)
     for (int low = ACE; low <= 10; low++) {
         if (none(low) || none(low+1) || none(low+2) || none(low+3) || none(low+4))
             continue;
         int hand[5];
-        for (int i1 = 0; i1 < cards[low][RANK_TOTAL]; i1++) {
-            hand[0] = cards[low][i1];
-            for (int i2 = 0; i2 < cards[low+1][RANK_TOTAL]; i2++) {
-                hand[1] = cards[low+1][i2];
-                for (int i3 = 0; i3 < cards[low+2][RANK_TOTAL]; i3++) {
-                    hand[2] = cards[low+2][i3]; 
-                    for (int i4 = 0; i4 < cards[low+3][RANK_TOTAL]; i4++) {
-                        hand[3] = cards[low+3][i4];
-                        for (int i5 = 0; i5 < cards[low+4][RANK_TOTAL]; i5++) {
-                            hand[4] = cards[low+4][i5];
-                            isort(hand);
-                            addHand(hand);
-                            straights++;
-                        }
-                    }
-                }
-            }
+        int i[5];
+        for (i[0]=0; i[0]<cards[low][RANK_TOTAL]; i[0]++)             
+        for (i[1]=0; i[1]<cards[low+1][RANK_TOTAL]; i[1]++)     
+        for (i[2]=0; i[2]<cards[low+2][RANK_TOTAL]; i[2]++) 
+        for (i[3]=0; i[3]<cards[low+3][RANK_TOTAL]; i[3]++) 
+        for (i[4]=0; i[4]<cards[low+4][RANK_TOTAL]; i[4]++) {
+            hand[0] = cards[low][i[0]]; 
+            hand[1] = cards[low+1][i[1]]; 
+            hand[2] = cards[low+2][i[2]]; 
+            hand[3] = cards[low+3][i[3]]; 
+            hand[4] = cards[low+4][i[4]]; 
+            isort(hand);
+            addHand(hand);
+            straights++;
         }
     }
     return straights;
 }
-
+                  
 int solver(RankSet spades, RankSet hearts,
             RankSet diamonds, RankSet clubs, Value *value) {
 
@@ -408,6 +318,7 @@ int solver(RankSet spades, RankSet hearts,
     suits[1] = diamonds;
     suits[2] = hearts;
     suits[3] = spades;
+    currentNode = nodes;
 
     #define RANK_TOTAL 4
 
@@ -449,21 +360,21 @@ int solver(RankSet spades, RankSet hearts,
     value->flushes = flushes;
     value->straights = straights;
     value->fullHouses = fulls;
-    // Matrix constructed.  Finad a solution, if one exists.
+    // Matrix constructed.  Find a solution, if one exists.
 
     int level = 0;
-    Column *bestColumn; // best column branch has minimum length
-    int minlen = 100000; // infinity
-    
+    Column *bestColumn; // best column for branching has minimum length
+    int minLength;
+
 forward:
-    
+
+    minLength = 100000; // infinity
     for (currentColumn = root.next; currentColumn != &root; currentColumn = currentColumn->next) {
-        if (currentColumn->len < minlen) {
+        if (currentColumn->len < minLength) {
             bestColumn = currentColumn;
-            minlen = currentColumn->len;
+            minLength = currentColumn->len;
         }
     }
-
     cover(bestColumn);
     currentNode = choice[level] = bestColumn->head.down;
 
@@ -480,7 +391,6 @@ advance:
     goto forward;
 
 backup:
-
     uncover(bestColumn);
     if (level == 0)
         return 0;  // we'd have short-circuited had there been a solution

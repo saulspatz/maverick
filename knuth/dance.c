@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#include <string.h>  // for memset
 #include <assert.h>
 #include "dance.h"
 #include "types.h" //for RankSet
 
-
+int maxPats;  // for testing only
 int maxb = 0;
 int maxl = 0;
 
@@ -24,10 +23,12 @@ enum {
 };
 Node *currentNode = nodes;
 int cards[16][5]; // no rank 0; room for high Ace, rank and suit totals
+int inverted[53];    // inverted list of the column headers  
 #define SUIT_TOTAL 15
 #define RANK_TOTAL 4
 
 void print_row(Node *p) {
+    //for debugging
     Node *q = p;
     int k;
     do {
@@ -46,6 +47,7 @@ void print_row(Node *p) {
 }
 
 void print_columns() {
+    //for debugging
     Column *c = root.next;
     while (c != &root) {
         printf("%d (%d) ", c->name, c->len);
@@ -54,29 +56,6 @@ void print_columns() {
     printf("\n\n");
     
  }
-
-int bitsum(int x) {
-    // count the 1 bits in x
-    int answer = 0;
-    while (x & (x - 1))
-        answer++;
-    return answer;
-}
-
-void isort(int hand[]) {
-    // insertion sort; hand has 5 cards
-    int value;
-    for (int j = 1; j < 5; j++) {
-        value = hand[j];
-        int i = j - 1;
-        while (i >= 0 && hand[i] > value)
-        {
-            hand[i + 1] = hand[i];
-            i--;
-        }
-        hand[i + 1] = value;
-    }
-}
 
 void cover(Column *c) {
     Column *l, *r;
@@ -120,19 +99,16 @@ void pip(int code, char buffer[]){
 } 
 
 void addHand(int hand[]) {
-    // Pre: The cards in both the deal and the hand are sorted in increasing
-    // order of the index, that is, suit and then by rank.
 
     Node *theNode = currentNode;
-    Column *currentColumn = columns + 1;
+    Column *currentColumn;
 
     for (int k = 0; k < 5; k++) {
         if (k != 0) 
             theNode->left = theNode - 1;
         if (k != 4)
             theNode->right = theNode + 1;
-        while (currentColumn->name != hand[k])
-            currentColumn++;
+        currentColumn = columns + inverted[hand[k]];
         theNode->col = currentColumn;
         theNode->up = currentColumn->head.up;
         currentColumn->head.up->down = theNode;
@@ -167,17 +143,24 @@ int findFlushes() {
                 k++;
             }
         }
-        int i[5];
-        for (i[0] = 0; i[0] < length - 4; i[0]++)
-        for (i[1] = i[0] + 1; i[1] < length - 3; i[1]++)
-        for (i[2] = i[1] + 1; i[2] < length - 2; i[2]++)
-        for (i[3] = i[2] + 1; i[3] < length - 1; i[3]++)
-        for (i[4] = i[3] + 1; i[4] < length; i[4]++) {
-            int hand[5];
-            for (int j = 0; j < 5; j++)
-                hand[j] = suit[i[j]];
-            addHand(hand);
-            flushes++;
+
+        int hand[5];
+        for (int i0 = 0; i0 < length - 4; i0++) {
+            hand[0] = suit[i0];        
+            for (int i1 = i0 + 1; i1 < length - 3; i1++) {
+                hand[1] = suit[i1];
+                for (int i2 = i1 + 1; i2 < length - 2; i2++) {
+                    hand[2] = suit[i2];
+                    for (int i3 = i2 + 1; i3 < length - 1; i3++) {
+                        hand[3] = suit[i3];
+                        for (int i4 = i3 + 1; i4 < length; i4++) {
+                            hand[4] = suit[i4];
+                            addHand(hand);
+                            flushes++;
+                        }
+                    }
+                }
+            }
         }
     }
     return flushes;
@@ -258,21 +241,21 @@ int findFullHouses() {
             p++;
         }
     }
-    assert(t==T && p==P);
+    //assert(t==T && p==P);
     
-    for (int t = 0; t < T; t++)
-    for (int p = 0; p < P; p++) {
-        if ((trips[t][0] - pairs[p][0]) % 13 == 0)
-            continue;  // trips and pair can't have same rank
+    for (int t = 0; t < T; t++) {
         int hand[5];
-
-        for (int k = 0; k < 3; k++)
-            hand[k] = trips[t][k];
-        for (int j = 0; j < 2; j++)
-            hand[j + 3] = pairs[p][j];
-        isort(hand);
-        addHand(hand);
-        fulls++;
+        hand[0] =trips[t][0];
+        hand[1] =trips[t][1];
+        hand[2] =trips[t][2];
+        for (int p = 0; p < P; p++) {
+            if ((trips[t][0] - pairs[p][0]) % 13 == 0)
+                continue;  // trips and pair can't have same rank
+            hand[3] = pairs[p][0];
+            hand[4] = pairs[p][1];
+            addHand(hand);
+            fulls++;
+        }
     }
     return fulls;
 }
@@ -292,33 +275,36 @@ int findStraights() {
             continue;
         int hand[5];
         int i[5];
-        for (i[0]=0; i[0]<cards[low][RANK_TOTAL]; i[0]++)             
-        for (i[1]=0; i[1]<cards[low+1][RANK_TOTAL]; i[1]++)     
-        for (i[2]=0; i[2]<cards[low+2][RANK_TOTAL]; i[2]++) 
-        for (i[3]=0; i[3]<cards[low+3][RANK_TOTAL]; i[3]++) 
-        for (i[4]=0; i[4]<cards[low+4][RANK_TOTAL]; i[4]++) {
-            hand[0] = cards[low][i[0]]; 
-            hand[1] = cards[low+1][i[1]]; 
-            hand[2] = cards[low+2][i[2]]; 
-            hand[3] = cards[low+3][i[3]]; 
-            hand[4] = cards[low+4][i[4]]; 
-            isort(hand);
-            addHand(hand);
-            straights++;
+        for (i[0]=0; i[0]<cards[low][RANK_TOTAL]; i[0]++) {
+            hand[0] = cards[low][i[0]];
+            for (i[1]=0; i[1]<cards[low+1][RANK_TOTAL]; i[1]++) { 
+                hand[1] = cards[low+1][i[1]]; 
+                for (i[2]=0; i[2]<cards[low+2][RANK_TOTAL]; i[2]++) { 
+                    hand[2] = cards[low+2][i[2]];
+                    for (i[3]=0; i[3]<cards[low+3][RANK_TOTAL]; i[3]++) {
+                        hand[3] = cards[low+3][i[3]];
+                        for (i[4]=0; i[4]<cards[low+4][RANK_TOTAL]; i[4]++) {
+                            hand[4] = cards[low+4][i[4]]; 
+                            addHand(hand);
+                            straights++;
+                        }
+                    }
+                }
+            }
         }
-    }
+     }
     return straights;
-}
-                  
+}      
+
 int solver(RankSet spades, RankSet hearts,
             RankSet diamonds, RankSet clubs, Value *value) {
 
-    RankSet suits[4];
-    suits[0] = clubs;
-    suits[1] = diamonds;
-    suits[2] = hearts;
-    suits[3] = spades;
-    currentNode = nodes;
+    RankSet bitsets[4];
+    bitsets[0] = clubs;
+    bitsets[1] = diamonds;
+    bitsets[2] = hearts;
+    bitsets[3] = spades;
+    currentNode = nodes; 
 
     #define RANK_TOTAL 4
 
@@ -327,15 +313,15 @@ int solver(RankSet spades, RankSet hearts,
     for (int s = CLUBS; s <= SPADES; s++) 
     for (int r = ACE; r <= KING; r++) {
         int mask = (1 << r);
-        if (mask & suits[s]) {
+        if (mask & bitsets[s]) {
             cards[r][s] = 13*s + r;
             cards[r][RANK_TOTAL] += 1;
             cards[SUIT_TOTAL][s] += 1;
         }
     }
     
-    // Make the column headers
-
+    // Make the column headers and an inverted list of them 
+  
     Column *currentColumn = columns + 1;
     Node *currentNode = nodes;
     for (int s = CLUBS; s <= SPADES; s++) 
@@ -346,6 +332,7 @@ int solver(RankSet spades, RankSet hearts,
         currentColumn->len = 0;
         currentColumn->prev = currentColumn - 1;
         currentColumn->name = cards[r][s];
+        inverted[cards[r][s]] = currentColumn - columns;
         (currentColumn - 1)->next = currentColumn;
         currentColumn++;
     }
@@ -360,10 +347,14 @@ int solver(RankSet spades, RankSet hearts,
     value->flushes = flushes;
     value->straights = straights;
     value->fullHouses = fulls;
+    
+    int tmp = flushes + straights + fulls;
+    if (tmp > maxPats) maxPats = tmp;
+
     // Matrix constructed.  Find a solution, if one exists.
 
     int level = 0;
-    Column *bestColumn; // best column for branching has minimum length
+    Column *bestColumn = columns+1; // best column for branching has minimum length
     int minLength;
 
 forward:
@@ -392,7 +383,7 @@ advance:
 
 backup:
     uncover(bestColumn);
-    if (level == 0)
+    if (level == 0) 
         return 0;  // we'd have short-circuited had there been a solution
     level--;
     currentNode = choice[level];

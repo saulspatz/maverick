@@ -25,7 +25,7 @@ struct col_struct;          // Forward declaration needed because Node
 typedef struct node_struct {
   struct node_struct *left,*right;  /* predecessor and successor in row */
   struct node_struct *up,*down;     /* predecessor and successor in column */
-  struct col_struct *col;                      /* the column containing this node */
+  struct col_struct *col;           /* the column containing this node */
 } Node; 
 
 typedef struct col_struct {

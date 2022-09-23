@@ -13,6 +13,8 @@ typedef struct {
 extern int solver(RankSet spades, RankSet hearts,
             RankSet diamonds, RankSet clubs, Value *value);
 
+extern int maxPats;
+
 int main() {
     FILE *input = fopen("problems.txt", "r");
     FILE *solns = fopen("solutions.txt", "w");
@@ -40,4 +42,5 @@ int main() {
         fflush(solns);
     }
     fclose(solns);
+    printf("maximum pat hands: %d\n", maxPats);
 }

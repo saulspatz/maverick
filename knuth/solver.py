@@ -34,7 +34,9 @@ class Solver:
         ranks = [[]]+[[card for card in deal if card[0] == rank]
                   for rank in range(ACE, KING+1)]
 
-        # Get the straights
+        # Get the straights  
+        # Straight flushes are duplicated, 
+        # but that doesn't matter
 
         for rank in range(ACE,TEN):
             theRanks = ranks[rank:rank+5]

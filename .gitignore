@@ -9,6 +9,9 @@ doc/maverick.log
 *.txt
 knuth/texput.log
 knuth/testDance
+knuth/testDance2
+*.bak
+*.gch
 
 
 

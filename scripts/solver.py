@@ -1,15 +1,18 @@
 # Solve a deal of Maverick Solitaire#
-#         ********* ACE IS HIGH ************
+#         ********* ACE IS LOW ************
 #
-from itertools import combinations, product
 
-DEUCE,TREY,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,JACK,QUEEN,KING,ACE = range(13)
-CLUB,DIAMOND,HEART,SPADE = range(4)
+from itertools import combinations, product
+import random
+import sys
+
+ranks = (ACE, DEUCE, TREY, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK,
+         QUEEN, KING) = range(1,14)
+suits = (CLUB, DIAMOND, HEART, SPADE) = range(4)
 
 class Solver:
-    def __init__(self, deal):
-        self.deal = [(c // 4, c % 4) for c in deal]
-
+    def __init__(self, *args):
+        self.dist = args
     def findPatHands(self):
 
         # patHands is a list of all possible pathands.
@@ -26,48 +29,53 @@ class Solver:
 
         for suit in (clubs, diamonds, hearts, spades):
             patHands += list(combinations(suit, 5))
+        flushes = self.flushes = len(patHands) 
 
-        flushes = len(patHands)
+        ranks = [[]]+[[card for card in deal if card[0] == rank]
+                  for rank in range(ACE, KING+1)]
 
-        ranks = [[card for card in deal if card[0] == rank]
-                  for rank in range(13)]
+        # Get the straights  
+        # Straight flushes are duplicated, 
+        # but that doesn't matter
 
-        # Get the straights
-
-        for rank in range(JACK):
+        for rank in range(ACE,TEN):
             theRanks = ranks[rank:rank+5]
             if all(theRanks):
                 patHands += product(*theRanks)
 
-        # Now the low straights
+        # Now the high straights
 
-        theRanks = [ranks[ACE]] + ranks[DEUCE:SIX]
+        theRanks = ranks[TEN:] + [ranks[ACE]] 
         if all(theRanks):
             patHands += product(*theRanks)
 
-        straights = len(patHands) - flushes
+        straights = self.straights = len(patHands) - flushes    
 
         # Full houses
 
         ranks = [card[0] for card in deal]
-        pairs = [rank for rank in range(13) if ranks.count(rank) == 2]
-        trips = [rank for rank in range(13) if ranks.count(rank) == 3]
-        fours = [rank for rank in range(13) if ranks.count(rank) == 4]
+        pairs = [rank for rank in range(ACE,KING+1) if ranks.count(rank) == 2]
+        trips = [rank for rank in range(ACE,KING+1) if ranks.count(rank) == 3]
+        fours = [rank for rank in range(ACE,KING+1) if ranks.count(rank) == 4]
 
         ranks = [tuple([card for card in deal if card[0] == rank])
-                 for rank in range(13)]
+                 for rank in range(0,KING+1)]
 
         for t in trips:
             T = ranks[t]
             for p in pairs:
                 P = ranks[p]
-                patHands += [T + P]
+                patHands.append(T+P)
+
+        tp = len(patHands) -straights - flushes
 
         for f in fours:
             F = ranks[f]
             for p in pairs:
                 P = ranks[p]
                 patHands += [P + s for s in combinations(F, 3)]
+
+        fp = len(patHands) -straights - flushes -tp
 
         for f in fours:
             F = ranks[f]
@@ -77,12 +85,16 @@ class Solver:
                              for s2 in combinations(T, 2)]
                 patHands += [T +  s2 for s2 in combinations(F, 2)]
 
+        ft = len(patHands) -straights - flushes -tp -fp
+
         for t1 in trips:
             T1 = ranks[t1]
             for t2 in trips:
                 T2 = ranks[t2]
                 if t1 != t2:
                     patHands += [T1 + p for p in combinations(T2, 2)]
+
+        tt = len(patHands) -straights - flushes -tp -fp -ft
 
         for f1 in fours:
             F1 = ranks[f1]
@@ -91,17 +103,25 @@ class Solver:
                 if f1 != f2:
                     patHands += [t + p for t in combinations(F1, 3)
                                  for p in combinations(F2, 2)]
+        ff = len(patHands) -straights - flushes -tp -fp -ft -tt
 
-        fulls = len(patHands) - (flushes + straights)
-        print(f'{flushes} flushes')
-        print(f'{straights} straights')
-        print(f'{fulls} full houses')
-
+        self.fullHouses = len(patHands) - flushes - straights
         self.patHands = patHands
 
-    def solve(self):
-        solution = None
-
+    def run(self):
+        sample = random.sample
+        ranks = range(ACE, KING+1)
+        if not self.dist:
+            self.sample = sample(range(1, 53), 25)
+            self.sample.sort()
+        else:
+            dist = self.dist
+            self.sample =   [c for c in sample(ranks, dist[0])]
+            self.sample +=  [13+c for c in sample(ranks, dist[1])]
+            self.sample +=  [26+c for c in sample(ranks, dist[2])]
+            self.sample +=  [39+c for c in sample(ranks, dist[3])]
+        deal = self.deal = [((c-1)%13+1,(c-1)//13) for c in self.sample]
+        
         self.findPatHands()
 
         # At this point, we have found all the possible pat hands.
@@ -110,7 +130,6 @@ class Solver:
         # hands come first
 
         pats = {}
-        deal = self.deal
         for card in deal:
             pats[card] = [set(pat) for pat in self.patHands if card in pat]
 
@@ -138,5 +157,25 @@ class Solver:
                         card4 = [card for card in deal if card not in used3][0]
                         for hand4 in pats[card4]:
                             if all([card not in used3 for card in hand4]):
-                                return  [hand0, hand1, hand2, hand3, hand4]
-        return False
+                                self.solution = 1
+                                return
+        self.solution = 0
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+    if not args:
+        print('Number of trials is a required parameter')
+        exit()
+    trials = int(args[0])
+    args = args[1:]
+    if sum(args) not in (0,25) or not all(0<=c<=13 for c in args):
+        print("invalid distribution", args)
+    solver = Solver(*args)
+    with open("problems.txt", "w") as fout1:
+        with open("answers.txt", "w") as fout2:
+            for _ in range(trials):
+                solver.run()
+                for card in solver.sample:
+                    fout1.write(f'{card} ')
+                fout1.write('\n')
+                fout2.write(f'{solver.flushes} {solver.straights} {solver.fullHouses} {solver.solution}\n')  

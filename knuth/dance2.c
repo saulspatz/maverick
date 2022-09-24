@@ -23,6 +23,8 @@ int inverted[53];    // inverted list of the column headers
 #define SUIT_TOTAL 15
 #define RANK_TOTAL 4
 
+void addHand(int hand[]);
+
 int findFlushes() {
     // find all flushes
     int flushes = 0;
@@ -198,20 +200,18 @@ int findStraights() {
 
 int currentNode;
 void print_row(int p) {
-    //for debugging
-    int k;
-    
+    //for debugging 
     int q = p - nodes[p].mod;
-    for (int k = 0; k < 5; k++) {
-        if (q == p) continue;
-        fprintf(stderr, "%s ", items[nodes[q].item].name);
-        fprintf(stderr, "\n\n");
-        q++;
+    int stop = q + 5;
+    for (; q != stop; q++) {
+        Node qq = nodes[q];
+        fprintf(stderr, "node %d: %s up: %d down: %d\n", q, items[qq.item].name, qq.up, qq.down);
     }
+    fprintf(stderr, "\n\n");
 }
 
 void print_items() {
-    //for debugging
+    //for debugging 
 
     int i = items[0].right;
     while (i != 0) {
@@ -229,7 +229,8 @@ void cover(int i) {
     items[after].left = before;
     for (int rr = nodes[i].down; rr != i; rr = nodes[rr].down) { 
         int nn = rr - nodes[rr].mod;
-        for (int k = 0; k < 5; k++) {
+        int stop = nn+5;
+        for (; nn != stop; nn++) {
             if (nn == rr) continue ;
             int above = nodes[nn].up;
             int below = nodes[nn].down;
@@ -237,24 +238,22 @@ void cover(int i) {
             nodes[above].down = below;
             nodes[below].up = above;
             nodes[ii].length -= 1;
-            nn++;
         }
     }
 }
 
 void uncover(int i) {
     //uncover item i
-    Node *rr, *nn, *uu, *dd;
     for (int rr = nodes[i].up; rr != i; rr = nodes[rr].up) { 
         int nn = rr +4 - nodes[rr].mod;
-        for (int k = 0; k < 5; k++) {
+        int stop = nn - 5;
+        for (; nn != stop ; nn--) {
             if (nn == rr) continue;
             int above = nodes[nn].up;
             int below = nodes[nn].down;
             int ii = nodes[nn].item;
             nodes[above].down = nodes[below].up = nn;
             nodes[ii].length += 1;
-            nn--;
         }
     }
     int before = items[i].left;
@@ -273,12 +272,13 @@ void pips(int card, char buffer[]) {
 void addHand(int hand[]) {
     for (int k = 0; k < 5; k++) {
         int i = inverted[hand[k]];
+        nodes[i].length = nodes[i].length+1;
         nodes[currentNode].item = i;
-        nodes[currentNode].up = i;
+        nodes[currentNode].up = nodes[i].up;
         nodes[nodes[i].up].down = currentNode;
         nodes[i].up = currentNode;
         nodes[currentNode].down = i;
-        nodes[i].length++;
+        nodes[currentNode].mod = k;
         currentNode++;
     }
 }
@@ -290,8 +290,7 @@ int solver(RankSet spades, RankSet hearts,
     bitsets[0] = clubs;
     bitsets[1] = diamonds;
     bitsets[2] = hearts;
-    bitsets[3] = spades;
-    currentNode = nodes; 
+    bitsets[3] = spades; 
 
     #define RANK_TOTAL 4
 
@@ -311,7 +310,8 @@ int solver(RankSet spades, RankSet hearts,
     // Also make the header nodes 
   
     int currentItem = 1;    //skip root
-    int currentNode = 1;      //nodes[0] is unused
+    currentNode = 1;        //nodes[0] is unused 
+   
     for (int s = CLUBS; s <= SPADES; s++) 
     for (int r = ACE; r <= KING; r++){
         if (cards[r][s] == 0)
@@ -323,11 +323,12 @@ int solver(RankSet spades, RankSet hearts,
         inverted[cards[r][s]] = currentItem;
         items[currentItem - 1].right = currentItem;
         currentItem++;
+        currentNode++;
     }
 
     items[25].right = 0;
     items[0].left = 25;
-
+    
     int flushes = findFlushes();
     int fulls = findFullHouses();
     int straights = findStraights();
@@ -359,10 +360,10 @@ advance:
     if (currentNode <= 25)
         goto backup;
     int pp = currentNode - nodes[currentNode].mod;
-    for (int k = 0; k < 5; k++) {
+    int stop = pp + 5;
+    for (; pp != stop; pp++) {
         if (pp == currentNode) continue;
         cover(nodes[pp].item);
-        pp++;
     }
 
     if (items[0].right == 0) 
@@ -379,13 +380,12 @@ backup:
     currentNode = choice[level];
     bestItem = nodes[currentNode].item;
 
-    int pp = currentNode + 4 - nodes[currentNode].mod; 
-    for (int k = 0; k < 5; k++) {
+    pp = currentNode + 4 - nodes[currentNode].mod; 
+    stop = pp -5;
+    for (; pp != stop; pp--) {
         if (pp == currentNode) continue;
         uncover(nodes[pp].item);
-        pp--;
     }
-    
     currentNode = choice[level] = nodes[currentNode].down;
     goto advance;
 }

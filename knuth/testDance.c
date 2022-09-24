@@ -42,5 +42,4 @@ int main() {
         fflush(solns);
     }
     fclose(solns);
-    printf("maximum pat hands: %d\n", maxPats);
 }

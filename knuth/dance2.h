@@ -21,9 +21,8 @@ typedef struct Item {
 #define length item     // for use in the header nodes
 
 Item items[26];         // one extra for the root
-Node nodes[26000];       // the ones in the matrix (and the header nodes)
-Node *curNode;           // next node to allocate
-Node *choice[5];         // the hand chosen on each level
+Node nodes[26000];      // the ones in the matrix (and the header nodes)
+int choice[5];          // the hand chosen on each level
 char rankCode[] = " A23456789TJQK";
 char suitCode[] = "CDHS";
 

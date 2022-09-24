@@ -1,4 +1,4 @@
-# Spade suit with rank symmetry applied
+# Suits with rank symmetry applied
 
 from functools import reduce
 from itertools import combinations
@@ -25,7 +25,7 @@ def flipped(ranks):
         low <<= 1
     return 0 
 
-for n in range(7, 14):
+for n in range(1, 14):
     eq = choose(6,n//2)    
     fout1 = open(f'../include/ranks{n}.h', 'w')
     fout3 = open(f'../include/equal{n}.h', 'w')

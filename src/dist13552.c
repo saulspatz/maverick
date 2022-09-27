@@ -1,57 +1,64 @@
 #include <stdio.h>
+#include <locale.h>
 #include "types.h"
 
 void dist13552() {
-  extern RankSet suit13[];
   extern RankSet suit5[];
-  extern RankSet suit2[];
-  RankSet *SPADES_START = suit13;
   RankSet *HEARTS_START = suit5;
+  RankSet *HEARTS_END = HEARTS_START + 1286;
+
+  extern RankSet suit5[];
   RankSet *DIAMONDS_START = suit5;
-  RankSet *CLUBS_START = suit2;
-  RankSet *SPADES_END  = SPADES_START + 0;
-  RankSet *HEARTS_END  = HEARTS_START + 1286;
-  RankSet *CLUBS_END  = CLUBS_START + 77;
+  RankSet *DIAMONDS_END = DIAMONDS_START + 1286;
+
+  extern RankSet suit13[];
+  RankSet *SPADES_START = suit13;
+  RankSet *SPADES_END = SPADES_START + 0;
+
+  extern RankSet ranks2[];
+  RankSet *CLUBS_START = ranks2;
+  RankSet *CLUBS_END = CLUBS_START + 41;
+  RankSet *SYM_START = CLUBS_START + 36;
+
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
   RankSet *diamonds = DIAMONDS_START;
   RankSet *clubs = CLUBS_START-1;
   int factor;
-  long total = 0L;
-  RankSet Phony = 0;
+  unsigned long deals = 0L;
+  unsigned long classes = 0L;
   while(1) {
     if (clubs < CLUBS_END) {
       clubs++;
       factor = (diamonds==hearts) ? 12 : 24;
-      goto compute;
+      if (clubs < SYM_START) factor *= 2;
     }
-    if (diamonds < hearts) {
+    else if (diamonds < hearts) {
       diamonds++;
       clubs = CLUBS_START;
       factor = (diamonds==hearts) ? 12 : 24;
-      goto compute;
+      if (clubs < SYM_START) factor *= 2;
     }
-    if (hearts < HEARTS_END) {
+    else if (hearts < HEARTS_END) {
       hearts++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
       factor = (diamonds==hearts) ? 12 : 24;
-      goto compute;
+      if (clubs < SYM_START) factor *= 2;
     }
-    if (spades < SPADES_END) {
+    else if (spades < SPADES_END) {
       spades++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
       hearts = HEARTS_START;
-      factor = 12;
-    } else break;
-
-compute:
-
-    total += factor;
-    Phony |= *spades & *hearts & *diamonds & *clubs;
+      factor = (clubs < SYM_START) ? 24 : 12;
+    }
+    else break;
+    deals += factor;
+    classes += 1;
   }
-
-  printf("13-5-5-2: %ld\n", total);
-  fprintf(stderr, "%d", Phony);
+  FILE* out = fopen("counts.log", "a");
+  setlocale(LC_ALL, "");
+  fprintf(out, "%9s %'15lu %'15lu\n", "13-5-5-2", deals, classes);
+  fclose(out);
 }

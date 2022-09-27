@@ -74,7 +74,7 @@ classes = sum(deals.values())
 for p, deal in sorted(deals.items(), key=lambda x:x[1], reverse=True):
     while len(p) < 4:
         p+= (0,)
-    fout.write(f'{"-".join(str(x) for x in p)} : {deal}\n')
+    fout.write(f'{"-".join(str(x) for x in p)}  {deal}\n')
 
 fout.write('\n{:,} equivalence classes\n'.format(classes))
 fout.close()

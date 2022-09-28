@@ -19,6 +19,10 @@ syms = {n: (count[n]-equal[n])//2 for n in range(14)}
 def best(*args):
     return min(args, key= lambda x: abs(13-2*x))
 
+def dominatedSuit(name, n, fout):
+    fout.write(f'  extern RankSet suit{n}[];\n')
+    fout.write(f'  RankSet *{name}_START = suit{n};\n')
+
 def plainSuit(name, n, fout):
     fout.write(f'  extern RankSet suit{n}[];\n')
     fout.write(f'  RankSet *{name}_START = suit{n};\n')
@@ -41,24 +45,32 @@ def start(s,h,d,c,fout):
     fout.write('  int factor;\n')
     fout.write('  unsigned long deals = 0L;\n')
     fout.write('  unsigned long classes = 0L;\n')
+    fout.write('  double begin, end;\n')
+    fout.write('  begin = clock();\n'  )
+
+def prolog(fout):
+    fout.write('#include <stdio.h>\n')
+    fout.write('#include <locale.h>\n')
+    fout.write('#include <time.h>\n')
+    fout.write('#include "types.h"\n')
 
 def epilog(fout, title):
     fout.write('    deals += factor;\n')
     fout.write('    classes += 1;\n')
     fout.write('  }\n')
+    fout.write('  end = clock();\n')
+    fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
     fout.write('  FILE* out = fopen("counts.log", "a");\n')
     fout.write('  setlocale(LC_ALL, "");\n')
-    fout.write(f'  fprintf(out, "%9s %\'15lu %\'15lu\\n", "{title}", deals, classes);\n')
+    fout.write(f'  fprintf(out, "%9s %\'15lu %\'15lu %.2f\\n", "{title}", deals, classes, time);\n')
     fout.write('  fclose(out);\n')
     fout.write('}')
 
 def genHand_abc(s, h, d):
-    with open(f'../src/dist{s}{h}{d}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
-        name = f'dist{s}{h}{d}'
+    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+        prolog(fout)
         title = f'{s}-{h}-{d}-0'
+        name = f'dist{s}{h}{d}0'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h,d) if d != 5 else best(s,h)
         
@@ -101,10 +113,8 @@ def genHand_abc(s, h, d):
         epilog(fout, title)
 
 def genHand_abcd(s,h,d,c):
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         name = f'dist{s}{h}{d}{c}'
         title =f'{s}-{h}-{d}-{c}-0'
         fout.write(f'\nvoid {name}() {{\n')
@@ -165,15 +175,13 @@ def genHand_abcd(s,h,d,c):
 
 def genHand_aab(s,h,d):
     assert h == s
-    with open(f'../src/dist{s}{h}{d}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
-        name = f'dist{s}{h}{d}'
+    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+        prolog(fout)
         title = f'{s}-{h}-{d}-0'
+        name = f'dist{s}{h}{d}{0}'
         fout.write(f'\nvoid {name}() {{\n')
         plainSuit('SPADES', s, fout)
-        plainSuit('HEARTS', h, fout)
+        dominatedSuit('HEARTS', h, fout)
         symSuit('DIAMONDS', d, fout)
         sym = 'diamonds'
         start(s,h,d,0,fout)
@@ -204,16 +212,14 @@ def genHand_aab(s,h,d):
 
 def genHand_abb(s,h,d):
     assert h==d
-    with open(f'../src/dist{s}{h}{d}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
-        name = f'dist{s}{h}{d}'
+    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+        prolog(fout)
         title = f'{s}-{h}-{d}-0'
+        name = f'dist{s}{h}{d}0'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES',s,fout)
         plainSuit('HEARTS', h, fout)
-        plainSuit('DIAMONDS',d,fout)
+        dominatedSuit('DIAMONDS',d,fout)
         sym = 'spades'
         start(s,h,d,0,fout)
 
@@ -234,7 +240,7 @@ def genHand_abb(s,h,d):
         fout.write('      spades++;\n')
         fout.write('      diamonds = DIAMONDS_START;\n')
         fout.write('      hearts = HEARTS_START;\n')
-        fout.write(f'      ({sym} < SYM_START) ? 12 : 24;\n')
+        fout.write(f'     factor = ({sym} < SYM_START) ? 12 : 24;\n')
         fout.write('    }\n')
         fout.write('    else break;\n')
 
@@ -242,16 +248,14 @@ def genHand_abb(s,h,d):
 
 def genHand_aabc(s,h,d,c):
     assert s == h
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         name = f'dist{s}{h}{d}{c}'
         title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(d,c) if c!=5 else d
         plainSuit('SPADES', s, fout)
-        plainSuit('HEARTS', h, fout)
+        dominatedSuit('HEARTS', h, fout)
         if m == d:
             symSuit('DIAMONDS', d,  fout)
             plainSuit('CLUBS', c, fout)
@@ -297,16 +301,14 @@ def genHand_aabc(s,h,d,c):
 
 def genHand_abbc(s,h,d,c):
     assert h==d
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
-        name = f'dist{s}{h}{d}{c}'
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
+        name = f'dist{s}{h}{d}{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,c) if c!=5 else s
         plainSuit('HEARTS', h, fout)
-        plainSuit('DIAMONDS', d, fout)
+        dominatedSuit('DIAMONDS', d, fout)
         if m == s:
             symSuit('SPADES', s,  fout)
             plainSuit('CLUBS', c, fout)
@@ -352,15 +354,13 @@ def genHand_abbc(s,h,d,c):
 
 def genHands_abcc(s,h,d,c):
     assert d == c
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
-        name = f'dist{s}{h}{d}{c}'
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
+        name = f'dist{s}{h}{d}{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h)
-        plainSuit('CLUBS', c, fout)
+        dominatedSuit('CLUBS', c, fout)
         plainSuit('DIAMONDS', d, fout)
         if m == s:
             symSuit('SPADES', s,  fout)
@@ -405,16 +405,14 @@ def genHands_abcc(s,h,d,c):
 
 def genHands_aaab(s,h,d,c):
     assert s == h == d
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         name = f'dist{s}{h}{d}{c}'
         title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         plainSuit('SPADES', s, fout)
-        plainSuit('HEARTS', h, fout)
-        plainSuit('DIAMONDS', d,  fout)
+        dominatedSuit('HEARTS', h, fout)
+        dominatedSuit('DIAMONDS', d,  fout)
         symSuit('CLUBS', c, fout)           
         start(s,h,d,c,fout)
 
@@ -460,17 +458,15 @@ def genHands_aaab(s,h,d,c):
 
 def genHands_abbb(s,h,d,c):
     assert h==d==c
-    with open(f'../src/dist{s}{h}{d}{c}.c', 'w') as fout:
-        fout.write('#include <stdio.h>\n')
-        fout.write('#include <locale.h>\n')
-        fout.write('#include "types.h"\n')
+    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+        prolog(fout)
         name = f'dist{s}{h}{d}{c}'
         title = f'dist{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES', s, fout)
         plainSuit('HEARTS', h, fout)
-        plainSuit('DIAMONDS', d,  fout)
-        plainSuit('CLUBS', c, fout)               
+        dominatedSuit('DIAMONDS', d,  fout)
+        dominatedSuit('CLUBS', c, fout)               
         start(s,h,d,c,fout)
 
         fout.write('  while(1) {\n')

@@ -3,6 +3,15 @@ __pycache__
 a.out
 *.o
 maverick
+doc/maverick.out
+doc/maverick.aux
+doc/maverick.log
+*.txt
+knuth/texput.log
+knuth/testDance
+knuth/testDance2
+*.bak
+*.gch
 
 
 

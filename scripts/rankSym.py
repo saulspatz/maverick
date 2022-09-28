@@ -25,20 +25,14 @@ def genhands(s, h, d=0, c=0):
         fout.write(f'\nvoid {name}() {{\n')
         fout.write(f'  extern RankSet ranks{s}[];\n')
         fout.write(f'  extern RankSet suit{h}[];\n')
-        fout.write(f'  extern Cards{s} swords{s}[];\n')
-        fout.write(f'  extern Cards{h} hearts{h}[];\n')
         if d:
             fout.write(f'  extern RankSet suit{d}[];\n')
+            fout.write(f'  RankSet *DIAMONDS_START = suit{d};\n') 
         if c:
             fout.write(f'  extern RankSet suit{c}[];\n')
+            fout.write(f'  RankSet *CLUBS_START = suit{c};\n')
         fout.write(f'  RankSet *SPADES_START = ranks{s};\n')
         fout.write(f'  RankSet *HEARTS_START = suit{h};\n')
-        if d:
-            fout.write(f'  extern Cards{d} diamonds{d}[];\n')
-            fout.write(f'  RankSet *DIAMONDS_START = suit{d};\n')
-        if c:
-            fout.write(f'  extern Cards{c} clubs{c}[];\n')
-            fout.write(f'  RankSet *CLUBS_START = suit{c};\n')
         fout.write(f'  RankSet *SPADES_END  = SPADES_START + {(count(s)+eq)//2-1};\n')
         fout.write(f'  RankSet *SYM_START = SPADES_START +{(count(s)-eq)//2};\n')
         fout.write(f'  RankSet *HEARTS_END  = HEARTS_START + {count(h)-1};\n')

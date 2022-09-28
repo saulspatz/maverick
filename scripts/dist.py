@@ -62,7 +62,7 @@ def epilog(fout, title):
     fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
     fout.write('  FILE* out = fopen("counts.log", "a");\n')
     fout.write('  setlocale(LC_ALL, "");\n')
-    fout.write(f'  fprintf(out, "%9s %\'15lu %\'15lu %.2f\\n", "{title}", deals, classes, time);\n')
+    fout.write(f'  fprintf(out, "%-9s %\'18lu %\'18lu %8.2f\\n", "{title}", deals, classes, time);\n')
     fout.write('  fclose(out);\n')
     fout.write('}')
 
@@ -461,7 +461,7 @@ def genHands_abbb(s,h,d,c):
     with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
         name = f'dist{s}{h}{d}{c}'
-        title = f'dist{s}-{h}-{d}-{c}'
+        title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES', s, fout)
         plainSuit('HEARTS', h, fout)

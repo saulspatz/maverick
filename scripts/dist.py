@@ -116,7 +116,7 @@ def genHand_abcd(s,h,d,c):
     with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
         name = f'dist{s}{h}{d}{c}'
-        title =f'{s}-{h}-{d}-{c}-0'
+        title =f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h,d,c) if c != 5 else best(s,h,d)
         if m == s:

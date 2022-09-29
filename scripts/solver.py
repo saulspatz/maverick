@@ -167,7 +167,7 @@ if __name__ == '__main__':
         print('Number of trials is a required parameter')
         exit()
     trials = int(args[0])
-    args = args[1:]
+    args = [int(a) for a in args[1:]]
     if sum(args) not in (0,25) or not all(0<=c<=13 for c in args):
         print("invalid distribution", args)
     solver = Solver(*args)

@@ -37,6 +37,7 @@ void dist9754() {
     }
     else if (diamonds < DIAMONDS_END) {
       diamonds++;
+      clubs = CLUBS_START;
       factor = hearts < SYM_START ? 48 : 24;
     }
     else if (hearts < HEARTS_END) {
@@ -60,7 +61,6 @@ void dist9754() {
   double time = (end-begin)/CLOCKS_PER_SEC;
   FILE* out = fopen("counts.log", "a");
   setlocale(LC_ALL, "");
-
   fprintf(out, "%-9s %'18lu %'18lu %8.2f\n", "9-7-5-4", deals, classes, time);
   fclose(out);
 }

@@ -37,6 +37,7 @@ void dist9871() {
     }
     else if (diamonds < DIAMONDS_END) {
       diamonds++;
+      clubs = CLUBS_START;
       factor = diamonds < SYM_START ? 48 : 24;
     }
     else if (hearts < HEARTS_END) {

@@ -48,7 +48,7 @@ void dist13444() {
       factor = 12;
       if (spades < SYM_START) factor *= 2;
     }
-    if (spades < SPADES_END) {
+    else if (spades < SPADES_END) {
       spades++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;

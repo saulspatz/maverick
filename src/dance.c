@@ -82,6 +82,7 @@ void print_columns() {
     for (int k = 0; k < 5; k++) {
         if ((n->col->name - 1)/13 != seek)
             return 0;
+        n = n->right;
     }
     return 1;
  }
@@ -411,18 +412,16 @@ advance:
         int seek;
         if (cbits == 5) 
             seek = 0;
-        else if (cbits == 0 && dbits == 5)
+        else if ((cbits == 0) && (dbits == 5))
             seek = 1;
         else
             return 1;    
         // check for a flush in the solution
         for (int k = 0; k < 5; k++) { 
-            if (isFlush(choice[k], seek)) {
-                print_solution();
+            if (isFlush(choice[k], seek)) 
                 return 5;
-            }
+            return 1;
         }
-        return 1; 
     }
     level++;
     goto forward;

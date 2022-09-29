@@ -152,6 +152,7 @@ def genHand_abcd(s,h,d,c):
 
         fout.write('    else if (diamonds < DIAMONDS_END) {\n')
         fout.write('      diamonds++;\n')
+        fout.write('      clubs = CLUBS_START;\n')
         fout.write(f'      factor = {sym} < SYM_START ? 48 : 24;\n')
         fout.write('    }\n')
 
@@ -494,7 +495,7 @@ def genHands_abbb(s,h,d,c):
         fout.write('      if (spades < SYM_START) factor *= 2;\n')
         fout.write('    }\n') 
 
-        fout.write('    if (spades < SPADES_END) {\n')
+        fout.write('    else if (spades < SPADES_END) {\n')
         fout.write('      spades++;\n')
         fout.write('      clubs = CLUBS_START;\n') 
         fout.write('      diamonds = DIAMONDS_START;\n')

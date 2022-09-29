@@ -54,7 +54,36 @@ void print_columns() {
         c = c->next;
     }
     printf("\n\n");
-    
+ }
+
+ void print_solution() {
+    // for debugging
+    for (int k = 0; k < 5; k++) {
+        Node *p = choice[k];
+        for (int j = 0; j < 5; j++) {
+            printf("%d ", p->col->name);
+            p  = p->right;
+        } 
+        printf("\n");
+    }
+    printf("\n");
+ }
+
+ int bitcount(RankSet n) {
+    int count = 0;
+    while (n) {
+        n &= (n-1);
+        count += 1;
+    }
+    return count;
+ }
+
+ int isFlush(Node *n, int seek) {
+    for (int k = 0; k < 5; k++) {
+        if ((n->col->name - 1)/13 != seek)
+            return 0;
+    }
+    return 1;
  }
 
 void cover(Column *c) {
@@ -376,8 +405,25 @@ advance:
     for (Node* pp = currentNode->right; pp != currentNode; pp = pp->right)
         cover(pp->col);
 
-    if (root.next == &root) 
-        return 1;     // all columns covered
+    if (root.next == &root) { // all columns covered
+        int cbits = bitcount(clubs);
+        int dbits = bitcount(diamonds);
+        int seek;
+        if (cbits == 5) 
+            seek = 0;
+        else if (cbits == 0 && dbits == 5)
+            seek = 1;
+        else
+            return 1;    
+        // check for a flush in the solution
+        for (int k = 0; k < 5; k++) { 
+            if (isFlush(choice[k], seek)) {
+                print_solution();
+                return 5;
+            }
+        }
+        return 1; 
+    }
     level++;
     goto forward;
 

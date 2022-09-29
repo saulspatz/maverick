@@ -60,6 +60,6 @@ void dist13732() {
   double time = (end-begin)/CLOCKS_PER_SEC;
   FILE* out = fopen("counts.log", "a");
   setlocale(LC_ALL, "");
-  fprintf(out, "%-9s %'18lu %'18lu %8.2f\n", "13-7-3-2-0", deals, classes, time);
+  fprintf(out, "%-9s %'18lu %'18lu %8.2f\n", "13-7-3-2", deals, classes, time);
   fclose(out);
 }

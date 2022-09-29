@@ -10,7 +10,7 @@ CC := gcc
 
 
 maverick: maverick.o $(OBJECTS)
-	python ../scripts/tasks.py
+	python3.10 ../scripts/tasks.py
 	$(CC) $(CFLAGS) maverick.o $(OBJECTS) -o $@
 
 $(OBJECTS): %.o : %.c

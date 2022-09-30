@@ -33,13 +33,13 @@ void dist9880() {
     else if (hearts < HEARTS_END) {
       hearts++;
       diamonds = DIAMONDS_START;
-      factor = (spades < SYM_START) ? 24 : 48;
+      factor = (spades < SYM_START) ? 48 : 24;
     }
     else if (spades < SPADES_END) {
       spades++;
       diamonds = DIAMONDS_START;
       hearts = HEARTS_START;
-     factor = (spades < SYM_START) ? 12 : 24;
+     factor = (spades < SYM_START) ? 24 : 12;
     }
     else break;
     deals += factor;

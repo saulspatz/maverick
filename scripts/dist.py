@@ -205,7 +205,7 @@ def genHand_aab(s,h,d):
         fout.write('      spades++;\n')
         fout.write('      diamonds = DIAMONDS_START;\n') 
         fout.write('      hearts = HEARTS_START;\n')
-        fout.write(f'      factor = {sym} < SYM_START ? 24 : 48;\n')
+        fout.write(f'      factor = {sym} < SYM_START ? 48 : 24;\n')
         fout.write('    }\n')
         fout.write('    else break;\n')
 
@@ -234,14 +234,14 @@ def genHand_abb(s,h,d):
         fout.write('    else if (hearts < HEARTS_END) {\n')
         fout.write('      hearts++;\n')
         fout.write('      diamonds = DIAMONDS_START;\n')
-        fout.write(f'      factor = ({sym} < SYM_START) ? 24 : 48;\n')
+        fout.write(f'      factor = ({sym} < SYM_START) ? 48 : 24;\n')
         fout.write('    }\n')
 
         fout.write('    else if (spades < SPADES_END) {\n')
         fout.write('      spades++;\n')
         fout.write('      diamonds = DIAMONDS_START;\n')
         fout.write('      hearts = HEARTS_START;\n')
-        fout.write(f'     factor = ({sym} < SYM_START) ? 12 : 24;\n')
+        fout.write(f'     factor = ({sym} < SYM_START) ? 24 : 12;\n')
         fout.write('    }\n')
         fout.write('    else break;\n')
 

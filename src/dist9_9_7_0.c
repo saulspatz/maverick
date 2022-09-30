@@ -40,7 +40,7 @@ void dist9970() {
       spades++;
       diamonds = DIAMONDS_START;
       hearts = HEARTS_START;
-      factor = diamonds < SYM_START ? 24 : 48;
+      factor = diamonds < SYM_START ? 48 : 24;
     }
     else break;
     deals += factor;

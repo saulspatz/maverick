@@ -91,7 +91,7 @@ def main():
     def dist(p):
         while len(p) < 4:
             p += (0,)
-        return '_'.join(str(x) for x in p)
+        return '-'.join(str(x) for x in p)
     
     total = binomial(52, 25)
     found = 0

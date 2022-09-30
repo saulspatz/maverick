@@ -8,7 +8,7 @@ from partitions import partitions, product, binomial
 def best(*args):
     return min(args, key= lambda x: abs(13-2*x))
 
-fout = open('equiv2.txt', 'w')
+fout = open('classes.txt', 'w')
 
 suits = {n: binomial(13,n) for n in range(14)}
 equal = {n: binomial(6, n//2) for n in range(14)}
@@ -36,6 +36,7 @@ for p in partitions(25, 4, 13):
             k = suits[h]
             deals[p] = sum(binomial(k,j) for j in (1,2))*suits[d]
         case (s, h, d) if h==s > d !=5:
+            k = suits[h]
             deals[p] = sum(binomial(k,j) for j in (1,2))*swords[d] 
         case (s, h, d) if h == d:
             k = suits[h]
@@ -64,17 +65,18 @@ for p in partitions(25, 4, 13):
             deals[p] = suits[M]*swords[m]* sum(binomial(k,j) for j in (1,2))
         case (s,h,d,c) if s == d:
             k = suits[s]
-            deals[p] = swords[c]*sum(binomial(k,j) for j in (1,2,3))
+            deals[p] = swords[c]*sum(binomial(k,j) for j in (1,2,2,3))
         case (s,h,d,c) if h == c:
             k = suits[h]
-            deals[p] = sum(suits[s]*binomial(k,j) for j in (1,2,3))
+            deals[p] = sum(swords[s]*binomial(k,j) for j in (1,2,2,3))
         case _:
             print(f'{p} not matched')
 classes = sum(deals.values())
 for p, deal in sorted(deals.items(), key=lambda x:x[1], reverse=True):
     while len(p) < 4:
         p+= (0,)
-    fout.write(f'{"-".join(str(x) for x in p)} : {deal}\n')
+    fout.write(f'{"-".join(str(x) for x in p):14} {"{:,}".format(deal):>18}\n')
+    #fout.write(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%}\n')
 
 fout.write('\n{:,} equivalence classes\n'.format(classes))
 fout.close()

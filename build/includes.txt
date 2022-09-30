@@ -1,102 +1,96 @@
-dist1312.o: ../include/ranks13.h ../include/suit12.h ../include/types.h
-dist13111.o: ../include/ranks13.h ../include/suit11.h ../include/suit1.h ../include/types.h
-dist13102.o: ../include/ranks13.h ../include/suit10.h ../include/suit2.h ../include/types.h
-dist131011.o:../include/suit13.h ../include/suit10.h ../include/suit1.h ../include/suit1.h ../include/types.h
-dist1393.o: ../include/ranks13.h ../include/suit9.h ../include/suit3.h ../include/types.h
-dist13921.o:../include/ranks13.h ../include/suit9.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist1384.o: ../include/ranks13.h ../include/suit8.h ../include/suit4.h ../include/types.h
-dist13831.o:../include/ranks13.h ../include/suit8.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist13822.o:../include/suit13.h ../include/suit8.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1375.o: ../include/ranks13.h ../include/suit7.h ../include/suit5.h ../include/types.h
-dist13741.o:../include/ranks13.h ../include/suit7.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist13732.o:../include/ranks13.h ../include/suit7.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1366.o: ../include/suit13.h ../include/suit6.h ../include/suit6.h ../include/types.h
-dist13651.o:../include/ranks13.h ../include/suit6.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist13642.o:../include/ranks13.h ../include/suit6.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist13633.o:../include/suit13.h ../include/suit6.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist13552.o:../include/suit13.h ../include/suit5.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist13543.o:../include/ranks13.h ../include/suit5.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist13444.o:../include/suit13.h ../include/suit4.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist12121.o: ../include/suit12.h ../include/suit12.h ../include/suit1.h ../include/types.h
-dist12112.o: ../include/ranks12.h ../include/suit11.h ../include/suit2.h ../include/types.h
-dist121111.o:../include/suit12.h ../include/suit11.h ../include/suit1.h ../include/suit1.h ../include/types.h
-dist12103.o: ../include/ranks12.h ../include/suit10.h ../include/suit3.h ../include/types.h
-dist121021.o:../include/ranks12.h ../include/suit10.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist1294.o: ../include/ranks12.h ../include/suit9.h ../include/suit4.h ../include/types.h
-dist12931.o:../include/ranks12.h ../include/suit9.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist12922.o:../include/suit12.h ../include/suit9.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1285.o: ../include/ranks12.h ../include/suit8.h ../include/suit5.h ../include/types.h
-dist12841.o:../include/ranks12.h ../include/suit8.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist12832.o:../include/ranks12.h ../include/suit8.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1276.o: ../include/ranks12.h ../include/suit7.h ../include/suit6.h ../include/types.h
-dist12751.o:../include/ranks12.h ../include/suit7.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist12742.o:../include/ranks12.h ../include/suit7.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist12733.o:../include/suit12.h ../include/suit7.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist12661.o:../include/suit12.h ../include/suit6.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist12652.o:../include/ranks12.h ../include/suit6.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist12643.o:../include/ranks12.h ../include/suit6.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist12553.o:../include/suit12.h ../include/suit5.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist12544.o:../include/suit12.h ../include/suit5.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist11113.o: ../include/suit11.h ../include/suit11.h ../include/suit3.h ../include/types.h
-dist111121.o:../include/suit11.h ../include/suit11.h ../include/suit2.h ../include/suit1.h ../include/types.h
-dist11104.o: ../include/ranks11.h ../include/suit10.h ../include/suit4.h ../include/types.h
-dist111031.o:../include/ranks11.h ../include/suit10.h ../include/suit3.h ../include/suit1.h ../include/types.h
-dist111022.o:../include/suit11.h ../include/suit10.h ../include/suit2.h ../include/suit2.h ../include/types.h
-dist1195.o: ../include/ranks11.h ../include/suit9.h ../include/suit5.h ../include/types.h
-dist11941.o:../include/ranks11.h ../include/suit9.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist11932.o:../include/ranks11.h ../include/suit9.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1186.o: ../include/ranks11.h ../include/suit8.h ../include/suit6.h ../include/types.h
-dist11851.o:../include/ranks11.h ../include/suit8.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist11842.o:../include/ranks11.h ../include/suit8.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist11833.o:../include/suit11.h ../include/suit8.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist1177.o: ../include/suit11.h ../include/suit7.h ../include/suit7.h ../include/types.h
-dist11761.o:../include/ranks11.h ../include/suit7.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist11752.o:../include/ranks11.h ../include/suit7.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist11743.o:../include/ranks11.h ../include/suit7.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist11662.o:../include/suit11.h ../include/suit6.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist11653.o:../include/ranks11.h ../include/suit6.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist11644.o:../include/suit11.h ../include/suit6.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist11554.o:../include/suit11.h ../include/suit5.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist10105.o: ../include/suit10.h ../include/suit10.h ../include/suit5.h ../include/types.h
-dist101041.o:../include/suit10.h ../include/suit10.h ../include/suit4.h ../include/suit1.h ../include/types.h
-dist101032.o:../include/suit10.h ../include/suit10.h ../include/suit3.h ../include/suit2.h ../include/types.h
-dist1096.o: ../include/ranks10.h ../include/suit9.h ../include/suit6.h ../include/types.h
-dist10951.o:../include/ranks10.h ../include/suit9.h ../include/suit5.h ../include/suit1.h ../include/types.h
-dist10942.o:../include/ranks10.h ../include/suit9.h ../include/suit4.h ../include/suit2.h ../include/types.h
-dist10933.o:../include/suit10.h ../include/suit9.h ../include/suit3.h ../include/suit3.h ../include/types.h
-dist1087.o: ../include/ranks10.h ../include/suit8.h ../include/suit7.h ../include/types.h
-dist10861.o:../include/ranks10.h ../include/suit8.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist10852.o:../include/ranks10.h ../include/suit8.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist10843.o:../include/ranks10.h ../include/suit8.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist10771.o:../include/suit10.h ../include/suit7.h ../include/suit7.h ../include/suit1.h ../include/types.h
-dist10762.o:../include/ranks10.h ../include/suit7.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist10753.o:../include/ranks10.h ../include/suit7.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist10744.o:../include/suit10.h ../include/suit7.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist10663.o:../include/suit10.h ../include/suit6.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist10654.o:../include/ranks10.h ../include/suit6.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist10555.o:../include/suit10.h ../include/suit5.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist997.o: ../include/suit9.h ../include/suit9.h ../include/suit7.h ../include/types.h
-dist9961.o:../include/suit9.h ../include/suit9.h ../include/suit6.h ../include/suit1.h ../include/types.h
-dist9952.o:../include/suit9.h ../include/suit9.h ../include/suit5.h ../include/suit2.h ../include/types.h
-dist9943.o:../include/suit9.h ../include/suit9.h ../include/suit4.h ../include/suit3.h ../include/types.h
-dist988.o: ../include/suit9.h ../include/suit8.h ../include/suit8.h ../include/types.h
-dist9871.o:../include/ranks9.h ../include/suit8.h ../include/suit7.h ../include/suit1.h ../include/types.h
-dist9862.o:../include/ranks9.h ../include/suit8.h ../include/suit6.h ../include/suit2.h ../include/types.h
-dist9853.o:../include/ranks9.h ../include/suit8.h ../include/suit5.h ../include/suit3.h ../include/types.h
-dist9844.o:../include/suit9.h ../include/suit8.h ../include/suit4.h ../include/suit4.h ../include/types.h
-dist9772.o:../include/suit9.h ../include/suit7.h ../include/suit7.h ../include/suit2.h ../include/types.h
-dist9763.o:../include/ranks9.h ../include/suit7.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist9754.o:../include/ranks9.h ../include/suit7.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist9664.o:../include/suit9.h ../include/suit6.h ../include/suit6.h ../include/suit4.h ../include/types.h
-dist9655.o:../include/suit9.h ../include/suit6.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist8881.o:../include/suit8.h ../include/suit8.h ../include/suit8.h ../include/suit1.h ../include/types.h
-dist8872.o:../include/suit8.h ../include/suit8.h ../include/suit7.h ../include/suit2.h ../include/types.h
-dist8863.o:../include/suit8.h ../include/suit8.h ../include/suit6.h ../include/suit3.h ../include/types.h
-dist8854.o:../include/suit8.h ../include/suit8.h ../include/suit5.h ../include/suit4.h ../include/types.h
-dist8773.o:../include/suit8.h ../include/suit7.h ../include/suit7.h ../include/suit3.h ../include/types.h
-dist8764.o:../include/ranks8.h ../include/suit7.h ../include/suit6.h ../include/suit4.h ../include/types.h
-dist8755.o:../include/suit8.h ../include/suit7.h ../include/suit5.h ../include/suit5.h ../include/types.h
-dist8665.o:../include/suit8.h ../include/suit6.h ../include/suit6.h ../include/suit5.h ../include/types.h
-dist7774.o:../include/suit7.h ../include/suit7.h ../include/suit7.h ../include/suit4.h ../include/types.h
-dist7765.o:../include/suit7.h ../include/suit7.h ../include/suit6.h ../include/suit5.h ../include/types.h
-dist7666.o:../include/suit7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h ../include/types.h
+dist11_6_5_3.o: ../include/types.h ../include/suit11.h ../include/ranks6.h ../include/suit5.h ../include/suit3.h 
+dist9_8_5_3.o: ../include/types.h ../include/suit9.h ../include/ranks8.h ../include/suit5.h ../include/suit3.h 
+dist13_10_2_0.o: ../include/types.h ../include/suit13.h ../include/ranks10.h ../include/suit2.h 
+dist8_8_7_2.o: ../include/types.h ../include/suit8.h ../include/suit8.h ../include/ranks7.h ../include/suit2.h 
+dist10_8_5_2.o: ../include/types.h ../include/suit10.h ../include/ranks8.h ../include/suit5.h ../include/suit2.h 
+dist11_7_7_0.o: ../include/types.h ../include/ranks11.h ../include/suit7.h ../include/suit7.h 
+dist12_11_2_0.o: ../include/types.h ../include/suit12.h ../include/ranks11.h ../include/suit2.h 
+dist8_8_5_4.o: ../include/types.h ../include/suit8.h ../include/suit8.h ../include/ranks5.h ../include/suit4.h 
+dist12_10_3_0.o: ../include/types.h ../include/suit12.h ../include/ranks10.h ../include/suit3.h 
+dist13_7_3_2.o: ../include/types.h ../include/suit13.h ../include/ranks7.h ../include/suit3.h ../include/suit2.h 
+dist11_11_3_0.o: ../include/types.h ../include/suit11.h ../include/suit11.h ../include/ranks3.h 
+dist10_7_7_1.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks10.h ../include/suit1.h 
+dist7_6_6_6.o: ../include/types.h ../include/ranks7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h 
+dist9_8_6_2.o: ../include/types.h ../include/suit9.h ../include/suit8.h ../include/ranks6.h ../include/suit2.h 
+dist12_9_4_0.o: ../include/types.h ../include/suit12.h ../include/ranks9.h ../include/suit4.h 
+dist9_7_7_2.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks9.h ../include/suit2.h 
+dist10_9_5_1.o: ../include/types.h ../include/suit10.h ../include/suit9.h ../include/ranks5.h ../include/suit1.h 
+dist11_5_5_4.o: ../include/types.h ../include/suit5.h ../include/suit5.h ../include/suit11.h ../include/ranks4.h 
+dist13_8_4_0.o: ../include/types.h ../include/suit13.h ../include/ranks8.h ../include/suit4.h 
+dist12_6_6_1.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks12.h ../include/suit1.h 
+dist13_6_3_3.o: ../include/types.h ../include/suit3.h ../include/suit3.h ../include/suit13.h ../include/ranks6.h 
+dist9_8_7_1.o: ../include/types.h ../include/suit9.h ../include/suit8.h ../include/ranks7.h ../include/suit1.h 
+dist12_7_4_2.o: ../include/types.h ../include/suit12.h ../include/ranks7.h ../include/suit4.h ../include/suit2.h 
+dist13_4_4_4.o: ../include/types.h ../include/ranks13.h ../include/suit4.h ../include/suit4.h ../include/suit4.h 
+dist10_8_7_0.o: ../include/types.h ../include/suit10.h ../include/suit8.h ../include/ranks7.h 
+dist11_7_5_2.o: ../include/types.h ../include/suit11.h ../include/ranks7.h ../include/suit5.h ../include/suit2.h 
+dist7_7_6_5.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks6.h ../include/suit5.h 
+dist11_6_6_2.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks11.h ../include/suit2.h 
+dist12_5_5_3.o: ../include/types.h ../include/suit5.h ../include/suit5.h ../include/suit12.h ../include/ranks3.h 
+dist10_10_4_1.o: ../include/types.h ../include/suit10.h ../include/suit10.h ../include/ranks4.h ../include/suit1.h 
+dist9_9_7_0.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks7.h 
+dist11_8_6_0.o: ../include/types.h ../include/suit11.h ../include/suit8.h ../include/ranks6.h 
+dist12_6_5_2.o: ../include/types.h ../include/suit12.h ../include/ranks6.h ../include/suit5.h ../include/suit2.h 
+dist10_6_5_4.o: ../include/types.h ../include/suit10.h ../include/ranks6.h ../include/suit5.h ../include/suit4.h 
+dist13_7_4_1.o: ../include/types.h ../include/suit13.h ../include/ranks7.h ../include/suit4.h ../include/suit1.h 
+dist12_9_3_1.o: ../include/types.h ../include/suit12.h ../include/ranks9.h ../include/suit3.h ../include/suit1.h 
+dist8_8_8_1.o: ../include/types.h ../include/suit8.h ../include/suit8.h ../include/suit8.h ../include/ranks1.h 
+dist11_6_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../include/suit11.h ../include/ranks6.h 
+dist13_10_1_1.o: ../include/types.h ../include/suit1.h ../include/suit1.h ../include/suit13.h ../include/ranks10.h 
+dist11_11_2_1.o: ../include/types.h ../include/suit11.h ../include/suit11.h ../include/ranks2.h ../include/suit1.h 
+dist11_7_6_1.o: ../include/types.h ../include/suit11.h ../include/ranks7.h ../include/suit6.h ../include/suit1.h 
+dist12_7_5_1.o: ../include/types.h ../include/suit12.h ../include/ranks7.h ../include/suit5.h ../include/suit1.h 
+dist13_7_5_0.o: ../include/types.h ../include/suit13.h ../include/ranks7.h ../include/suit5.h 
+dist11_8_4_2.o: ../include/types.h ../include/suit11.h ../include/ranks8.h ../include/suit4.h ../include/suit2.h 
+dist13_8_2_2.o: ../include/types.h ../include/suit2.h ../include/suit2.h ../include/suit13.h ../include/ranks8.h 
+dist13_6_5_1.o: ../include/types.h ../include/suit13.h ../include/ranks6.h ../include/suit5.h ../include/suit1.h 
+dist8_7_6_4.o: ../include/types.h ../include/suit8.h ../include/ranks7.h ../include/suit6.h ../include/suit4.h 
+dist10_7_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../include/suit10.h ../include/ranks7.h 
+dist9_6_6_4.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks9.h ../include/suit4.h 
+dist12_8_4_1.o: ../include/types.h ../include/suit12.h ../include/ranks8.h ../include/suit4.h ../include/suit1.h 
+dist11_8_5_1.o: ../include/types.h ../include/suit11.h ../include/ranks8.h ../include/suit5.h ../include/suit1.h 
+dist10_8_6_1.o: ../include/types.h ../include/suit10.h ../include/suit8.h ../include/ranks6.h ../include/suit1.h 
+dist10_9_4_2.o: ../include/types.h ../include/suit10.h ../include/ranks9.h ../include/suit4.h ../include/suit2.h 
+dist12_8_5_0.o: ../include/types.h ../include/suit12.h ../include/ranks8.h ../include/suit5.h 
+dist9_9_4_3.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks4.h ../include/suit3.h 
+dist12_6_4_3.o: ../include/types.h ../include/suit12.h ../include/ranks6.h ../include/suit4.h ../include/suit3.h 
+dist7_7_7_4.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/suit7.h ../include/ranks4.h 
+dist12_10_2_1.o: ../include/types.h ../include/suit12.h ../include/ranks10.h ../include/suit2.h ../include/suit1.h 
+dist9_6_5_5.o: ../include/types.h ../include/suit5.h ../include/suit5.h ../include/suit9.h ../include/ranks6.h 
+dist9_7_6_3.o: ../include/types.h ../include/suit9.h ../include/ranks7.h ../include/suit6.h ../include/suit3.h 
+dist13_9_3_0.o: ../include/types.h ../include/suit13.h ../include/ranks9.h ../include/suit3.h 
+dist9_7_5_4.o: ../include/types.h ../include/suit9.h ../include/ranks7.h ../include/suit5.h ../include/suit4.h 
+dist11_8_3_3.o: ../include/types.h ../include/suit3.h ../include/suit3.h ../include/suit11.h ../include/ranks8.h 
+dist12_7_6_0.o: ../include/types.h ../include/suit12.h ../include/ranks7.h ../include/suit6.h 
+dist11_10_3_1.o: ../include/types.h ../include/suit11.h ../include/ranks10.h ../include/suit3.h ../include/suit1.h 
+dist9_8_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../include/suit9.h ../include/ranks8.h 
+dist12_11_1_1.o: ../include/types.h ../include/suit1.h ../include/suit1.h ../include/suit12.h ../include/ranks11.h 
+dist11_9_3_2.o: ../include/types.h ../include/suit11.h ../include/ranks9.h ../include/suit3.h ../include/suit2.h 
+dist8_6_6_5.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks8.h ../include/suit5.h 
+dist12_9_2_2.o: ../include/types.h ../include/suit2.h ../include/suit2.h ../include/suit12.h ../include/ranks9.h 
+dist13_9_2_1.o: ../include/types.h ../include/suit13.h ../include/ranks9.h ../include/suit2.h ../include/suit1.h 
+dist12_8_3_2.o: ../include/types.h ../include/suit12.h ../include/ranks8.h ../include/suit3.h ../include/suit2.h 
+dist12_7_3_3.o: ../include/types.h ../include/suit3.h ../include/suit3.h ../include/suit12.h ../include/ranks7.h 
+dist13_8_3_1.o: ../include/types.h ../include/suit13.h ../include/ranks8.h ../include/suit3.h ../include/suit1.h 
+dist9_9_5_2.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks5.h ../include/suit2.h 
+dist8_8_6_3.o: ../include/types.h ../include/suit8.h ../include/suit8.h ../include/ranks6.h ../include/suit3.h 
+dist11_10_2_2.o: ../include/types.h ../include/suit2.h ../include/suit2.h ../include/suit11.h ../include/ranks10.h 
+dist11_7_4_3.o: ../include/types.h ../include/suit11.h ../include/ranks7.h ../include/suit4.h ../include/suit3.h 
+dist8_7_7_3.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks8.h ../include/suit3.h 
+dist10_10_3_2.o: ../include/types.h ../include/suit10.h ../include/suit10.h ../include/ranks3.h ../include/suit2.h 
+dist12_5_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../include/suit12.h ../include/ranks5.h 
+dist10_7_6_2.o: ../include/types.h ../include/suit10.h ../include/ranks7.h ../include/suit6.h ../include/suit2.h 
+dist9_8_8_0.o: ../include/types.h ../include/ranks9.h ../include/suit8.h ../include/suit8.h 
+dist13_6_4_2.o: ../include/types.h ../include/suit13.h ../include/ranks6.h ../include/suit4.h ../include/suit2.h 
+dist9_9_6_1.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks6.h ../include/suit1.h 
+dist10_6_6_3.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks10.h ../include/suit3.h 
+dist13_5_5_2.o: ../include/types.h ../include/suit5.h ../include/suit5.h ../include/suit13.h ../include/ranks2.h 
+dist13_5_4_3.o: ../include/types.h ../include/suit13.h ../include/ranks5.h ../include/suit4.h ../include/suit3.h 
+dist11_9_4_1.o: ../include/types.h ../include/suit11.h ../include/ranks9.h ../include/suit4.h ../include/suit1.h 
+dist10_7_5_3.o: ../include/types.h ../include/suit10.h ../include/ranks7.h ../include/suit5.h ../include/suit3.h 
+dist11_10_4_0.o: ../include/types.h ../include/suit11.h ../include/suit10.h ../include/ranks4.h 
+dist8_7_5_5.o: ../include/types.h ../include/suit5.h ../include/suit5.h ../include/suit8.h ../include/ranks7.h 
+dist10_9_3_3.o: ../include/types.h ../include/suit3.h ../include/suit3.h ../include/suit10.h ../include/ranks9.h 
+dist11_9_5_0.o: ../include/types.h ../include/suit11.h ../include/ranks9.h ../include/suit5.h 
+dist10_8_4_3.o: ../include/types.h ../include/suit10.h ../include/ranks8.h ../include/suit4.h ../include/suit3.h 
+dist10_9_6_0.o: ../include/types.h ../include/suit10.h ../include/suit9.h ../include/ranks6.h 

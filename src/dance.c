@@ -387,13 +387,28 @@ int solver(RankSet spades, RankSet hearts,
     Column *bestColumn = columns+1; // best column for branching has minimum length
     int minLength;
 
-forward:
+    int cbits = bitcount(clubs);
+    int dbits = bitcount(diamonds);
+    int short5 = (cbits == 5) || ((cbits == 0) && (dbits == 5));
 
-    minLength = 100000; // infinity
-    for (currentColumn = root.next; currentColumn != &root; currentColumn = currentColumn->next) {
-        if (currentColumn->len < minLength) {
-            bestColumn = currentColumn;
-            minLength = currentColumn->len;
+    if (short5) {
+        minLength = 1000000; // infinity
+        currentColumn = root.next;
+        for (int k=0; k < 5; k++) {
+            if (currentColumn->len < minLength) {
+                bestColumn = currentColumn;
+                minLength = currentColumn->len;
+            }
+        }
+    }
+forward:
+    if ((level > 0) || (!short5)) {
+        minLength = 100000; // infinity
+        for (currentColumn = root.next; currentColumn != &root; currentColumn = currentColumn->next) {
+            if (currentColumn->len < minLength) {
+                bestColumn = currentColumn;
+                minLength = currentColumn->len;
+            }
         }
     }
     cover(bestColumn);

@@ -1,4 +1,4 @@
-# partitions2.py
+# partitions.py
 
 '''
 Determine the effects of symmteries on the hands in Maverick
@@ -91,7 +91,7 @@ def main():
     def dist(p):
         while len(p) < 4:
             p += (0,)
-        return '-'.join(str(x) for x in p)
+        return '_'.join(str(x) for x in p)
     
     total = binomial(52, 25)
     found = 0
@@ -131,7 +131,7 @@ def main():
         found += hands
         results[p] = hands
     
-    # partitions.txt sorted lexicographically by partitons 
+    # partitions.txt sorted lexicographically by partitions 
     with open('partitions.txt', 'w') as fout:
         for p, hands in sorted(list(results.items()), reverse=True):
             fout.write(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%}\n')
@@ -139,7 +139,7 @@ def main():
     # partitions2.txt is in the same format as test runs, for easy comaprison
     with open('partitions2.txt', 'w') as fout:
         for p, hands in sorted(list(results.items()), key = lambda x:x[1], reverse=True):
-            fout.write(f'{dist(p)}: {hands}\n')
+            fout.write(f'{dist(p):14} {"{:,}".format(hands):>18}\n')
 
     assert found == total
 

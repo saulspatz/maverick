@@ -237,7 +237,7 @@ def genHand_abb(s,h,d):
         fout.write(f'      factor = ({sym} < SYM_START) ? 24 : 48;\n')
         fout.write('    }\n')
 
-        fout.write('    if (spades < SPADES_END) {\n')
+        fout.write('    else if (spades < SPADES_END) {\n')
         fout.write('      spades++;\n')
         fout.write('      diamonds = DIAMONDS_START;\n')
         fout.write('      hearts = HEARTS_START;\n')

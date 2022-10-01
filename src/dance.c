@@ -422,21 +422,13 @@ advance:
         cover(pp->col);
 
     if (root.next == &root) { // all columns covered
-        int cbits = bitcount(clubs);
-        int dbits = bitcount(diamonds);
-        int seek;
-        if (cbits == 5) 
-            seek = 0;
-        else if ((cbits == 0) && (dbits == 5))
-            seek = 1;
-        else
-            return 1;    
-        // check for a flush in the solution
-        for (int k = 0; k < 5; k++) { 
-            if (isFlush(choice[k], seek)) 
-                return 5;
+        if (!short5)
             return 1;
-        }
+        int seek = (cbits == 5) ? 0 : 1;
+        // check for a flush in the solution
+        for (int k = 0; k < 5; k++) 
+            if (isFlush(choice[k], seek)) return 5;
+        return 1;
     }
     level++;
     goto forward;

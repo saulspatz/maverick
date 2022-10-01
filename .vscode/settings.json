@@ -1,0 +1,10 @@
+{
+    "[makefile]": {
+        "editor.insertSpaces": false
+    },
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "random": "c",
+        "*.tcc": "c"
+    },
+}

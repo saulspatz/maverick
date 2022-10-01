@@ -10,6 +10,7 @@ not the shortes suit has exactly 5 cards.
 '''
 
 from partitions import partitions, product, binomial
+import argparse
 
 count = {n: binomial(13,n) for n in range(14)}
 equal = {n: binomial(6, n//2) for n in range(14)}
@@ -506,10 +507,10 @@ def genHands_abbb(s,h,d,c):
 
         epilog(fout, title)
 
-for p in partitions(25, 4, 13):
+def genHand(p):
     match p:
         case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1):
-            continue
+            return
         case (s,h,d) if s > h > d:
             genHand_abc(*p)
         case (s,h,d,c) if s > h > d > c != 0:
@@ -530,3 +531,20 @@ for p in partitions(25, 4, 13):
             genHands_abbb(*p)
         case _:
             print(f'{p} not matched')        
+
+def main():
+    parser = argparse.ArgumentParser(description='Create dists from makeDist.txt')
+    parser.add_argument('--all', action='store_true', help='Create all dists')
+    args = parser.parse_args()
+    if args.all:
+        for p in partitions(25, 4, 13):
+            genHand(p)
+    else:
+        text = open('makeDist.txt').readlines()
+        for line in text:
+            line = line.strip()
+            p = list(int(x) for x in line.split())
+            genHand(p)
+
+if __name__ == '__main__':
+    main()

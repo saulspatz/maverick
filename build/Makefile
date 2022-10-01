@@ -5,13 +5,17 @@ VPATH = ../include
 vpath %.c ../src
 
 INCLUDE = ../include
-CFLAGS := -O3 -Wall -g -std=c11 -I$(INCLUDE)
+CFLAGS := -O3 -Wall -Wextra -Wpedantic -g -std=c11 -I$(INCLUDE)
 CC := gcc
 
+maverick: maverick.o dance.o $(OBJECTS) 
+	$(CC) $(CFLAGS) maverick.o dance.o $(OBJECTS) -o $@
 
-maverick: maverick.o $(OBJECTS)
+dance.o: dance.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+tasks.h:
 	python3.10 ../scripts/tasks.py
-	$(CC) $(CFLAGS) maverick.o $(OBJECTS) -o $@
 
 $(OBJECTS): %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@

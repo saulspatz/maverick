@@ -327,7 +327,7 @@ int findStraights() {
 }      
 
 int solver(RankSet spades, RankSet hearts,
-            RankSet diamonds, RankSet clubs, Value *value) {
+            RankSet diamonds, RankSet clubs) {
 
     RankSet bitsets[4];
     bitsets[0] = clubs;
@@ -373,10 +373,6 @@ int solver(RankSet spades, RankSet hearts,
     int flushes = findFlushes();
     int fulls = findFullHouses();
     int straights = findStraights();
-
-    value->flushes = flushes;
-    value->straights = straights;
-    value->fullHouses = fulls;
     
     int tmp = flushes + straights + fulls;
     if (tmp > maxPats) maxPats = tmp;

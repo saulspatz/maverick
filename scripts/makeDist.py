@@ -44,8 +44,13 @@ def start(s,h,d,c,fout):
     else:
         fout.write('  RankSet *diamonds = DIAMONDS_START-1;\n\n')
     fout.write('  int factor;\n')
-    fout.write('  unsigned long deals = 0L;\n')
-    fout.write('  unsigned long classes = 0L;\n')
+    fout.write('  unsigned long exhaustC = 0L;\n')
+    fout.write('  unsigned long heurC = 0L;\n')
+    fout.write('  unsigned long skipC = 0L;\n')
+    fout.write('  unsigned long exhaustD = 0L;\n')
+    fout.write('  unsigned long heurD = 0L;\n')
+    fout.write('  unsigned long skipD = 0L;\n')
+    fout.write('  unsigned long solutions = 0L;\n')
     fout.write('  double begin, end;\n')
     fout.write('  begin = clock();\n'  )
 
@@ -54,16 +59,48 @@ def prolog(fout):
     fout.write('#include <locale.h>\n')
     fout.write('#include <time.h>\n')
     fout.write('#include "types.h"\n')
+    fout.write('\nextern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);\n')
+
+def skip(c, d, fout):
+    suit = 'clubs' if c==5 else 'diamonds'
+    if (c == 0):
+        end = 'DIAMONDS_END'
+    elif (d == 5):
+        end = 'diamonds - 1'
+    else: 
+        end = 'CLUBS_END'
+    if not (c == d == 5):
+        fout.write('    if (result == 5) {\n')
+        fout.write(f'      int skipped = {end} - {suit};\n')
+        fout.write('      skipC += skipped;\n')
+        fout.write('      skipD += factor*skipped;\n')
+        fout.write('      solutions += (skipped+1)*factor;\n')
+        fout.write(f'      {suit} = {end};\n')    
+        fout.write('    }\n')
+    else:
+        fout.write('    if (result == 5) {\n')
+        fout.write(f'      int skipped = {end} - {suit};\n')
+        fout.write('       if skipped >= 0 {\n')
+        fout.write('         skipC += skipped;\n')
+        fout.write('         skipD += factor*skipped;\n')
+        fout.write('         solutions += (skipped+1)*factor;\n')
+        fout.write(f'        {suit} = {end};\n')    
+        fout.write('       }\n')
+        fout.write('    else result = 1;  // ignore flush\n')
+        fout.write('    }\n')
+
 
 def epilog(fout, title):
-    fout.write('    deals += factor;\n')
-    fout.write('    classes += 1;\n')
+    fout.write('    if (result == 1)')
+    fout.write('      solutions += factor;\n')
     fout.write('  }\n')
     fout.write('  end = clock();\n')
     fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
     fout.write('  FILE* out = fopen("counts.log", "a");\n')
     fout.write('  setlocale(LC_ALL, "");\n')
-    fout.write(f'  fprintf(out, "%-9s %\'18lu %\'18lu %8.2f\\n", "{title}", deals, classes, time);\n')
+    fout.write(f'  fprintf(out, "%-9s %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu\\n",\n')
+    fout.write(f'      "{title}", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions);\n')
+    fout.write('   fprintf(stderr, "%.2f", time);\n')
     fout.write('  fclose(out);\n')
     fout.write('}')
 
@@ -111,6 +148,11 @@ def genHand_abc(s, h, d):
         fout.write('    }\n') 
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (d==5): skip(0, d, fout)
+        
         epilog(fout, title)
 
 def genHand_abcd(s,h,d,c):
@@ -173,7 +215,12 @@ def genHand_abcd(s,h,d,c):
         fout.write('    }\n') 
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+
         epilog(fout, title)
+        if (c==5): skip(c, d, fout)
 
 def genHand_aab(s,h,d):
     assert h == s
@@ -210,6 +257,11 @@ def genHand_aab(s,h,d):
         fout.write('    }\n')
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (d==5): skip(0, d, fout)
+
         epilog(fout, title)
 
 def genHand_abb(s,h,d):
@@ -245,6 +297,11 @@ def genHand_abb(s,h,d):
         fout.write(f'     factor = ({sym} < SYM_START) ? 24 : 12;\n')
         fout.write('    }\n')
         fout.write('    else break;\n')
+
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (d==5): skip(0, d, fout)
 
         epilog(fout, title)
 
@@ -299,6 +356,11 @@ def genHand_aabc(s,h,d,c):
         fout.write('    }\n')
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (c==5): skip(c, d, fout)
+
         epilog(fout, title)
 
 def genHand_abbc(s,h,d,c):
@@ -352,6 +414,11 @@ def genHand_abbc(s,h,d,c):
         fout.write('    }\n')     
         fout.write('    else break;\n') 
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (c==5): skip(c, d, fout)
+
         epilog(fout, title)
 
 def genHands_abcc(s,h,d,c):
@@ -402,6 +469,11 @@ def genHands_abcc(s,h,d,c):
         fout.write(f'      factor = ({sym} < SYM_START) ? 24 : 12;\n')
         fout.write('    }\n')     
         fout.write('    else break;\n') 
+
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (c==5): skip(c, d, fout)
 
         epilog(fout, title)
 
@@ -455,6 +527,11 @@ def genHands_aaab(s,h,d,c):
         fout.write('    }\n')
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (c==5): skip(c, d, fout)
+
         epilog(fout, title)
     
 
@@ -505,19 +582,24 @@ def genHands_abbb(s,h,d,c):
         fout.write('    }\n')
         fout.write('    else break;\n')
 
+        fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
+        fout.write('    exhaustC += 1;\n')
+        fout.write('    exhaustD += factor;\n')
+        if (c==5): skip(c, d, fout)
+
         epilog(fout, title)
 
 def genHand(p):
     match p:
         case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1):
             return
-        case (s,h,d) if s > h > d:
+        case (s,h,d) | (s,h,d,0) if s > h > d:
             genHand_abc(*p)
         case (s,h,d,c) if s > h > d > c != 0:
             genHand_abcd(*p)
-        case (s, h, d) if h==s > d:
+        case (s, h, d) | (s,h,d,0) if h==s > d:
             genHand_aab(*p)
-        case (s, h, d) if h == d:
+        case (s, h, d) | (s,h,d,0) if h == d:
             genHand_abb(*p)
         case (s,h,d,c) if s==h>d>c!=0:
             genHand_aabc(*p)
@@ -543,7 +625,7 @@ def main():
         text = open('makeDist.txt').readlines()
         for line in text:
             line = line.strip()
-            p = list(int(x) for x in line.split())
+            p = tuple(int(x) for x in line.split())
             genHand(p)
 
 if __name__ == '__main__':

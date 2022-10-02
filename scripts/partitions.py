@@ -25,7 +25,7 @@ def partitions(n: int, m: int, k: int) -> int:
         return
     for j in range(k, 0, -1):
         for p in partitions(n-j, m-1, j):
-            yield (j,) + p
+            yield (j,) + p + (m-1-len(p)) * (0,)
 
 
 def main():

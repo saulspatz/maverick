@@ -12,7 +12,7 @@ with open("../build/includes.txt", 'w') as fout:
         with open('../src/'+f) as fin:
             for line in fin:
                 line = line.strip()
-                if not line.startswith('extern'):
+                if not line.startswith('extern RankSet'):
                     continue
                 line = line.split()
                 text += '../include/'+ line[2][:-3] + '.h '

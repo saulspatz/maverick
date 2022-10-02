@@ -11,7 +11,7 @@ This script will be run by make, from the makefile.
 
 import os
 
-files = [f[4:-2] for f in os.listdir('../src') if f.startswith('dist')]
+files = [f[5:-2] for f in os.listdir('../src') if f.startswith('dist')]
 dists = [f.translate({ord('_'): ord('-')}) for f in files]
 
 sizes = { }
@@ -22,14 +22,14 @@ with open('../scripts/classes.txt') as fin:
         line = line.split()[:2]
         sizes[line[0]] = int(line[1].translate({ord(','):None}))
 
-classes = sorted(sizes.items(), key = lambda x:x[1], reverse = True)
+classes = sorted(list(sizes.items()), key = lambda x:x[1], reverse = True)
 classes = [c[0] for c in classes if c[0] in dists]
 
 with open("../include/externs.h", 'w') as fout:
     fout.write('#ifndef EXTERNS_H\n')
     fout.write('#define EXTERNS_H\n')
-    for c in classes:
-        fout.write(f'extern void dist{c.translate({ord("-"):None})}();\n')
+    for f in files:
+        fout.write(f'extern void dist_{f}();\n')
     fout.write(f'\nint numTasks = {len(classes)};\n')
     fout.write('#endif\n')
 
@@ -39,6 +39,6 @@ with open("../include/tasks.h",'w') as fout:
     fout.write('typedef void (*task)();\n')
     fout.write('task tasks[] = {\n')
     for c in classes:
-        fout.write(f'dist{c.translate({ord("-"):None})},\n')
+        fout.write(f'dist_{c.translate({ord("-"):ord("_")})},\n')
     fout.write('};\n')  
     fout.write('#endif\n')

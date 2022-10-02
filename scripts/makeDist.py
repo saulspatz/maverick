@@ -104,11 +104,11 @@ def epilog(fout, title):
     fout.write('  fclose(out);\n')
     fout.write('}')
 
-def genHand_abc(s, h, d):
-    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+def genHand_abc(s, h, d, c=0):
+    with open(f'../src/dist_{s}_{h}_{d}_0.c', 'w') as fout:
         prolog(fout)
-        title = f'{s}-{h}-{d}-0'
-        name = f'dist{s}{h}{d}0'
+        title = f'{s}-{h}-{d}-{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h,d) if d != 5 else best(s,h)
         
@@ -156,9 +156,9 @@ def genHand_abc(s, h, d):
         epilog(fout, title)
 
 def genHand_abcd(s,h,d,c):
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         title =f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h,d,c) if c != 5 else best(s,h,d)
@@ -222,12 +222,12 @@ def genHand_abcd(s,h,d,c):
         epilog(fout, title)
         if (c==5): skip(c, d, fout)
 
-def genHand_aab(s,h,d):
+def genHand_aab(s,h,d, c=0):
     assert h == s
-    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_0.c', 'w') as fout:
         prolog(fout)
-        title = f'{s}-{h}-{d}-0'
-        name = f'dist{s}{h}{d}{0}'
+        title = f'{s}-{h}-{d}-{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         plainSuit('SPADES', s, fout)
         dominatedSuit('HEARTS', h, fout)
@@ -264,12 +264,12 @@ def genHand_aab(s,h,d):
 
         epilog(fout, title)
 
-def genHand_abb(s,h,d):
+def genHand_abb(s,h,d,c=0):
     assert h==d
-    with open(f'../src/dist{s}_{h}_{d}_0.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_0.c', 'w') as fout:
         prolog(fout)
-        title = f'{s}-{h}-{d}-0'
-        name = f'dist{s}{h}{d}0'
+        title = f'{s}-{h}-{d}-{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES',s,fout)
         plainSuit('HEARTS', h, fout)
@@ -307,9 +307,9 @@ def genHand_abb(s,h,d):
 
 def genHand_aabc(s,h,d,c):
     assert s == h
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(d,c) if c!=5 else d
@@ -365,10 +365,10 @@ def genHand_aabc(s,h,d,c):
 
 def genHand_abbc(s,h,d,c):
     assert h==d
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,c) if c!=5 else s
         plainSuit('HEARTS', h, fout)
@@ -423,10 +423,10 @@ def genHand_abbc(s,h,d,c):
 
 def genHands_abcc(s,h,d,c):
     assert d == c
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h)
         dominatedSuit('CLUBS', c, fout)
@@ -479,9 +479,9 @@ def genHands_abcc(s,h,d,c):
 
 def genHands_aaab(s,h,d,c):
     assert s == h == d
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         plainSuit('SPADES', s, fout)
@@ -537,9 +537,9 @@ def genHands_aaab(s,h,d,c):
 
 def genHands_abbb(s,h,d,c):
     assert h==d==c
-    with open(f'../src/dist{s}_{h}_{d}_{c}.c', 'w') as fout:
+    with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
-        name = f'dist{s}{h}{d}{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         title = f'{s}-{h}-{d}-{c}'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES', s, fout)
@@ -593,13 +593,13 @@ def genHand(p):
     match p:
         case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1):
             return
-        case (s,h,d) | (s,h,d,0) if s > h > d:
+        case (s,h,d,0) if s > h > d:
             genHand_abc(*p)
         case (s,h,d,c) if s > h > d > c != 0:
             genHand_abcd(*p)
-        case (s, h, d) | (s,h,d,0) if h==s > d:
+        case (s,h,d,0) if h==s > d:
             genHand_aab(*p)
-        case (s, h, d) | (s,h,d,0) if h == d:
+        case (s,h,d,0) if h == d:
             genHand_abb(*p)
         case (s,h,d,c) if s==h>d>c!=0:
             genHand_aabc(*p)

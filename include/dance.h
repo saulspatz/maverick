@@ -31,17 +31,18 @@ typedef struct node_struct {
 typedef struct col_struct {
   Node head;                        // the list header 
   int len;                          // the number of non-header items currently in this column's list 
-  int name;                         // symbolic identification of the column, for printing 
+  char name[4];                     // symbolic identification of the column, for printing 
   struct col_struct *prev,*next;    // neighbors of this column 
 } Column;
 
 // gateway to the unsettled columns 
 #define root columns[0] 
 
+#define MAXPATS 5200      
+
 Column columns[26];             // one extra for the root
-Node nodes[26000];              // the ones in the matrix
-Node *curNode;                  // next node to allocate
-Node *choice[5];               // the hand chosen on each level
+Node nodes[5*MAXPATS];          // the ones in the matrix
+Node *choice[5];                // the hand chosen on each level
 char rankCode[] = " A23456789TJQK";
 char suitCode[] = "CDHS";
  

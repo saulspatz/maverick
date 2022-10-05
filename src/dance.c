@@ -5,7 +5,7 @@
 #include "dance.h"
 #include "types.h" //for RankSet
 
-int maxPats;  // for testing only
+//int maxPats;  // for testing only
 int maxb = 0;
 int maxl = 0;
 
@@ -21,6 +21,7 @@ enum {
     HEARTS,
     SPADES
 };
+
 Node *currentNode = nodes;
 int cards[16][5]; // no rank 0; room for high Ace, rank and suit totals
 int inverted[53];    // inverted list of the column headers  
@@ -30,30 +31,21 @@ int inverted[53];    // inverted list of the column headers
 void print_row(Node *p) {
     //for debugging
     Node *q = p;
-    int k;
     do {
-        printf(" %d", q->col->name);
+        fprintf(stderr, " %s", q->col->name);
         q = q->right;
     } while (q != p);
-    for (q = p->col->head.down, k = 1; q != p; k++) {
-        if (q == &(p->col->head)) {
-            printf("\n");
-            return;
-        }
-        else
-            q = q->down;
-    }
-    printf(" (%d of %d)\n", k, p->col->len);
+    fprintf(stderr,"\n");   
 }
 
 void print_columns() {
     //for debugging
     Column *c = root.next;
     while (c != &root) {
-        printf("%d (%d) ", c->name, c->len);
+        fprintf(stderr,"%s (%d) ", c->name, c->len);
         c = c->next;
     }
-    printf("\n\n");
+    fprintf(stderr, "\n\n");
  }
 
  void print_solution() {
@@ -61,7 +53,7 @@ void print_columns() {
     for (int k = 0; k < 5; k++) {
         Node *p = choice[k];
         for (int j = 0; j < 5; j++) {
-            printf("%d ", p->col->name);
+            printf("%s ", p->col->name);
             p  = p->right;
         } 
         printf("\n");
@@ -78,9 +70,9 @@ void print_columns() {
     return count;
  }
 
- int isFlush(Node *n, int seek) {
+ int isFlush(Node *n, char seek) {
     for (int k = 0; k < 5; k++) {
-        if ((n->col->name - 1)/13 != seek)
+        if (n->col->name[1]  != seek)
             return 0;
         n = n->right;
     }
@@ -119,19 +111,18 @@ void uncover(Column *c) {
     l->next = r->prev = c;
 }
 
-void pip(int code, char buffer[]){
-    // for debugging
-    int rank = (code-1)%13 + 1;
-    int suit = (code-1)/13;
-    buffer[0] = rankCode[rank];
-    buffer[1] = suitCode[suit];
-    buffer[2] = '\0';
-} 
+int pats;
 
 void addHand(int hand[]) {
 
     Node *theNode = currentNode;
     Column *currentColumn;
+    
+    pats += 1;
+    if (pats > MAXPATS) {
+        fprintf(stderr, "MAXPATS exceeded.  Recompile\n");
+        exit(1);
+    } 
 
     for (int k = 0; k < 5; k++) {
         if (k != 0) 
@@ -326,6 +317,12 @@ int findStraights() {
     return straights;
 }      
 
+void pip(int card, char buf[]) {
+    buf[0] = rankCode[(card-1)%13 +1];
+    buf[1] = suitCode[(card-1)/13];
+    buf[2] = '\0';
+}
+
 int solver(RankSet spades, RankSet hearts,
             RankSet diamonds, RankSet clubs) {
 
@@ -342,7 +339,7 @@ int solver(RankSet spades, RankSet hearts,
 
     for (int s = CLUBS; s <= SPADES; s++) 
     for (int r = ACE; r <= KING; r++) {
-        int mask = (1 << r);
+        int mask = (1 << (r-1));
         if (mask & bitsets[s]) {
             cards[r][s] = 13*s + r;
             cards[r][RANK_TOTAL] += 1;
@@ -361,7 +358,7 @@ int solver(RankSet spades, RankSet hearts,
         currentColumn->head.up = currentColumn->head.down = &currentColumn->head;
         currentColumn->len = 0;
         currentColumn->prev = currentColumn - 1;
-        currentColumn->name = cards[r][s];
+        pip(cards[r][s], currentColumn->name);
         inverted[cards[r][s]] = currentColumn - columns;
         (currentColumn - 1)->next = currentColumn;
         currentColumn++;
@@ -370,12 +367,16 @@ int solver(RankSet spades, RankSet hearts,
     (currentColumn - 1)->next = &root;
     root.prev = currentColumn - 1;
 
-    int flushes = findFlushes();
-    int fulls = findFullHouses();
-    int straights = findStraights();
-    
-    int tmp = flushes + straights + fulls;
-    if (tmp > maxPats) maxPats = tmp;
+    pats = 0;
+    findFlushes();
+    findFullHouses();
+    findStraights();
+
+    // value->flushes = flushes;
+    // value->straights = straights;
+    // value->fullHouses = fulls;
+    //int tmp = flushes + straights + fulls;
+    //if (tmp > maxPats) maxPats = tmp;
 
     // Matrix constructed.  Find a solution, if one exists.
 
@@ -397,7 +398,9 @@ int solver(RankSet spades, RankSet hearts,
             }
         }
     }
+
 forward:
+
     if ((level > 0) || (!short5)) {
         minLength = 100000; // infinity
         for (currentColumn = root.next; currentColumn != &root; currentColumn = currentColumn->next) {
@@ -408,19 +411,22 @@ forward:
         }
     }
     cover(bestColumn);
+    //print_columns();
     currentNode = choice[level] = bestColumn->head.down;
 
 advance:
 
     if (currentNode == &(bestColumn->head))
         goto backup;
+    //print_row(choice[level]);
     for (Node* pp = currentNode->right; pp != currentNode; pp = pp->right)
         cover(pp->col);
+    //print_columns();
 
     if (root.next == &root) { // all columns covered
         if (!short5)
             return 1;
-        int seek = (cbits == 5) ? 0 : 1;
+        char seek = (cbits == 5) ? 'C' : 'D';
         // check for a flush in the solution
         for (int k = 0; k < 5; k++) 
             if (isFlush(choice[k], seek)) return 5;
@@ -437,7 +443,7 @@ backup:
     currentNode = choice[level];
     bestColumn = currentNode->col;
 
-    // Uncover all other columns of curNode
+    // Uncover all other columns of currentNode
     // We included left links, thereby making the rows doubly linked, so
     // that columns would be uncovered in the correct LIFO order in this
     // part of the program. (The uncover routine itself could have done its

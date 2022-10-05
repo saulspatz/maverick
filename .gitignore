@@ -6,12 +6,7 @@ doc/maverick.out
 doc/maverick.aux
 doc/maverick.log
 *.txt
-knuth/texput.log
-knuth/testDance
-knuth/testDance2
+src/testDance
+src/testMaverick
 *.bak
 *.gch
-
-
-
-

@@ -33,7 +33,7 @@ int main() {
             sscanf(ptr, "%d%n", &card, &count);
             int c = (card-1)%13 + 1;
             int s = (card-1)/13;
-            suit[s] |= 1 << c;
+            suit[s] |= 1 << (c-1);
             ptr += count; 
         }
         int s = solver(suit[3], suit[2], suit[1], suit[0], &value);

@@ -4,6 +4,8 @@ a.out
 maverick
 doc/maverick.out
 doc/maverick.aux
+*.log
+
 doc/maverick.log
 *.txt
 src/testDance

@@ -44,10 +44,10 @@ def start(s,h,d,c,fout):
     else:
         fout.write('  RankSet *diamonds = DIAMONDS_START-1;\n\n')
     fout.write('  int factor;\n')
-    fout.write('  unsigned long exhaustC = 0L;\n')
+    fout.write('  unsigned long exhaustC = 0L;  // classes\n')
     fout.write('  unsigned long heurC = 0L;\n')
     fout.write('  unsigned long skipC = 0L;\n')
-    fout.write('  unsigned long exhaustD = 0L;\n')
+    fout.write('  unsigned long exhaustD = 0L;   // deals\n')
     fout.write('  unsigned long heurD = 0L;\n')
     fout.write('  unsigned long skipD = 0L;\n')
     fout.write('  unsigned long solutions = 0L;\n')

@@ -74,10 +74,10 @@
                 "-I../include",
                 "maverick.c",
                 "dance.c",
-                "dist_13_8_2_2.c"
+                "dist_13_7_5_0.c"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}/src"
             },
             "problemMatcher": [
                 "$gcc"

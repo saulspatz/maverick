@@ -66,9 +66,11 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
+                "-O3",
                 "-std=c11",
                 "-Wall",
                 "-Wextra",
+                "-Wpedantic",
                 "-o",
                 "maverick",
                 "-I../include",

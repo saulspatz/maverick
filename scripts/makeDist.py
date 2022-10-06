@@ -56,7 +56,6 @@ def start(s,h,d,c,fout):
 
 def prolog(fout):
     fout.write('#include <stdio.h>\n')
-    fout.write('#include <locale.h>\n')
     fout.write('#include <time.h>\n')
     fout.write('#include "types.h"\n')
     fout.write('\nextern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);\n')
@@ -97,10 +96,9 @@ def epilog(fout, title):
     fout.write('  end = clock();\n')
     fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
     fout.write('  FILE* out = fopen("counts.log", "a");\n')
-    fout.write('  setlocale(LC_ALL, "");\n')
-    fout.write(f'  fprintf(out, "%-9s %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu %\'18lu\\n",\n')
-    fout.write(f'      "{title}", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions);\n')
-    fout.write('   fprintf(stderr, "%.2f", time);\n')
+    fout.write('  char buffer[256];\n')
+    fout.write('  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\\n",\n')
+    fout.write(f'       {title}, exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);\n')
     fout.write('  fclose(out);\n')
     fout.write('}')
 

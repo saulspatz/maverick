@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <locale.h>
 #include <time.h>
 #include "types.h"
 
@@ -65,9 +64,8 @@ void dist_13_7_5_0() {
   end = clock();
   double time = (end-begin)/CLOCKS_PER_SEC;
   FILE* out = fopen("counts.log", "a");
-  setlocale(LC_ALL, "");
-  fprintf(out, "%-9s %'18lu %'18lu %'18lu %'18lu %'18lu %'18lu %'18lu\n",
-      "13-7-5-0", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions);
-   fprintf(stderr, "%.2f", time);
+  char buffer[256];
+  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",
+       13-7-5-0, exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
   fclose(out);
 }

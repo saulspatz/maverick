@@ -17,7 +17,7 @@ swords = {n: (suits[n]+equal[n])//2 for n in range(14)}
 deals = {}
 for p in partitions(25, 4, 13):
     match p:
-        case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1):
+        case (10,5,5,5) | (10,10,5,0) | (13,12,0,0) | (12,12,1,0) | (13,6,6,0) | (13,11,1,0) |(13,7,5,0):
             deals[p] = 0
         case (s,h,d) if s > h > d != 5:
             m = best(s,h,d)
@@ -75,7 +75,7 @@ classes = sum(deals.values())
 for p, deal in sorted(deals.items(), key=lambda x:x[1], reverse=True):
     while len(p) < 4:
         p+= (0,)
-    fout.write(f'{"-".join(str(x) for x in p):14} {"{:,}".format(deal):>18}\n')
+    fout.write(f'{"-".join(str(x) for x in p):14}\t {"{:,}".format(deal):>18}\n')
     #fout.write(f'{str(p):14} {"{:,}".format(hands):>18} {hands/total:>9.5%}\n')
 
 fout.write('\n{:,} equivalence classes\n'.format(classes))

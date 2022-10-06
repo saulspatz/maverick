@@ -589,7 +589,7 @@ def genHands_abbb(s,h,d,c):
 
 def genHand(p):
     match p:
-        case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1):
+        case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1) | (13,7,5):
             return
         case (s,h,d,0) if s > h > d:
             genHand_abc(*p)

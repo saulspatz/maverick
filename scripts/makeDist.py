@@ -95,7 +95,7 @@ def epilog(fout, title):
     fout.write('  }\n')
     fout.write('  end = clock();\n')
     fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
-    fout.write('  FILE* out = fopen("counts2.log", "a");\n')
+    fout.write('  FILE* out = fopen("counts1.log", "a");\n')
     fout.write('  char buffer[256];\n')
     fout.write('  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\\n",\n')
     fout.write(f'       "{title}", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);\n')

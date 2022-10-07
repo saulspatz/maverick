@@ -4,21 +4,21 @@
 
 extern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 
-void dist_12_11_2_2() {
-  extern RankSet suit2[];
-  RankSet *CLUBS_START = suit2;
-  extern RankSet suit2[];
-  RankSet *DIAMONDS_START = suit2;
-  RankSet *DIAMONDS_END = DIAMONDS_START + 77;
+void dist_10_10_4_1() {
+  extern RankSet suit10[];
+  RankSet *SPADES_START = suit10;
+  RankSet *SPADES_END = SPADES_START + 285;
 
-  extern RankSet suit12[];
-  RankSet *SPADES_START = suit12;
-  RankSet *SPADES_END = SPADES_START + 12;
+  extern RankSet suit10[];
+  RankSet *HEARTS_START = suit10;
+  extern RankSet ranks4[];
+  RankSet *DIAMONDS_START = ranks4;
+  RankSet *DIAMONDS_END = DIAMONDS_START + 364;
+  RankSet *SYM_START = DIAMONDS_START + 350;
 
-  extern RankSet ranks11[];
-  RankSet *HEARTS_START = ranks11;
-  RankSet *HEARTS_END = HEARTS_START + 41;
-  RankSet *SYM_START = HEARTS_START + 36;
+  extern RankSet suit1[];
+  RankSet *CLUBS_START = suit1;
+  RankSet *CLUBS_END = CLUBS_START + 12;
 
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
@@ -34,29 +34,31 @@ void dist_12_11_2_2() {
   unsigned long solutions = 0L;
   double begin, end;
   begin = clock();
-  while(1) {
-    if (clubs < diamonds) {
+  while (1) {
+    if (clubs < CLUBS_END) {
       clubs++;
-      factor = (diamonds==clubs) ? 12 : 24;
-      if (hearts < SYM_START) factor *= 2;
+      factor = (hearts==spades) ? 12 : 24;
+      if (diamonds < SYM_START) factor *= 2;
     }
     else if (diamonds < DIAMONDS_END) {
       diamonds++;
       clubs = CLUBS_START;
-      factor = (hearts < SYM_START) ? 48 : 24;
+      factor = (hearts==spades) ? 12 : 24;
+      if (diamonds < SYM_START) factor *= 2;
     }
-    else if (hearts < HEARTS_END) {
+    else if (hearts < spades) {
       hearts++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
-      factor = (hearts < SYM_START) ? 24 : 12;
+      factor = (hearts==spades) ? 12 : 24;
+      if (diamonds < SYM_START) factor *= 2;
     }
     else if (spades < SPADES_END) {
       spades++;
       clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
       hearts = HEARTS_START;
-      factor = (hearts < SYM_START) ? 24 : 12;
+      factor = (diamonds < SYM_START) ? 48 : 24;
     }
     else break;
     int result = solver(*spades, *hearts, *diamonds, *clubs);
@@ -69,6 +71,7 @@ void dist_12_11_2_2() {
   FILE* out = fopen("counts.log", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",
-       "12-11-2-2", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
+       "10-10-4-1", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
+  fputs(buffer, out);
   fclose(out);
 }

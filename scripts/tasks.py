@@ -22,7 +22,7 @@ with open('../scripts/classes.txt') as fin:
         line = line.split()[:2]
         sizes[line[0]] = int(line[1].translate({ord(','):None}))
 
-classes = sorted(list(sizes.items()), key = lambda x:x[1], reverse = True)
+classes = sorted(list(sizes.items()), key = lambda x:x[1])
 classes = [c[0] for c in classes if c[0] in dists]
 
 with open("../include/externs.h", 'w') as fout:

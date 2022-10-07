@@ -1,22 +1,18 @@
 #ifndef EXTERNS_H
 #define EXTERNS_H
 extern void dist_10_8_6_1();
-extern void dist_11_6_4_4();
 extern void dist_11_11_2_1();
 extern void dist_13_7_3_2();
 extern void dist_11_6_6_2();
 extern void dist_10_9_5_1();
 extern void dist_9_8_8_0();
-extern void dist_11_7_4_3();
 extern void dist_12_6_4_3();
 extern void dist_13_8_4_0();
 extern void dist_11_10_2_2();
 extern void dist_13_9_2_1();
 extern void dist_8_8_8_1();
-extern void dist_9_9_5_2();
 extern void dist_11_8_6_0();
 extern void dist_13_8_3_1();
-extern void dist_9_8_7_1();
 extern void dist_13_6_5_1();
 extern void dist_11_9_3_2();
 extern void dist_12_8_4_1();
@@ -25,7 +21,6 @@ extern void dist_10_9_6_0();
 extern void dist_12_9_3_1();
 extern void dist_12_6_6_1();
 extern void dist_12_9_4_0();
-extern void dist_11_7_5_2();
 extern void dist_11_8_3_3();
 extern void dist_12_10_2_1();
 extern void dist_12_11_1_1();
@@ -59,7 +54,6 @@ extern void dist_12_9_2_2();
 extern void dist_13_5_4_3();
 extern void dist_12_10_3_0();
 extern void dist_12_7_3_3();
-extern void dist_10_9_4_2();
 extern void dist_11_8_4_2();
 extern void dist_13_9_3_0();
 extern void dist_12_7_4_2();
@@ -68,5 +62,5 @@ extern void dist_13_5_5_2();
 extern void dist_12_8_5_0();
 extern void dist_11_10_3_1();
 
-int numTasks = 67;
+int numTasks = 61;
 #endif

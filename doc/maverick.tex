@@ -96,12 +96,13 @@ suit and its "mirror image."  If the suit has a King but not a 2, we accept it; 
 we look to the 3 and Q to decide, and so on.  Again, it is possible that there are ties all the way down the line, and then we 
 don't get a doubling.
 
-Unfortunately, the rank and suit symmetries conflict, because transforming the ranks by reflection may change the ordering of the suits.  After reflection
+There is a conflict between the rank and suit symmetries, because transforming the ranks by reflection may change the ordering of the suits.  After reflection
 the suit that originally had the lowest low card will now have the highest high card, and the low cards probably had no role in determining
 which of the original suits was better.  So, for example, if the Spades and Hearts have the same length, there is no way to combine the rule 
-that the Spades are at least as good as the Hearts with the rank symmetry.  Still when all the suits have different lengths, we can use the rank symmetry.
-This occurs in about 30\% of the deals, so we get a very worthwhile reduction.  Suit symmetries alone produced about 19.9 trillion equivalence 
-classes.  Applying the rank symmetry reduces this number to 17,023,704,173,138.  Still a formidable number, but 460 trillion less than we started with.
+that the Spades are at least as good as the Hearts with the rank symmetry.  Fortunately, there is always at least one suit whose length is not
+duplicated, so we can always use the rank symmetry.   Suit symmetries alone produce about 19.9 trillion equivalence 
+classes.  Applying the rank symmetry reduces this number to 10,027,826,073,395, after discount half a dozen small classes where 
+there is always a solution.  Still a formidable number, but 467 trillion fewer than we started with.
 
 \section*{Exhaustive Search}
 
@@ -130,26 +131,14 @@ try to cover should be the uncovered card that occurs in the fewest of the eligi
 
 The famous computer scientist Donald Knuth has developed an efficient algorithm along these lines called DLX and described his paper  
 \href{https://arxiv.org/abs/cs/0011047}{``Dancing Links''}, and that is the method I've used.  Efficient though this
-method is, it can still take an appreciable time.  Before we can run the algorithm, we have to find all the pat hands in the deal.  
-Since there can be 2,000 or more pat hands in a deal, this takes a while.
+method is, it can still take an appreciable time.  In *Fascicle 5* of *The Art of Computer Programming*, Knuth describes a modification
+to DLX called DLX1, which he says run a little faster.  I implemented it, and even though there are five items in every option, 
+so that we don't need spacer nodes, it runs a little slower than DLX in this case.  No doubt I could tune my implementation OfDLX1 
+to run a bit faster, but it did not seem worth it, and I stuck with DLX.   
 
 \section*{Avoiding Exhaustive Search}
 
-It would be better to avoid doing the exhaustive search at all.  At first, it seems that we can never be sure there is no 
-solution without doing an exhaustive search, but this is not so.  Consider the following deal:
-\begin{align*}
-    &\spadesuit \text{AKQJ10987} \\
-    &\heartsuit \text{AKQJ10987}  \\
-    &\diamondsuit \text{AKQJ10987} \\
-    &\clubsuit \text{3}
-\end{align*}
-This has no solution, because there is no pat hand that covers the 3 of Clubs.  Of course, DLX would discover this immediately, but in the 
-setup for DLX, we have to construct the 1,208 pat hands in the deal, and tabulate how many pat hands each of the 25 cards
-appears in.  The first thing the program does is to check whether some card is not contained in any pat hand.  Of course, any
-card in suit of at least five cards is contained in a flush, so this check is only performed on cards that occur in a suit Of
-fewer than five cards.
-
-It may also be possible to avoid exhaustive search by using heuristics.  A heuristic is a sort of rule of thumb that often leads 
+It would be better to avoid doing the exhaustive search at all.  It may be possible to do this by using heuristics.  A heuristic is a sort of rule of thumb that often leads 
 to the right answer, though there is no guarantee.  In this case, we may try to mimic the approach that a human player might take
 to attack the problem, or we might try to find a method peculiarly suited to computer calculation.  If the heuristic fails to find 
 a solution, we must fall back to exhaustive search.
@@ -161,6 +150,22 @@ Club flush.  Then until the Diamonds are incremented, every deal has a solution,
 exactly the same things with the Spades, Hearts, and Diamonds, and just replace the Club flush with another one.  So, we don't
 have to generate those hands at all; we simply record the results, and change the setting on the odometer.  The same approach
 applies to hands with exactly five Diamonds and no Clubs, but there are many fewer of these.
+
+At first, it seems that we can never be sure there is no 
+solution without doing an exhaustive search, but this is not so.  Consider the following deal:
+\begin{align*}
+    &\spadesuit \text{AKQJ10987} \\
+    &\heartsuit \text{AKQJ10987}  \\
+    &\diamondsuit \text{AKQJ10987} \\
+    &\clubsuit \text{3}
+\end{align*}
+This has no solution, because there is no pat hand that covers the 3 of Clubs.  Of course, DLX would discover this immediately, but in the 
+setup for DLX, we have to construct the 1,208 pat hands in the deal, and tabulate how many pat hands each of the 25 cards
+appears in.  Perhaps the first thing the program should do is to check whether some card is not contained in any pat hand.  Of course, any
+card in suit of at least five cards is contained in a flush, so this check need only be performed on cards that occur in a suit Of
+fewer than five cards.  An experiment on one million random deals, each of which had at least one suit of fewer than five cards,
+resulted in fewer than 6,000 deals where some card was in no pat head.  It seems clear that the overhead of running the testwould
+outweigh any benefits, so I did not implement this test.
 
 \section*{The Program}
 

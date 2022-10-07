@@ -5,7 +5,7 @@
 
 int main() {
 	extern int numTasks;
-	FILE* out = fopen("counts.log", "w");
+	FILE* out = fopen("counts2.log", "w");
 	fprintf(out, "Distribution, Exhaustive Search, Heuristic, Short Five,Exhaustive Search, Heuristic, Short Five, Time\n");
 	fclose(out);
 	for (int i = 0; i < numTasks; ++i)

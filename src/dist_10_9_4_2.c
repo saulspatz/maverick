@@ -67,7 +67,7 @@ void dist_10_9_4_2() {
   }
   end = clock();
   double time = (end-begin)/CLOCKS_PER_SEC;
-  FILE* out = fopen("counts.log", "a");
+  FILE* out = fopen("counts2.log", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",
        "10-9-4-2", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);

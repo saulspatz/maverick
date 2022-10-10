@@ -5,7 +5,7 @@ VPATH = ../include
 vpath %.c ../src
 
 INCLUDE = ../include
-CFLAGS := -O3 -Wall -Wextra -Wpedantic  -g -std=c11 -I$(INCLUDE)
+CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wno-unused-result -g -std=c11 -I$(INCLUDE)
 CC := gcc
 
 maverick: maverick.o dance.o$(OBJECTS) 

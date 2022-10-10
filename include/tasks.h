@@ -2,10 +2,6 @@
 #define TASKS_H
 typedef void (*task)();
 task tasks[] = {
-dist_12_8_4_1,
-dist_11_8_6_0,
-dist_13_5_4_3,
-dist_12_6_6_1,
 dist_10_9_6_0,
 dist_12_8_3_2,
 dist_12_7_5_1,
@@ -26,7 +22,6 @@ dist_10_9_5_1,
 dist_11_8_3_3,
 dist_12_5_4_4,
 dist_12_6_4_3,
-dist_8_8_8_1,
 dist_10_7_7_1,
 dist_11_8_4_2,
 dist_9_9_6_1,

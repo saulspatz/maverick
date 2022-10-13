@@ -19,10 +19,10 @@ for p in partitions(25, 4, 13):
     match p:
         case (10,5,5,5) | (10,10,5,0) | (13,12,0,0) | (12,12,1,0) | (13,6,6,0) | (13,11,1,0) |(13,7,5,0):
             deals[p] = 0
-        case (s,h,d) if s > h > d != 5:
+        case (s,h,d,0) if s > h > d != 5:
             m = best(s,h,d)
             deals[p] = product(suits[n] for n in p if n != m)*swords[m]
-        case (s,h,5) if s > h:
+        case (s,h,5,0) if s > h:
             m = best(s,h)
             M = s if m == h else h
             deals[p] = suits[M]*suits[5]*swords[m]
@@ -32,13 +32,13 @@ for p in partitions(25, 4, 13):
         case (s,h,d,5) if s > h > d > 5:
             m = best(s,h,d)
             deals[p] = product(suits[n] for n in p[:-1] if n != m)*suits[5]*swords[m] 
-        case (s, h, 5) if h == s:
+        case (s,h,5,0) if h == s:
             k = suits[h]
             deals[p] = sum(binomial(k,j) for j in (1,2))*suits[d]
         case (s, h, d) if h==s > d !=5:
             k = suits[h]
             deals[p] = sum(binomial(k,j) for j in (1,2))*swords[d] 
-        case (s, h, d) if h == d:
+        case (s,h,d,0) if h == d:
             k = suits[h]
             deals[p] = sum(binomial(k,j) for j in (1,2))*swords[s]
         case (s,h,d,5) if s==h>d:

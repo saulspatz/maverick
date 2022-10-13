@@ -4,26 +4,24 @@
 
 extern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 
-void dist_12_5_5_3() {
-  extern RankSet suit5[];
-  RankSet *HEARTS_START = suit5;
-  RankSet *HEARTS_END = HEARTS_START + 1286;
+void dist_11_9_5_0() {
+  extern RankSet suit11[];
+  RankSet *SPADES_START = suit11;
+  RankSet *SPADES_END = SPADES_START + 77;
+
+  extern RankSet ranks9[];
+  RankSet *HEARTS_START = ranks9;
+  RankSet *HEARTS_END = HEARTS_START + 364;
+  RankSet *SYM_START = HEARTS_START + 350;
 
   extern RankSet suit5[];
   RankSet *DIAMONDS_START = suit5;
-  extern RankSet suit12[];
-  RankSet *SPADES_START = suit12;
-  RankSet *SPADES_END = SPADES_START + 12;
-
-  extern RankSet ranks3[];
-  RankSet *CLUBS_START = ranks3;
-  RankSet *CLUBS_END = CLUBS_START + 145;
-  RankSet *SYM_START = CLUBS_START + 140;
+  RankSet *DIAMONDS_END = DIAMONDS_START + 1286;
 
   RankSet *spades = SPADES_START;
   RankSet *hearts = HEARTS_START;
-  RankSet *diamonds = DIAMONDS_START;
-  RankSet *clubs = CLUBS_START-1;
+  RankSet *diamonds = DIAMONDS_START-1;
+
   int factor;
   unsigned long exhaustC = 0L;  // classes
   unsigned long heurC = 0L;
@@ -35,35 +33,32 @@ void dist_12_5_5_3() {
   double begin, end;
   begin = clock();
   while(1) {
-    if (clubs < CLUBS_END) {
-      clubs++;
-      factor = (diamonds==hearts) ? 12 : 24;
-      if (clubs < SYM_START) factor *= 2;
-    }
-    else if (diamonds < hearts) {
+    if (diamonds < DIAMONDS_END) {
       diamonds++;
-      clubs = CLUBS_START;
-      factor = (diamonds==hearts) ? 12 : 24;
-      if (clubs < SYM_START) factor *= 2;
+      factor = hearts < SYM_START ? 48 : 24;
     }
     else if (hearts < HEARTS_END) {
       hearts++;
-      clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
-      factor = (diamonds==hearts) ? 12 : 24;
-      if (clubs < SYM_START) factor *= 2;
+      factor = hearts < SYM_START ? 48 : 24;
     }
     else if (spades < SPADES_END) {
       spades++;
-      clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
-      hearts = HEARTS_START;
-      factor = (clubs < SYM_START) ? 24 : 12;
+      hearts= HEARTS_START;
+      factor = hearts < SYM_START ? 48 : 24;
     }
     else break;
-    int result = solver(*spades, *hearts, *diamonds, *clubs);
+    int result = solver(*spades, *hearts, *diamonds, 0);
     exhaustC += 1;
     exhaustD += factor;
+    if (result == 5) {
+      int skipped = DIAMONDS_END - diamonds;
+      skipC += skipped;
+      skipD += factor*skipped;
+      solutions += (skipped+1)*factor;
+      diamonds = DIAMONDS_END;
+    }
     if (result == 1)      solutions += factor;
   }
   end = clock();
@@ -71,7 +66,7 @@ void dist_12_5_5_3() {
   FILE* out = fopen("counts1.log", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",
-       "12-5-5-3", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
+       "11-9-5-0", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
   fputs(buffer, out);
   fclose(out);
 }

@@ -27,39 +27,30 @@ def dominatedSuit(name, n, fout):
 def plainSuit(name, n, fout):
     fout.write(f'  extern RankSet suit{n}[];\n')
     fout.write(f'  RankSet *{name}_START = suit{n};\n')
-    fout.write(f'  RankSet *{name}_END = {name}_START + {count[n]-1};\n\n')
+    fout.write(f'  RankSet *{name}_END = suit{n} + {count[n]-1};\n\n')
 
 def symSuit(name, n, fout):
     fout.write(f'  extern RankSet ranks{n}[];\n')
     fout.write(f'  RankSet *{name}_START = ranks{n};\n')
-    fout.write(f'  RankSet *{name}_END = {name}_START + {swords[n]-1};\n')
-    fout.write(f'  RankSet *SYM_START = {name}_START + {syms[n]};\n\n')
-
-def start(s,h,d,c,fout):
-    fout.write('  RankSet *spades = SPADES_START;\n')
-    fout.write('  RankSet *hearts = HEARTS_START;\n')
-    if c:
-        fout.write('  RankSet *diamonds = DIAMONDS_START;\n')
-        fout.write('  RankSet *clubs = CLUBS_START-1;\n')
-    else:
-        fout.write('  RankSet *diamonds = DIAMONDS_START-1;\n\n')
-    fout.write('  int factor;\n')
-    fout.write('  unsigned long exhaustC = 0L;  // classes\n')
-    fout.write('  unsigned long heurC = 0L;\n')
-    fout.write('  unsigned long skipC = 0L;\n')
-    fout.write('  unsigned long exhaustD = 0L;   // deals\n')
-    fout.write('  unsigned long heurD = 0L;\n')
-    fout.write('  unsigned long skipD = 0L;\n')
-    fout.write('  unsigned long solutions = 0L;\n')
-    fout.write('  double begin, end;\n')
-    fout.write('  begin = clock();\n'  )
+    fout.write(f'  RankSet *{name}_END = ranks{n} + {swords[n]-1};\n')
+    fout.write(f'  RankSet *SYM_START = ranks{n} + {syms[n]};\n\n')
 
 def prolog(fout):
     fout.write('#include <stdio.h>\n')
     fout.write('#include <time.h>\n')
+    fout.write('#include <signal.h>\n')
+    fout.write('#include <unistd.h>\n')
+    fout.write('#include <string.h>\n')
     fout.write('#include "types.h"\n')
-    fout.write('\nextern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);\n')
-
+    fout.write('\nextern int backup;\n')
+    fout.write('extern int interval;\n')
+    fout.write('int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);\n')
+    fout.write('''
+void sig_handler(int signum);
+int restoreState(State *state, unsigned long stop);
+void saveState(State *state);\n''')
+    
+    
 def skip(c, d, fout):
     suit = 'clubs' if c==5 else 'diamonds'
     if (c == 0):
@@ -71,37 +62,95 @@ def skip(c, d, fout):
     if not (c == d == 5):
         fout.write('    if (result == 5) {\n')
         fout.write(f'      int skipped = {end} - {suit};\n')
-        fout.write('      skipC += skipped;\n')
-        fout.write('      skipD += factor*skipped;\n')
-        fout.write('      solutions += (skipped+1)*factor;\n')
+        fout.write('      state.skipC += skipped;\n')
+        fout.write('      state.skipD += factor*skipped;\n')
+        fout.write('      state.solutions += (skipped+1)*factor;\n')
         fout.write(f'      {suit} = {end};\n')    
         fout.write('    }\n')
     else:
         fout.write('    if (result == 5) {\n')
         fout.write(f'      int skipped = {end} - {suit};\n')
-        fout.write('       if skipped >= 0 {\n')
-        fout.write('         skipC += skipped;\n')
-        fout.write('         skipD += factor*skipped;\n')
-        fout.write('         solutions += (skipped+1)*factor;\n')
+        fout.write('      if (skipped >= 0) {\n')
+        fout.write('        state.skipC += skipped;\n')
+        fout.write('        state.skipD += factor*skipped;\n')
+        fout.write('        state.solutions += (skipped+1)*factor;\n')
         fout.write(f'        {suit} = {end};\n')    
         fout.write('       }\n')
         fout.write('    else result = 1;  // ignore flush\n')
         fout.write('    }\n')
 
 
-def epilog(fout, title):
-    fout.write('    if (result == 1)')
-    fout.write('      solutions += factor;\n')
-    fout.write('  }\n')
-    fout.write('  end = clock();\n')
-    fout.write('  double time = (end-begin)/CLOCKS_PER_SEC;\n')
-    fout.write('  FILE* out = fopen("counts1.log", "a");\n')
-    fout.write('  char buffer[256];\n')
-    fout.write('  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\\n",\n')
-    fout.write(f'       "{title}", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);\n')
-    fout.write('  fputs(buffer, out);\n')
-    fout.write('  fclose(out);\n')
-    fout.write('}')
+def epilog(fout, title, c):
+    fout.write(f'''
+    if (result == 1) state.solutions += factor;
+    if (backup) {{
+      end = clock();
+      state.elapsed += (end-begin)/CLOCKS_PER_SEC;\n''')
+    if c:
+        fout.write('      state.cc = clubs - CLUBS_START;\n')
+    else:
+        fout.write('      state.cc = 0;\n')
+    fout.write('''
+      state.dd = diamonds - DIAMONDS_START;
+      state.hh = hearts - HEARTS_START;
+      state.ss = spades - SPADES_START;
+      saveState(&state);
+      begin = clock();        
+      }
+  }
+  end = clock();
+  state.elapsed += (end-begin)/CLOCKS_PER_SEC;
+  FILE* out = fopen("counts1.log", "a");
+  char buffer[256];
+  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\\n",  
+        "{title}", 
+        state.exhaustC, 
+        state.heurC, 
+        state.skipC, 
+        state.exhaustD, 
+        state.heurD, 
+        state.skipD, 
+        state.solutions, 
+        state.elapsed);
+  fputs(buffer, out);
+  fclose(out);\n''')
+    if c:
+        fout.write('  state.cc = clubs - CLUBS_START;\n')
+    else:
+        fout.write('  state.cc = 0;\n')
+    fout.write('''
+  state.dd = diamonds - DIAMONDS_START;
+  state.hh = hearts - HEARTS_START;
+  state.ss = spades - SPADES_START;
+  saveState(&state);  // last backup shows calculation complete
+}\n''')
+
+def start(s,h,d,c,name,fout):
+    fout.write(f'''
+  State state;
+  int factor;
+  double begin, end;\n''')
+    if c:
+        fout.write('  RankSet *clubs;\n')
+    fout.write(f'''
+  RankSet *diamonds;
+  RankSet *hearts;
+  RankSet *spades;
+
+  // check whether to continue an interrupted run
+  strncpy(state.name, "{name}", 20);
+  int completed = restoreState(&state, SPADES_END-SPADES_START);
+  if (completed) return;\n\n''')
+    if c:
+        fout.write('  clubs = CLUBS_START + state.cc;\n')
+    fout.write('''
+  diamonds = DIAMONDS_START + state.dd;
+  hearts = HEARTS_START + state.hh;
+  spades = SPADES_START + state.ss;
+     
+  signal(SIGALRM,sig_handler); // Register signal handler
+  alarm(interval);             // schedule a backup in an hour
+  begin = clock();\n\n''')
 
 def genHand_abc(s, h, d, c=0):
     with open(f'../src/dist_{s}_{h}_{d}_0.c', 'w') as fout:
@@ -110,7 +159,6 @@ def genHand_abc(s, h, d, c=0):
         name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         m = best(s,h,d) if d != 5 else best(s,h)
-        
         if m == s:
             symSuit('SPADES', s, fout)
             plainSuit('HEARTS',h,fout)
@@ -126,7 +174,7 @@ def genHand_abc(s, h, d, c=0):
             plainSuit('HEARTS',h,fout)
             symSuit('DIAMONDS',d,fout)
             sym = 'diamonds'
-        start(s,h,d,0,fout)
+        start(s,h,d,0,name,fout)
         fout.write('  while(1) {\n')
         fout.write('    if (diamonds < DIAMONDS_END) {\n')
         fout.write('      diamonds++;\n')
@@ -148,11 +196,11 @@ def genHand_abc(s, h, d, c=0):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (d==5): skip(0, d, fout)
         
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHand_abcd(s,h,d,c):
     with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
@@ -185,7 +233,7 @@ def genHand_abcd(s,h,d,c):
             plainSuit('DIAMONDS',d,fout)
             symSuit('CLUBS', c, fout)
             sym = 'clubs'
-        start(s,h,d,c,fout)
+        start(s,h,d,c,name,fout)
         fout.write('  while(1) {\n')
         fout.write('    if (clubs < CLUBS_END) {\n')
         fout.write('      clubs++;\n')
@@ -215,11 +263,11 @@ def genHand_abcd(s,h,d,c):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
 
-        epilog(fout, title)
         if (c==5): skip(c, d, fout)
+        epilog(fout, title, c)
 
 def genHand_aab(s,h,d, c=0):
     assert h == s
@@ -232,8 +280,7 @@ def genHand_aab(s,h,d, c=0):
         dominatedSuit('HEARTS', h, fout)
         symSuit('DIAMONDS', d, fout)
         sym = 'diamonds'
-        start(s,h,d,0,fout)
-
+        start(s,h,d,0,name,fout)
         fout.write('  while (1) {\n')
         fout.write('    if (diamonds < DIAMONDS_END) {\n')
         fout.write('      diamonds++;\n')
@@ -257,11 +304,11 @@ def genHand_aab(s,h,d, c=0):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (d==5): skip(0, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHand_abb(s,h,d,c=0):
     assert h==d
@@ -274,7 +321,7 @@ def genHand_abb(s,h,d,c=0):
         plainSuit('HEARTS', h, fout)
         dominatedSuit('DIAMONDS',d,fout)
         sym = 'spades'
-        start(s,h,d,0,fout)
+        start(s,h,d,0,name,fout)
 
         fout.write('  while (1) {\n')
         fout.write('    if (diamonds < hearts) {\n')
@@ -298,11 +345,11 @@ def genHand_abb(s,h,d,c=0):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, 0);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (d==5): skip(0, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHand_aabc(s,h,d,c):
     assert s == h
@@ -321,8 +368,9 @@ def genHand_aabc(s,h,d,c):
         else:
             plainSuit('DIAMONDS', d,  fout)
             symSuit('CLUBS', c, fout)
-            sym = 'clubs'            
-        start(s,h,d,c,fout)
+            sym = 'clubs'     
+        
+        start(s,h,d,c,name,fout)
 
         fout.write('  while (1) {\n')
         fout.write('    if (clubs < CLUBS_END) {\n')
@@ -356,11 +404,11 @@ def genHand_aabc(s,h,d,c):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (c==5): skip(c, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHand_abbc(s,h,d,c):
     assert h==d
@@ -368,7 +416,7 @@ def genHand_abbc(s,h,d,c):
         prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
         name = f'dist_{s}_{h}_{d}_{c}'
-        fout.write(f'\nvoid {name}() {{\n')
+        fout.write(f'\nvoid {name}() {{\n') 
         m = best(s,c) if c!=5 else s
         plainSuit('HEARTS', h, fout)
         dominatedSuit('DIAMONDS', d, fout)
@@ -379,8 +427,8 @@ def genHand_abbc(s,h,d,c):
         else:
             plainSuit('SPADES', s,  fout)
             symSuit('CLUBS', c, fout)
-            sym = 'clubs'            
-        start(s,h,d,c,fout)
+            sym = 'clubs'           
+        start(s,h,d,c,name,fout)
 
         fout.write('  while(1) {\n')
         fout.write('    if (clubs < CLUBS_END) {\n')
@@ -414,11 +462,11 @@ def genHand_abbc(s,h,d,c):
         fout.write('    else break;\n') 
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (c==5): skip(c, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHands_abcc(s,h,d,c):
     assert d == c
@@ -426,7 +474,7 @@ def genHands_abcc(s,h,d,c):
         prolog(fout)
         title = f'{s}-{h}-{d}-{c}'
         name = f'dist_{s}_{h}_{d}_{c}'
-        fout.write(f'\nvoid {name}() {{\n')
+        fout.write(f'\nvoid {name}() {{\n')  
         m = best(s,h)
         dominatedSuit('CLUBS', c, fout)
         plainSuit('DIAMONDS', d, fout)
@@ -437,8 +485,8 @@ def genHands_abcc(s,h,d,c):
         else:
             plainSuit('SPADES', s,  fout)
             symSuit('HEARTS', h, fout)
-            sym = 'hearts'            
-        start(s,h,d,c,fout)
+            sym = 'hearts'          
+        start(s,h,d,c,name,fout)
 
         fout.write('  while(1) {\n')
         fout.write('    if (clubs < diamonds) {\n')
@@ -470,11 +518,11 @@ def genHands_abcc(s,h,d,c):
         fout.write('    else break;\n') 
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (c==5): skip(c, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHands_aaab(s,h,d,c):
     assert s == h == d
@@ -482,12 +530,12 @@ def genHands_aaab(s,h,d,c):
         prolog(fout)
         name = f'dist_{s}_{h}_{d}_{c}'
         title = f'{s}-{h}-{d}-{c}'
-        fout.write(f'\nvoid {name}() {{\n')
+        fout.write(f'\nvoid {name}() {{\n')    
         plainSuit('SPADES', s, fout)
         dominatedSuit('HEARTS', h, fout)
         dominatedSuit('DIAMONDS', d,  fout)
-        symSuit('CLUBS', c, fout)           
-        start(s,h,d,c,fout)
+        symSuit('CLUBS', c, fout)      
+        start(s,h,d,c,name,fout)
 
         fout.write('  while(1) {\n')
         fout.write('    if (clubs < CLUBS_END) {\n')
@@ -527,25 +575,25 @@ def genHands_aaab(s,h,d,c):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (c==5): skip(c, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
     
 
 def genHands_abbb(s,h,d,c):
     assert h==d==c
     with open(f'../src/dist_{s}_{h}_{d}_{c}.c', 'w') as fout:
         prolog(fout)
-        name = f'dist_{s}_{h}_{d}_{c}'
         title = f'{s}-{h}-{d}-{c}'
+        name = f'dist_{s}_{h}_{d}_{c}'
         fout.write(f'\nvoid {name}() {{\n')
         symSuit('SPADES', s, fout)
         plainSuit('HEARTS', h, fout)
         dominatedSuit('DIAMONDS', d,  fout)
         dominatedSuit('CLUBS', c, fout)               
-        start(s,h,d,c,fout)
+        start(s,h,d,c,name,fout)
 
         fout.write('  while(1) {\n')
         fout.write('    if (clubs < diamonds) {\n')
@@ -582,15 +630,15 @@ def genHands_abbb(s,h,d,c):
         fout.write('    else break;\n')
 
         fout.write('    int result = solver(*spades, *hearts, *diamonds, *clubs);\n')
-        fout.write('    exhaustC += 1;\n')
-        fout.write('    exhaustD += factor;\n')
+        fout.write('    state.exhaustC += 1;\n')
+        fout.write('    state.exhaustD += factor;\n')
         if (c==5): skip(c, d, fout)
 
-        epilog(fout, title)
+        epilog(fout, title, c)
 
 def genHand(p):
     match p:
-        case (10,5,5,5) | (10,10,5) | (13,12) | (12,12,1) | (13,6,6) | (13,11,1) | (13,7,5):
+        case (10,5,5,5) | (10,10,5,0) | (13,12,0,0) | (12,12,1,0) | (13,6,6,0) | (13,11,1,0) | (13,7,5,0):
             return
         case (s,h,d,0) if s > h > d:
             genHand_abc(*p)

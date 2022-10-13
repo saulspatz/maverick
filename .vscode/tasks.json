@@ -75,7 +75,7 @@
                 "-I../include",
                 "maverick.c",
                 "dance.c",
-                "dist_13_7_5_0.c"
+                "dist_11_9_5_0.c"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/src"

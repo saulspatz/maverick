@@ -38,4 +38,20 @@ typedef RankSet Suit13[count13];
 #define KING 13
 #define HIGH_ACE 14 
 
+typedef struct {
+  unsigned long exhaustC;  // classes
+  unsigned long heurC;
+  unsigned long skipC;
+  unsigned long exhaustD;   // deals
+  unsigned long heurD;
+  unsigned long skipD;
+  unsigned long solutions;
+  double        elapsed;
+  unsigned long cc;         // "loop counters"
+  unsigned long dd;
+  unsigned long hh;
+  unsigned long ss; 
+  char name[20];
+} State;
+
 #endif

@@ -8,14 +8,14 @@ INCLUDE = ../include
 CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wno-unused-result -g -std=c11 -I$(INCLUDE)
 CC := gcc
 
-maverick: maverick.o dance.o$(OBJECTS) 
-	$(CC) $(CFLAGS) maverick.o dance.o $(OBJECTS) -o $@
+maverick: maverick.o dance.o backup.o $(OBJECTS) 
+	$(CC) $(CFLAGS) maverick.o dance.o backup.o $(OBJECTS) -o $@
 
 dance.o: dance.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-tasks.h:
-	python3.10 ../scripts/tasks.py
+backup.o: backup.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJECTS): %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@

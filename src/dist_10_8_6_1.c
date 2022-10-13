@@ -1,41 +1,61 @@
 #include <stdio.h>
 #include <time.h>
+#include <signal.h>
+#include <unistd.h>
+#include <string.h>
 #include "types.h"
 
-extern int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
+extern int backup;
+extern int interval;
+int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
+
+void sig_handler(int signum);
+int restoreState(State *state, unsigned long stop);
+void saveState(State *state);
 
 void dist_10_8_6_1() {
   extern RankSet suit10[];
   RankSet *SPADES_START = suit10;
-  RankSet *SPADES_END = SPADES_START + 285;
+  RankSet *SPADES_END = suit10 + 285;
 
   extern RankSet suit8[];
   RankSet *HEARTS_START = suit8;
-  RankSet *HEARTS_END = HEARTS_START + 1286;
+  RankSet *HEARTS_END = suit8 + 1286;
 
   extern RankSet ranks6[];
   RankSet *DIAMONDS_START = ranks6;
-  RankSet *DIAMONDS_END = DIAMONDS_START + 867;
-  RankSet *SYM_START = DIAMONDS_START + 848;
+  RankSet *DIAMONDS_END = ranks6 + 867;
+  RankSet *SYM_START = ranks6 + 848;
 
   extern RankSet suit1[];
   RankSet *CLUBS_START = suit1;
-  RankSet *CLUBS_END = CLUBS_START + 12;
+  RankSet *CLUBS_END = suit1 + 12;
 
-  RankSet *spades = SPADES_START;
-  RankSet *hearts = HEARTS_START;
-  RankSet *diamonds = DIAMONDS_START;
-  RankSet *clubs = CLUBS_START-1;
+
+  State state;
   int factor;
-  unsigned long exhaustC = 0L;  // classes
-  unsigned long heurC = 0L;
-  unsigned long skipC = 0L;
-  unsigned long exhaustD = 0L;   // deals
-  unsigned long heurD = 0L;
-  unsigned long skipD = 0L;
-  unsigned long solutions = 0L;
   double begin, end;
+  RankSet *clubs;
+
+  RankSet *diamonds;
+  RankSet *hearts;
+  RankSet *spades;
+
+  // check whether to continue an interrupted run
+  strncpy(state.name, "dist_10_8_6_1", 20);
+  int completed = restoreState(&state, SPADES_END-SPADES_START);
+  if (completed) return;
+
+  clubs = CLUBS_START + state.cc;
+
+  diamonds = DIAMONDS_START + state.dd;
+  hearts = HEARTS_START + state.hh;
+  spades = SPADES_START + state.ss;
+     
+  signal(SIGALRM,sig_handler); // Register signal handler
+  alarm(interval);             // schedule a backup in an hour
   begin = clock();
+
   while(1) {
     if (clubs < CLUBS_END) {
       clubs++;
@@ -61,16 +81,42 @@ void dist_10_8_6_1() {
     }
     else break;
     int result = solver(*spades, *hearts, *diamonds, *clubs);
-    exhaustC += 1;
-    exhaustD += factor;
-    if (result == 1)      solutions += factor;
+    state.exhaustC += 1;
+    state.exhaustD += factor;
+
+    if (result == 1) state.solutions += factor;
+    if (backup) {
+      end = clock();
+      state.elapsed += (end-begin)/CLOCKS_PER_SEC;
+      state.cc = clubs - CLUBS_START;
+
+      state.dd = diamonds - DIAMONDS_START;
+      state.hh = hearts - HEARTS_START;
+      state.ss = spades - SPADES_START;
+      saveState(&state);
+      begin = clock();        
+      }
   }
   end = clock();
-  double time = (end-begin)/CLOCKS_PER_SEC;
+  state.elapsed += (end-begin)/CLOCKS_PER_SEC;
   FILE* out = fopen("counts1.log", "a");
   char buffer[256];
-  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",
-       "10-8-6-1", exhaustC, heurC, skipC, exhaustD, heurD, skipD, solutions, time);
+  sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",  
+        "{title}", 
+        state.exhaustC, 
+        state.heurC, 
+        state.skipC, 
+        state.exhaustD, 
+        state.heurD, 
+        state.skipD, 
+        state.solutions, 
+        state.elapsed);
   fputs(buffer, out);
   fclose(out);
+  state.cc = clubs - CLUBS_START;
+
+  state.dd = diamonds - DIAMONDS_START;
+  state.hh = hearts - HEARTS_START;
+  state.ss = spades - SPADES_START;
+  saveState(&state);  // last backup shows calculation complete
 }

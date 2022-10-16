@@ -90,17 +90,17 @@ def epilog(fout, title, c):
         fout.write('      state.cc = clubs - CLUBS_START;\n')
     else:
         fout.write('      state.cc = 0;\n')
-    fout.write('''
+    fout.write(f'''
       state.dd = diamonds - DIAMONDS_START;
       state.hh = hearts - HEARTS_START;
       state.ss = spades - SPADES_START;
       saveState(&state);
       begin = clock();        
-      }
-  }
+      }}
+  }}
   end = clock();
   state.elapsed += (end-begin)/CLOCKS_PER_SEC;
-  FILE* out = fopen("counts1.log", "a");
+  FILE* out = fopen("../results/counts.csv", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\\n",  
         "{title}", 
@@ -121,7 +121,7 @@ def epilog(fout, title, c):
     fout.write('''
   state.dd = diamonds - DIAMONDS_START;
   state.hh = hearts - HEARTS_START;
-  state.ss = spades - SPADES_START;
+  state.ss = spades - SPADES_START + 1;  
   saveState(&state);  // last backup shows calculation complete
 }\n''')
 

@@ -11,4 +11,6 @@ doc/maverick.log
 src/testDance
 src/testMaverick
 *.bak
+*.a
+
 *.gch

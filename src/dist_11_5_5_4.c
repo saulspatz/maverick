@@ -100,10 +100,10 @@ void dist_11_5_5_4() {
   }
   end = clock();
   state.elapsed += (end-begin)/CLOCKS_PER_SEC;
-  FILE* out = fopen("counts1.log", "a");
+  FILE* out = fopen("../results/counts.csv", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",  
-        "{title}", 
+        "11-5-5-4", 
         state.exhaustC, 
         state.heurC, 
         state.skipC, 
@@ -118,6 +118,6 @@ void dist_11_5_5_4() {
 
   state.dd = diamonds - DIAMONDS_START;
   state.hh = hearts - HEARTS_START;
-  state.ss = spades - SPADES_START;
+  state.ss = spades - SPADES_START + 1;  
   saveState(&state);  // last backup shows calculation complete
 }

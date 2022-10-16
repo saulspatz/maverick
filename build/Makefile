@@ -8,8 +8,8 @@ INCLUDE = ../include
 CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wno-unused-result -g -std=c11 -I$(INCLUDE)
 CC := gcc
 
-maverick: maverick.o dance.o backup.o $(OBJECTS) 
-	$(CC) $(CFLAGS) maverick.o dance.o backup.o $(OBJECTS) -o $@
+maverick: maverick.o dance.o backup.o libmaverick.a 
+	$(CC) $(CFLAGS) -L. maverick.o -lmaverick dance.o backup.o -o $@
 
 dance.o: dance.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -19,6 +19,9 @@ backup.o: backup.c
 
 $(OBJECTS): %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+libmaverick.a: $(OBJECTS)
+	ar -rc libmaverick.a dist_*
 
 maverick.c: suits.h externs.h tasks.h
 

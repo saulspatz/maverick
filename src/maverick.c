@@ -2,15 +2,20 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "externs.h" // names of pattern functions
 #include "suits.h"   // all possible suit distributions
 #include "tasks.h"   // task list
 
 extern int numTasks;
 
+int fexists(const char *fileanme);
+int interval = 3600;
+int backup;
+
 int main(int argc, char *argv[]) {
-	if (!access("counts1.csv",F_OK)) {
-		FILE* out = fopen("counts1.csv", "w");
+	if (!fexists("../results/counts.csv")) {
+		FILE* out = fopen("../results/counts.csv", "w");
 		fprintf(out, "Distribution, Exhaustive Search, Heuristic, Short Five,Exhaustive Search, Heuristic, Short Five, Time\n");
 		fclose(out);
 	}
@@ -24,8 +29,8 @@ int main(int argc, char *argv[]) {
 		fscanf(fin, "%d", &index);
 		while (!feof(fin)) {
 			if (index>= numTasks) {
-				FILE *log = fopen("maverick.log", "a");
-				fprintf(log, "maverick.c: Invalid index %d\n", index);
+				FILE *log = fopen("../results/maverick.log", "a");
+				fprintf(log, "../results/maverick.c: Invalid index %d\n", index);
 				fclose(log);
 				continue;
 			}
@@ -34,10 +39,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	else {
-		for (int i = 1; i <= argc; i++) {
+		for (int i = 1; i < argc; i++) {
 			int index = atoi(argv[i]);
 			if (index>= numTasks) {
-				FILE *log = fopen("maverick.log", "a");
+				FILE *log = fopen("../results/maverick.log", "a");
 				fprintf(log, "maverick.c: Invalid index %d\n", index);
 				fclose(log);
 				continue;

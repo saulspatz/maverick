@@ -12,3 +12,5 @@ src/testDance
 src/testMaverick
 *.bak
 *.gch
+*.a
+

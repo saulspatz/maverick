@@ -120,7 +120,9 @@ void addHand(int hand[]) {
     
     pats += 1;
     if (pats > MAXPATS) {
-        fprintf(stderr, "MAXPATS exceeded.  Recompile\n");
+        FILE *log = fopen("maverick.log", "a");
+        fputs("MAXPATS exceeded; recompile\n", log);
+        fclose(log);
         exit(1);
     } 
 

@@ -1,6 +1,4 @@
 '''
-This script will be run by make, from the makefile.
-
 1. Read the names of the distxxxx.c file from ../src/ to get the tasks
 2. Read classes.txt file to get the number of classses in 
    each tasks.

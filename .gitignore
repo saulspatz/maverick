@@ -14,5 +14,6 @@ src/testMaverick
 *.a
 
 *.gch
-*.a
+*.ods
+
 

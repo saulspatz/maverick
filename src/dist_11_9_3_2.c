@@ -13,7 +13,7 @@ void sig_handler(int signum);
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
 
-void dist_11_9_5_0() {
+void dist_11_9_3_2() {
   extern RankSet suit11[];
   RankSet *SPADES_START = suit11;
   RankSet *SPADES_END = suit11 + 77;
@@ -23,24 +23,30 @@ void dist_11_9_5_0() {
   RankSet *HEARTS_END = ranks9 + 364;
   RankSet *SYM_START = ranks9 + 350;
 
-  extern RankSet suit5[];
-  RankSet *DIAMONDS_START = suit5;
-  RankSet *DIAMONDS_END = suit5 + 1286;
+  extern RankSet suit3[];
+  RankSet *DIAMONDS_START = suit3;
+  RankSet *DIAMONDS_END = suit3 + 285;
+
+  extern RankSet suit2[];
+  RankSet *CLUBS_START = suit2;
+  RankSet *CLUBS_END = suit2 + 77;
 
 
   State state;
   int factor;
   double begin, end;
+  RankSet *clubs;
 
   RankSet *diamonds;
   RankSet *hearts;
   RankSet *spades;
 
   // check whether to continue an interrupted run
-  strncpy(state.name, "dist_11_9_5_0", 20);
+  strncpy(state.name, "dist_11_9_3_2", 20);
   int completed = restoreState(&state, SPADES_END-SPADES_START);
   if (completed) return;
 
+  clubs = CLUBS_START + state.cc;
 
   diamonds = DIAMONDS_START + state.dd;
   hearts = HEARTS_START + state.hh;
@@ -51,38 +57,38 @@ void dist_11_9_5_0() {
   begin = clock();
 
   while(1) {
-    if (diamonds < DIAMONDS_END) {
+    if (clubs < CLUBS_END) {
+      clubs++;
+      factor = hearts < SYM_START ? 48 : 24;
+    }
+    else if (diamonds < DIAMONDS_END) {
       diamonds++;
+      clubs = CLUBS_START;
       factor = hearts < SYM_START ? 48 : 24;
     }
     else if (hearts < HEARTS_END) {
       hearts++;
       diamonds = DIAMONDS_START;
+      clubs = CLUBS_START;
       factor = hearts < SYM_START ? 48 : 24;
     }
     else if (spades < SPADES_END) {
       spades++;
+      clubs = CLUBS_START;
       diamonds = DIAMONDS_START;
       hearts= HEARTS_START;
       factor = hearts < SYM_START ? 48 : 24;
     }
     else break;
-    int result = solver(*spades, *hearts, *diamonds, 0);
+    int result = solver(*spades, *hearts, *diamonds, *clubs);
     state.exhaustC += 1;
     state.exhaustD += factor;
-    if (result == 5) {
-      int skipped = DIAMONDS_END - diamonds;
-      state.skipC += skipped;
-      state.skipD += factor*skipped;
-      state.solutions += (skipped+1)*factor;
-      diamonds = DIAMONDS_END;
-    }
 
     if (result == 1) state.solutions += factor;
     if (backup) {
       end = clock();
       state.elapsed += (end-begin)/CLOCKS_PER_SEC;
-      state.cc = 0;
+      state.cc = clubs - CLUBS_START;
 
       state.dd = diamonds - DIAMONDS_START;
       state.hh = hearts - HEARTS_START;
@@ -96,7 +102,7 @@ void dist_11_9_5_0() {
   FILE* out = fopen("../results/counts.csv", "a");
   char buffer[256];
   sprintf(buffer,"%-9s, %lu, %lu, %lu, %lu, %lu, %lu, %lu, %.2f\n",  
-        "11-9-5-0", 
+        "11-9-3-2", 
         state.exhaustC, 
         state.heurC, 
         state.skipC, 
@@ -107,7 +113,7 @@ void dist_11_9_5_0() {
         state.elapsed);
   fputs(buffer, out);
   fclose(out);
-  state.cc = 0;
+  state.cc = clubs - CLUBS_START;
 
   state.dd = diamonds - DIAMONDS_START;
   state.hh = hearts - HEARTS_START;

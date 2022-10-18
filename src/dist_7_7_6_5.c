@@ -4,10 +4,12 @@
 #include <string.h>
 #include <pthread.h>
 #include "types.h"
+#include "straights.h"
 
 extern int backup;
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
+int bitcount(RankSet n);
 
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
@@ -16,18 +18,15 @@ void dist_7_7_6_5() {
   extern RankSet suit7[];
   RankSet *SPADES_START = suit7;
   RankSet *SPADES_END = suit7 + 1715;
-
   extern RankSet suit7[];
   RankSet *HEARTS_START = suit7;
   extern RankSet ranks6[];
   RankSet *DIAMONDS_START = ranks6;
   RankSet *DIAMONDS_END = ranks6 + 867;
   RankSet *SYM_START = ranks6 + 848;
-
   extern RankSet suit5[];
   RankSet *CLUBS_START = suit5;
   RankSet *CLUBS_END = suit5 + 1286;
-
 
   State state;
   int factor;
@@ -79,7 +78,75 @@ void dist_7_7_6_5() {
       factor = (diamonds < SYM_START) ? 48 : 24;
     }
     else break;
-    int result = solver(*spades, *hearts, *diamonds, *clubs);
+    int result = 0;
+    RankSet intersect = *spades & *hearts & *diamonds;
+    int bits = bitcount(intersect);
+    if (bits>=2) result = 5;  //full house
+    else if (bits==1) {
+      if ((*spades & ~intersect) & (*hearts & ~intersect))
+        result = 5; 
+    }
+    else { // look for a straight
+      RankSet join = *spades | *hearts | *diamonds;
+      for (int k = 0; k <10; k++) {
+        if ((join & straights[k]) != straights[k])
+          continue;
+        RankSet s = *spades & straights[k];
+        RankSet h = *hearts & straights[k];
+        RankSet d = *diamonds & straights[k];
+        if ((bitcount(s)<2) || (bitcount(h)<2) || (bitcount(d)<1))
+          continue;
+        int cards[5];
+        memset(cards, 0, sizeof(cards));
+        for (int k = 0; k < 5; k++) {
+          RankSet st = straights[k];
+          RankSet st1 = st & (st-1);
+          RankSet card = st & (~st1);
+          st = st1;
+          if (s & card) cards[k] |= 0x100;
+          if (h & card) cards[k] |= 0x01;
+          if (d & card) cards[k] |= 0x11;
+        }
+        int available[5];
+        int choice[5];
+        int used[5][3];
+        memset(used, 0, sizeof(used));
+        available[0] = cards[0];
+        int k = 0;
+        while(k >= 0) {
+          while (available[k]) {
+            int a = 1;
+            while (a& available[k]) 
+              a <<= 1;
+            available[k] &= (~a);
+            choice[k] = a;
+            if ( a == 1)
+              used[k][0] += 1;
+            else if (a== 2)
+              used[k][1] += 1;
+            else
+              used[k][2] += 1;
+            k++;
+            if (k == 5) {
+              result = 5;
+              fprintf(stderr, "%x %x %x %d %d %d %d %d\n",
+                              *spades, *hearts, *diamonds, 
+                              choice[0], choice[1], choice[2], choice[3], choice[4]);
+              break;
+            }
+            available[k] =cards[k];
+            if (used[k][0]==1)
+              available[k] &= ~1;
+            if (used[k][1]==2)
+              available[k] &= ~2;
+            if (used[k][2]==2)
+              available[k] &= ~4;
+          }
+          k -= 1;
+        }
+      }
+    }
+    if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
     state.exhaustC += 1;
     state.exhaustD += factor;
     if (result == 5) {

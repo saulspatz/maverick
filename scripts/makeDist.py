@@ -38,15 +38,14 @@ def symSuit(name, n, fout):
 def prolog(fout):
     fout.write('#include <stdio.h>\n')
     fout.write('#include <time.h>\n')
-    fout.write('#include <signal.h>\n')
     fout.write('#include <unistd.h>\n')
     fout.write('#include <string.h>\n')
+    fout.write('#include <pthread.h>\n')
     fout.write('#include "types.h"\n')
     fout.write('\nextern int backup;\n')
-    fout.write('extern int interval;\n')
+    fout.write('extern pthread_mutex_t mutex1;\n')
     fout.write('int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);\n')
     fout.write('''
-void sig_handler(int signum);
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);\n''')
     
@@ -83,6 +82,7 @@ def skip(c, d, fout):
 def epilog(fout, title, c):
     fout.write(f'''
     if (result == 1) state.solutions += factor;
+    pthread_mutex_lock( &mutex1 );
     if (backup) {{
       end = clock();
       state.elapsed += (end-begin)/CLOCKS_PER_SEC;\n''')
@@ -95,8 +95,10 @@ def epilog(fout, title, c):
       state.hh = hearts - HEARTS_START;
       state.ss = spades - SPADES_START;
       saveState(&state);
+      backup = 0;
       begin = clock();        
       }}
+      pthread_mutex_unlock( &mutex1 );
   }}
   end = clock();
   state.elapsed += (end-begin)/CLOCKS_PER_SEC;
@@ -148,8 +150,7 @@ def start(s,h,d,c,name,fout):
   hearts = HEARTS_START + state.hh;
   spades = SPADES_START + state.ss;
      
-  signal(SIGALRM,sig_handler); // Register signal handler
-  alarm(interval);             // schedule a backup in an hour
+
   begin = clock();\n\n''')
 
 def genHand_abc(s, h, d, c=0):

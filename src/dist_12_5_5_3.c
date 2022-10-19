@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <time.h>
-#include <signal.h>
 #include <unistd.h>
 #include <string.h>
+#include <pthread.h>
 #include "types.h"
 
 extern int backup;
-extern int interval;
+extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 
-void sig_handler(int signum);
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
 
@@ -50,8 +49,7 @@ void dist_12_5_5_3() {
   hearts = HEARTS_START + state.hh;
   spades = SPADES_START + state.ss;
      
-  signal(SIGALRM,sig_handler); // Register signal handler
-  alarm(interval);             // schedule a backup in an hour
+
   begin = clock();
 
   while(1) {
@@ -86,6 +84,7 @@ void dist_12_5_5_3() {
     state.exhaustD += factor;
 
     if (result == 1) state.solutions += factor;
+    pthread_mutex_lock( &mutex1 );
     if (backup) {
       end = clock();
       state.elapsed += (end-begin)/CLOCKS_PER_SEC;
@@ -95,8 +94,10 @@ void dist_12_5_5_3() {
       state.hh = hearts - HEARTS_START;
       state.ss = spades - SPADES_START;
       saveState(&state);
+      backup = 0;
       begin = clock();        
       }
+      pthread_mutex_unlock( &mutex1 );
   }
   end = clock();
   state.elapsed += (end-begin)/CLOCKS_PER_SEC;

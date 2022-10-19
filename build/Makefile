@@ -9,7 +9,7 @@ CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wno-unused-result -g -std=c11 -I$(INCLUD
 CC := gcc
 
 maverick: maverick.o dance.o backup.o libmaverick.a 
-	$(CC) $(CFLAGS) -L. maverick.o -lmaverick dance.o backup.o -o $@
+	$(CC) $(CFLAGS) -pthread -L. maverick.o -lmaverick dance.o backup.o -o $@
 
 dance.o: dance.c
 	$(CC) $(CFLAGS) -c $< -o $@

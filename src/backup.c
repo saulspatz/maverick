@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include "types.h"
@@ -12,13 +11,6 @@ extern int interval;
 int fexists(const char *filename)
 {   struct stat buffer;
     return stat(filename, &buffer) == 0 ? 1 : 0;
-}
-
-void sig_handler(int signum){
-  if (signum == SIGALRM) {
-    backup = 1;
-    alarm(interval);  // Schedule a new alarm after an hour
-  }
 }
 
 int restoreState(State *state, unsigned long stop) {
@@ -105,6 +97,6 @@ void saveState(State *state) {
       state->skipD, 
       state->solutions, 
       state->elapsed);
+
   fclose(back);
-  backup = 0;
 }

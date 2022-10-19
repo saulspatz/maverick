@@ -3,17 +3,32 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <pthread.h>
 #include "externs.h" // names of pattern functions
 #include "suits.h"   // all possible suit distributions
 #include "tasks.h"   // task list
 
 extern int numTasks;
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 
 int fexists(const char *fileanme);
-int interval = 3600;
+unsigned int interval = 3600;
 int backup;
 
+void *setFlag(){
+	while(1) {
+		sleep(interval);
+		pthread_mutex_lock( &mutex1 );
+		backup = 1;
+		pthread_mutex_unlock( &mutex1 );
+	}
+	return 0;
+}
+
 int main(int argc, char *argv[]) {
+	pthread_t thread1;
+	pthread_create(&thread1, NULL, setFlag, NULL);
+
 	if (!fexists("../results/counts.csv")) {
 		FILE* out = fopen("../results/counts.csv", "w");
 		fprintf(out, "Distribution, Exhaustive Search, Heuristic, Short Five,Exhaustive Search, Heuristic, Short Five, Time\n");

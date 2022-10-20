@@ -79,7 +79,7 @@ void dist_7_7_6_5() {
     }
     else break;
     int result = 0;
-    RankSet intersect = *spades & *hearts & *diamonds;
+    RankSet intersect = (*spades) & (*hearts) & (*diamonds);gi
     int bits = bitcount(intersect);
     if (bits>=2) result = 5;  //full house
     else if (bits==1) {

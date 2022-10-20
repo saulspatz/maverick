@@ -72,6 +72,7 @@
                 "-Wpedantic",
                 "-o",
                 "maverick",
+                "-pthread",
                 "-I../include",
                 "maverick.c",
                 "dance.c",

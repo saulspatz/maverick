@@ -145,10 +145,6 @@ void dist_7_7_6_5() {
             if (k == 5) {
               result = 5;
 
-              // for testing only
-              fprintf(stderr, "%x %x %x %x %d %d %d %d %d\n",
-                              *spades, *hearts, *diamonds, straight, 
-                              choice[0], choice[1], choice[2], choice[3], choice[4]);
               goto found;
             }
             available[k] =cards[k];
@@ -164,7 +160,6 @@ void dist_7_7_6_5() {
           k -= 1;
         }
       }
-      fprintf(stderr, "%x %x %x\n", *spades, *hearts, *diamonds);
     }
     if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
 

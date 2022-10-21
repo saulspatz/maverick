@@ -119,7 +119,6 @@ void dist_7_7_6_5() {
           if (d & card) cards[j] |= 1;
         }
         int available[5];
-        int choice[5];
         int used[5][3];
         memset(used, 0, sizeof(used));
         available[0] = cards[0];
@@ -127,17 +126,14 @@ void dist_7_7_6_5() {
         while (k >= 0) {
           while (available[k]) {
             if (1 & available[k]) {
-              choice[k] = 0;
               used[k][0] += 1;
               available[k] &= ~1;
             }
             else if (2 & available[k]) {
-              choice[k] = 1;
               used[k][1] += 1;
               available[k] &= ~2;
             }
             else {
-              choice[k] = 2;
               used[k][2] += 1;
               available[k] &= ~4;
             }

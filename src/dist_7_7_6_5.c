@@ -88,24 +88,35 @@ void dist_7_7_6_5() {
     }
     else { // look for a straight
       RankSet join = *spades | *hearts | *diamonds;
-      for (int k = 0; k <10; k++) {
-        if ((join & straights[k]) != straights[k])
+      for (int m = 0; m <10; m++) {
+        if ((join & straights[m]) != straights[m])
           continue;
-        RankSet s = *spades & straights[k];
-        RankSet h = *hearts & straights[k];
-        RankSet d = *diamonds & straights[k];
-        if ((bitcount(s)<2) || (bitcount(h)<2) || (bitcount(d)<1))
+        RankSet straight = straights[m];
+        RankSet s = *spades & straight;
+        RankSet h = *hearts & straight;
+        RankSet d = *diamonds & straight;
+        int bs = bitcount(s);
+        int bh = bitcount(h);
+        int bd = bitcount(d);
+        if ( bs < 2 || bh < 2 || bd < 1)
+          continue;
+        if ( bs == 2 && bd == 2 && (*spades & *hearts) )
+          continue;
+        if ( bs == 2 && bd == 1 && (*spades &  *diamonds))
+          continue;
+        if ( bd == 2 && bd == 1 && (*hearts &  *diamonds))
           continue;
         int cards[5];
         memset(cards, 0, sizeof(cards));
-        for (int k = 0; k < 5; k++) {
-          RankSet st = straights[k];
-          RankSet st1 = st & (st-1);
-          RankSet card = st & (~st1);
-          st = st1;
-          if (s & card) cards[k] |= 0x100;
-          if (h & card) cards[k] |= 0x01;
-          if (d & card) cards[k] |= 0x11;
+        // which cards of the straight are in each suit?
+        RankSet st = straight;
+        for (int j = 0; j < 5; j++) {  // for each bit 
+          RankSet st1 = st & (st-1);   // clear lsb
+          RankSet card = st & (~st1);  // isolate the bit
+          st = st1;                    // remaining cards
+          if (s & card) cards[j] |= 4;
+          if (h & card) cards[j] |= 2;
+          if (d & card) cards[j] |= 1;
         }
         int available[5];
         int choice[5];
@@ -113,28 +124,36 @@ void dist_7_7_6_5() {
         memset(used, 0, sizeof(used));
         available[0] = cards[0];
         int k = 0;
-        while(k >= 0) {
+        while (k >= 0) {
           while (available[k]) {
-            int a = 1;
-            while (a& available[k]) 
-              a <<= 1;
-            available[k] &= (~a);
-            choice[k] = a;
-            if ( a == 1)
+            if (1 & available[k]) {
+              choice[k] = 0;
               used[k][0] += 1;
-            else if (a== 2)
+              available[k] &= ~1;
+            }
+            else if (2 & available[k]) {
+              choice[k] = 1;
               used[k][1] += 1;
-            else
+              available[k] &= ~2;
+            }
+            else {
+              choice[k] = 2;
               used[k][2] += 1;
+              available[k] &= ~4;
+            }
             k++;
             if (k == 5) {
               result = 5;
-              fprintf(stderr, "%x %x %x %d %d %d %d %d\n",
-                              *spades, *hearts, *diamonds, 
+
+              // for testing only
+              fprintf(stderr, "%x %x %x %x %d %d %d %d %d\n",
+                              *spades, *hearts, *diamonds, straight, 
                               choice[0], choice[1], choice[2], choice[3], choice[4]);
-              break;
+              goto found;
             }
             available[k] =cards[k];
+            for (int m = 0; m < 3; m++)
+              used[k][m] = used[k-1][m];
             if (used[k][0]==1)
               available[k] &= ~1;
             if (used[k][1]==2)
@@ -145,8 +164,12 @@ void dist_7_7_6_5() {
           k -= 1;
         }
       }
+      fprintf(stderr, "%x %x %x\n", *spades, *hearts, *diamonds);
     }
     if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
+
+found:
+
     state.exhaustC += 1;
     state.exhaustD += factor;
     if (result == 5) {

@@ -79,12 +79,15 @@ void dist_7_7_6_5() {
     }
     else break;
     int result = 0;
+    int heur = 0;
     RankSet intersect = (*spades) & (*hearts) & (*diamonds);
     int bits = bitcount(intersect);
     if (bits>=2) result = 5;  //full house
     else if (bits==1) {
-      if ((*spades & ~intersect) & (*hearts & ~intersect))
+      if ((*spades & ~intersect) & (*hearts & ~intersect)) {
         result = 5; 
+        heur = 1;
+      }
     }
     else { // look for a straight
       RankSet join = *spades | *hearts | *diamonds;
@@ -140,8 +143,8 @@ void dist_7_7_6_5() {
             k++;
             if (k == 5) {
               result = 5;
-
-              goto found;
+              heur = 1;
+              goto done;
             }
             available[k] =cards[k];
             for (int m = 0; m < 3; m++)
@@ -158,11 +161,15 @@ void dist_7_7_6_5() {
       }
     }
     if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
+done:
+    if (heur == 0) {
+      state.exhaustC += 1;
+      state.exhaustD += factor;
+    } else {
+      state.heurC += 1;
+      state.heurD += factor;
+    } 
 
-found:
-
-    state.exhaustC += 1;
-    state.exhaustD += factor;
     if (result == 5) {
       int skipped = CLUBS_END - clubs;
       state.skipC += skipped;

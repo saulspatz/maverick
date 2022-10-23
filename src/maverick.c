@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 
 	if (!fexists("../results/counts.csv")) {
 		FILE* out = fopen("../results/counts.csv", "w");
-		fprintf(out, "Distribution, Exhaustive Search, Heuristic, Short Five,Exhaustive Search, Heuristic, Short Five, Time\n");
+		fprintf(out, "Distribution, Exhaustive Search, Heuristic, Short Five,Exhaustive Search, Heuristic, Short Five, Solutions, Time\n");
 		fclose(out);
 	}
 	if (argc == 1) {

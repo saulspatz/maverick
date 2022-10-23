@@ -161,7 +161,9 @@ void dist_7_7_6_5() {
       }
     }
     if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
+
 done:
+
     if (heur == 0) {
       state.exhaustC += 1;
       state.exhaustD += factor;

@@ -7,6 +7,7 @@
 #include "externs.h" // names of pattern functions
 #include "suits.h"   // all possible suit distributions
 #include "tasks.h"   // task list
+#include "straights.h" // all possible straights
 
 extern int numTasks;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;

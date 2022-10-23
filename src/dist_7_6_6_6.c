@@ -4,9 +4,9 @@
 #include <string.h>
 #include <pthread.h>
 #include "types.h"
-#include "straights.h"
 
 extern int backup;
+extern RankSet straights[];
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 int bitcount(RankSet n);
@@ -87,11 +87,12 @@ void dist_7_6_6_6() {
 
     RankSet intersect = *spades & *hearts & *diamonds;
     RankSet intersect2 = *spades & *clubs;
+    RankSet int1, card;
     while (intersect) {
-      int1 = intersect & (interect-1);
+      int1 = intersect & (intersect-1);
       card = intersect & (~int1);
       intersect = int1;
-      if intersect2 & (~card) {
+      if (intersect2 & (~card)) {
         result =1;
         heur = 1; 
         goto done;
@@ -101,10 +102,10 @@ void dist_7_6_6_6() {
     intersect = *spades & *hearts & *clubs;
     intersect2 = *spades & *diamonds;
     while (intersect) {
-      int1 = intersect & (interect-1);
+      int1 = intersect & (intersect-1);
       card = intersect & (~int1);
       intersect = int1;
-      if intersect2 & (~card) {
+      if (intersect2 & (~card)) {
         result =1;
         heur = 1; 
         goto done;
@@ -114,10 +115,10 @@ void dist_7_6_6_6() {
     intersect = *spades & *diamonds & *clubs;
     intersect2 = *spades & *hearts;
     while (intersect) {
-      int1 = intersect & (interect-1);
+      int1 = intersect & (intersect-1);
       card = intersect & (~int1);
       intersect = int1;
-      if intersect2 & (~card) {
+      if (intersect2 & (~card)) {
         result =1;
         heur = 1; 
         goto done;
@@ -166,7 +167,7 @@ void dist_7_6_6_6() {
         if (c & card) cards[j] |= 1;
       }
       int available[5];
-      int used[5][3];
+      int used[5][4];
       memset(used, 0, sizeof(used));
       available[0] = cards[0];
       int k = 0;
@@ -204,7 +205,7 @@ void dist_7_6_6_6() {
           if (used[k][2]==2)
             available[k] &= ~4;
         }
-        k-=1
+        k-=1;
       }
     }
     if (result == 0) result = solver(*spades, *hearts, *diamonds, *clubs);

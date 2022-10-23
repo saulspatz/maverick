@@ -1,6 +1,9 @@
-//#include "types.h"
+#ifndef STRAIGHTS_H
+#define STRAIGHTS_H
 
-unsigned short straights[] = {
+#include "types.h"
+
+RankSet straights[] = {
     0x1f,
     0x3e,
     0x7c,
@@ -12,3 +15,4 @@ unsigned short straights[] = {
     0x1f00,
     0x1e01};
 
+#endif

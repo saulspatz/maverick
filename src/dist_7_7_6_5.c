@@ -4,9 +4,9 @@
 #include <string.h>
 #include <pthread.h>
 #include "types.h"
-#include "straights.h"
 
 extern int backup;
+extern RankSet straights[];
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 int bitcount(RankSet n);

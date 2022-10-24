@@ -43,7 +43,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${fileDirname}/maverick",
-            "args": ["94"],
+            "args": ["90", "2>/dev/null"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/src",
             "environment": [],

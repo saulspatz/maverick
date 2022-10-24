@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include <assert.h>
 #include "types.h"
 
 extern int backup;
@@ -93,7 +94,7 @@ void dist_7_6_6_6() {
       card = intersect & (~int1);
       intersect = int1;
       if (intersect2 & (~card)) {
-        result =1;
+        result = 1;
         heur = 1; 
         goto done;
       }
@@ -106,8 +107,10 @@ void dist_7_6_6_6() {
       card = intersect & (~int1);
       intersect = int1;
       if (intersect2 & (~card)) {
-        result =1;
+        result = 1;
         heur = 1; 
+        fprintf(stderr, "full %x %x %x %x diamonds %x\n",
+                  *spades, *hearts, *diamonds, *clubs, card);
         goto done;
       }
     }
@@ -121,6 +124,8 @@ void dist_7_6_6_6() {
       if (intersect2 & (~card)) {
         result =1;
         heur = 1; 
+        fprintf(stderr, "full %x %x %x %x hearts %x\n",
+                  *spades, *hearts, *diamonds, *clubs, card);
         goto done;
       }
     }
@@ -168,6 +173,7 @@ void dist_7_6_6_6() {
       }
       int available[5];
       int used[5][4];
+      int choice[5];
       memset(used, 0, sizeof(used));
       available[0] = cards[0];
       int k = 0;
@@ -176,23 +182,30 @@ void dist_7_6_6_6() {
           if (1 & available[k]) {
             used[k][0] += 1;
             available[k] &= ~1;
+            choice[k] =1;
           }
           else if (2 & available[k]) {
             used[k][1] += 1;
             available[k] &= ~2;
+            choice[k] =2;
           }
           else if (4 & available[k]) {
             used[k][2] += 1;
             available[k] &= ~4;
+            choice[k] =4;
           }
           else {
             used[k][3] += 1;
             available[k] &= ~8;
+            choice[k] = 8;
           }
           k++;
           if (k == 5) {
             result = 1;
             heur = 1;
+            fprintf(stderr, "%x %x %x %x %d %d %d %d %d\n",
+                 *spades, *hearts, *diamonds, *clubs, 
+                 choice[0], choice[1],choice[2],choice[3],choice[4]);
             goto done;
           }
           available[k] =cards[k];
@@ -200,15 +213,19 @@ void dist_7_6_6_6() {
             used[k][m] = used[k-1][m];
           if (used[k][0]==1)
             available[k] &= ~1;
-          if (used[k][1]==2)
+          if (used[k][1]==1)
             available[k] &= ~2;
-          if (used[k][2]==2)
+          if (used[k][2]==1)
             available[k] &= ~4;
+          if (used[k][3]==2)
+          available[k] &= ~8;
         }
         k-=1;
       }
     }
-    if (result == 0) result = solver(*spades, *hearts, *diamonds, *clubs);
+    assert(result==0);
+    fprintf(stderr, "%x %x %x %x\n", *spades, *hearts, *diamonds, *clubs);
+    result = solver(*spades, *hearts, *diamonds, *clubs);
 
 done:
 

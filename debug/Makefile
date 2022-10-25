@@ -18,7 +18,7 @@ backup.o: backup.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 straights.o: straights.c straights.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -DDEBUG $< -o $@
 
 $(OBJECTS): %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@

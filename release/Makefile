@@ -8,13 +8,16 @@ INCLUDE = ../include
 CFLAGS := -O3 -Wall -Wextra -Wpedantic -Wno-unused-result -g -std=c11 -I$(INCLUDE)
 CC := gcc
 
-maverick: maverick.o dance.o backup.o libmaverick.a 
-	$(CC) $(CFLAGS) -pthread -L. maverick.o -lmaverick dance.o backup.o -o $@
+maverick: maverick.o dance.o backup.o straights.o libmaverick.a 
+	$(CC) $(CFLAGS) -pthread -L. maverick.o -lmaverick dance.o backup.o straights.o -o $@
 
 dance.o: dance.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 backup.o: backup.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+straights.o: straights.c straights.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJECTS): %.o : %.c
@@ -46,7 +49,7 @@ dist_9_8_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../incl
 dist_10_7_4_4.o: ../include/types.h ../include/suit4.h ../include/suit4.h ../include/suit10.h ../include/ranks7.h 
 dist_13_9_2_1.o: ../include/types.h ../include/suit13.h ../include/ranks9.h ../include/suit2.h ../include/suit1.h 
 dist_8_8_8_1.o: ../include/types.h ../include/suit8.h ../include/suit8.h ../include/suit8.h ../include/ranks1.h 
-dist_7_7_6_5.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks6.h ../include/suit5.h ../include/straights.h
+dist_7_7_6_5.o: ../include/types.h ../include/suit7.h ../include/suit7.h ../include/ranks6.h ../include/suit5.h 
 dist_9_9_5_2.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks5.h ../include/suit2.h 
 dist_11_8_6_0.o: ../include/types.h ../include/suit11.h ../include/suit8.h ../include/ranks6.h 
 dist_13_8_3_1.o: ../include/types.h ../include/suit13.h ../include/ranks8.h ../include/suit3.h ../include/suit1.h 
@@ -61,7 +64,7 @@ dist_12_8_4_1.o: ../include/types.h ../include/suit12.h ../include/ranks8.h ../i
 dist_9_9_6_1.o: ../include/types.h ../include/suit9.h ../include/suit9.h ../include/ranks6.h ../include/suit1.h 
 dist_10_9_6_0.o: ../include/types.h ../include/suit10.h ../include/suit9.h ../include/ranks6.h 
 dist_10_7_5_3.o: ../include/types.h ../include/suit10.h ../include/ranks7.h ../include/suit5.h ../include/suit3.h 
-dist_7_6_6_6.o: ../include/types.h ../include/ranks7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h ../include/straights.h
+dist_7_6_6_6.o: ../include/types.h ../include/ranks7.h ../include/suit6.h ../include/suit6.h ../include/suit6.h 
 dist_10_6_6_3.o: ../include/types.h ../include/suit6.h ../include/suit6.h ../include/ranks10.h ../include/suit3.h 
 dist_12_9_3_1.o: ../include/types.h ../include/suit12.h ../include/ranks9.h ../include/suit3.h ../include/suit1.h 
 dist_10_8_5_2.o: ../include/types.h ../include/suit10.h ../include/ranks8.h ../include/suit5.h ../include/suit2.h 

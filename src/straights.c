@@ -80,7 +80,9 @@ int hasStraight4(RankSet spades, RankSet hearts, RankSet diamonds, RankSet clubs
           
         k++;
         if (k == 5) {
+#ifdef DEBUG
           fprintf(stderr, "%x %x %x %x %x\n", spades,hearts,diamonds,clubs,straight);
+#endif
           return 1;
         }
         available[k] = cards[k];
@@ -98,7 +100,9 @@ int hasStraight4(RankSet spades, RankSet hearts, RankSet diamonds, RankSet clubs
       k--;
     }
   }
+#ifdef DEBUF
   fprintf(stderr, "%x %x %x %x fail\n", spades, hearts, diamonds, clubs);
+#endif
   return 0;
 }
 
@@ -163,7 +167,9 @@ int hasStraight3(RankSet spades, RankSet hearts, RankSet diamonds) {
           
         k++;
         if (k == 5) {
+#ifdef DEBUG
           fprintf(stderr, "%x %x %x %x\n", spades, hearts, diamonds, straight);
+#endif
           return 1;
         }
         available[k] = cards[k];
@@ -179,6 +185,8 @@ int hasStraight3(RankSet spades, RankSet hearts, RankSet diamonds) {
       k--;
     }
   }
+#ifdef DEBUG
   fprintf(stderr, "%x %x %x fail\n", spades, hearts, diamonds);
+#endif
   return 0;
 }

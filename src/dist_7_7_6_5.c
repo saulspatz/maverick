@@ -6,11 +6,10 @@
 #include "types.h"
 
 extern int backup;
-extern RankSet straights[];
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 int bitcount(RankSet n);
-
+int hasStraight3(RankSet spades, RankSet hearts, RankSet diamonds);
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
 
@@ -80,89 +79,23 @@ void dist_7_7_6_5() {
     else break;
     int result = 0;
     int heur = 0;
-    RankSet intersect = (*spades) & (*hearts) & (*diamonds);
-    int bits = bitcount(intersect);
-    if (bits>=2) result = 5;  //full house
-    else if (bits==1) {
-      if ((*spades & ~intersect) & (*hearts & ~intersect)) {
-        result = 5; 
-        heur = 1;
+    // Since the heuristic tries to make a pat hand without breaking
+    // up the clubs, there's no point in checking again until 
+    // another suit changes
+
+    if (clubs == CLUBS_START) {
+      RankSet intersect = (*spades) & (*hearts) & (*diamonds);
+      int bits = bitcount(intersect);
+      if (bits>=2) heur = 1;  //full house
+      else if (bits==1) {
+        if ((*spades & ~intersect) & (*hearts & ~intersect)) 
+          heur = 1;
       }
-    }
-    else { // look for a straight
-      RankSet join = *spades | *hearts | *diamonds;
-      for (int m = 0; m <10; m++) {
-        if ((join & straights[m]) != straights[m])
-          continue;
-        RankSet straight = straights[m];
-        RankSet s = *spades & straight;
-        RankSet h = *hearts & straight;
-        RankSet d = *diamonds & straight;
-        int bs = bitcount(s);
-        int bh = bitcount(h);
-        int bd = bitcount(d);
-        if ( bs < 2 || bh < 2 || bd < 1)
-          continue;
-        if ( bs == 2 && bd == 2 && (*spades & *hearts) )
-          continue;
-        if ( bs == 2 && bd == 1 && (*spades &  *diamonds))
-          continue;
-        if ( bd == 2 && bd == 1 && (*hearts &  *diamonds))
-          continue;
-        int cards[5];
-        memset(cards, 0, sizeof(cards));
-        // which cards of the straight are in each suit?
-        RankSet st = straight;
-        for (int j = 0; j < 5; j++) {  // for each bit 
-          RankSet st1 = st & (st-1);   // clear lsb
-          RankSet card = st & (~st1);  // isolate the bit
-          st = st1;                    // remaining cards
-          if (s & card) cards[j] |= 4;
-          if (h & card) cards[j] |= 2;
-          if (d & card) cards[j] |= 1;
-        }
-        int available[5];
-        int used[5][3];
-        memset(used, 0, sizeof(used));
-        available[0] = cards[0];
-        int k = 0;
-        while (k >= 0) {
-          while (available[k]) {
-            if (1 & available[k]) {
-              used[k][0] += 1;
-              available[k] &= ~1;
-            }
-            else if (2 & available[k]) {
-              used[k][1] += 1;
-              available[k] &= ~2;
-            }
-            else {
-              used[k][2] += 1;
-              available[k] &= ~4;
-            }
-            k++;
-            if (k == 5) {
-              result = 5;
-              heur = 1;
-              goto done;
-            }
-            available[k] =cards[k];
-            for (int m = 0; m < 3; m++)
-              used[k][m] = used[k-1][m];
-            if (used[k][0]==1)
-              available[k] &= ~1;
-            if (used[k][1]==2)
-              available[k] &= ~2;
-            if (used[k][2]==2)
-              available[k] &= ~4;
-          }
-          k -= 1;
-        }
-      }
+      else  // look for a straight
+        heur = hasStraight3(*spades, *hearts, *diamonds);
+      if (heur) result = 5;
     }
     if ( !result ) result = solver(*spades, *hearts, *diamonds, *clubs);
-
-done:
 
     if (heur == 0) {
       state.exhaustC += 1;

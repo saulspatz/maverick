@@ -66,7 +66,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "-O0",
+                "-Og",
                 "-std=c11",
                 "-Wall",
                 "-Wextra",
@@ -78,9 +78,8 @@
                 "maverick.c",
                 "dance.c",
                 "backup.c",
-                "-L../build",
+                "-L../debug",
                 "-lmaverick"
-
             ],
             "options": {
                 "cwd": "${workspaceFolder}/src"

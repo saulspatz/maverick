@@ -3,11 +3,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <pthread.h>
+#include <assert.h>
 #include "types.h"
 
 extern int backup;
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
+
 
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
@@ -79,9 +81,99 @@ void dist_8_6_6_5() {
       factor = (spades < SYM_START) ? 24 : 12;
     }
     else break;
-    int result = solver(*spades, *hearts, *diamonds, *clubs);
-    state.exhaustC += 1;
-    state.exhaustD += factor;
+
+    int result = 0;
+    int heur = 0;
+
+    // Look for a straight with 3 spades, 1 heart, 1 diamond
+
+    RankSet join = *spades | *hearts | *diamonds;
+    for (int m = 0; m <10; m++) {
+      if ((join & straights[m]) != straights[m])
+        continue;
+      RankSet straight = straights[m];
+      RankSet s = *spades & straight;
+      RankSet h = *hearts & straight;
+      RankSet d = *diamonds & straight;
+      int bs = bitcount(s);
+      int bh = bitcount(h);
+      int bd = bitcount(d);
+      if ( bs < 3 || bh < 1 || bd < 1)
+        continue;
+      if ( bs == 3 && bh == 1 && (*spades & *hearts) )
+        continue;
+      if ( bs == 3 && bd == 1 && (*spades &  *diamonds))
+        continue;
+      if ( bh == 1 && bd == 1 && (*hearts & *diamonds) )
+        continue;
+      int cards[5];
+      memset(cards, 0, sizeof(cards));
+      // which cards of the straight are in each suit?
+      RankSet st = straight;
+      for (int j = 0; j < 5; j++) {  // for each bit 
+        RankSet st1 = st & (st-1);   // clear lsb
+        RankSet card = st & (~st1);  // isolate the bit
+        st = st1;                    // remaining cards
+        if (s & card) cards[j] |= 4;
+        if (h & card) cards[j] |= 2;
+        if (d & card) cards[j] |= 1;
+      }
+      int available[5];
+      int used[5][3];
+      int choice[5];
+      memset(used, 0, sizeof(used));
+      available[0] = cards[0];
+      int k = 0;
+      while (k >= 0) {
+        while (available[k]) {
+          if (1 & available[k]) {
+            used[k][0] += 1;
+            available[k] &= ~1;
+            choice[k] =1;
+          }
+          else if (2 & available[k]) {
+            used[k][1] += 1;
+            available[k] &= ~2;
+            choice[k] = 2;
+          }
+          else  {
+            used[k][2] += 1;
+            available[k] &= ~4;
+            choice[k] =4;
+          }
+          
+          k++;
+          if (k == 5) {
+            result = 5;
+            heur = 1;
+            goto done;
+          }
+          available[k] =cards[k];
+          for (int m = 0; m < 3; m++)
+            used[k][m] = used[k-1][m];
+          if (used[k][0]==1)
+            available[k] &= ~1;
+          if (used[k][1]==1)
+            available[k] &= ~2;
+          if (used[k][2]==3)
+            available[k] &= ~4;
+        }
+        k--;
+      }
+    }
+    assert (result == 0);
+    result = solver(*spades, *hearts, *diamonds, *clubs);
+
+done:
+
+    if (heur == 0) {
+      state.exhaustC += 1;
+      state.exhaustD += factor;
+    } else {
+      state.heurC += 1;
+      state.heurD += factor;
+    }
+ 
     if (result == 5) {
       int skipped = CLUBS_END - clubs;
       state.skipC += skipped;

@@ -7,13 +7,43 @@
 #include "types.h"
 
 extern int backup;
-extern RankSet straights[];
 extern pthread_mutex_t mutex1;
 int solver(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
+int hasStraight4(RankSet spades, RankSet hearts,RankSet diamonds, RankSet clubs);
 int bitcount(RankSet n);
-
 int restoreState(State *state, unsigned long stop);
 void saveState(State *state);
+
+int testFull(RankSet intersect3, RankSet intersect2) {
+  RankSet int1, card;
+  while (intersect3) {
+    int1 = intersect3 & (intersect3-1);  
+    card = intersect3 & (~int1);  // card = least significant 1 bit
+    intersect3 = int1;
+    if (intersect2 & (~card)) 
+      return 1; 
+  }
+  return 0;
+}
+
+int hasFull(RankSet spades, RankSet hearts, RankSet diamonds, RankSet clubs) {
+  RankSet intersect = spades & hearts & diamonds;
+  RankSet intersect2 = spades & clubs;
+  if (testFull(intersect, intersect2)) 
+    return 1;
+  
+  intersect = spades & hearts & clubs;
+  intersect2 = spades & diamonds;
+  if (testFull(intersect, intersect2)) 
+    return 1;
+
+  intersect = spades & diamonds & clubs;
+  intersect2 = spades & hearts;
+  if (testFull(intersect, intersect2)) 
+    return 1;
+
+  return 0;
+}
 
 void dist_7_6_6_6() {
   extern RankSet ranks7[];
@@ -82,138 +112,19 @@ void dist_7_6_6_6() {
       factor = (spades < SYM_START) ? 8 : 4;
     }
     else break;
+
     int result;
-    result = 0;
-    int heur = 0;
 
-    RankSet intersect = *spades & *hearts & *diamonds;
-    RankSet intersect2 = *spades & *clubs;
-    RankSet int1, card;
-    while (intersect) {
-      int1 = intersect & (intersect-1);
-      card = intersect & (~int1);
-      intersect = int1;
-      if (intersect2 & (~card)) {
-        result = 1;
-        heur = 1; 
-        goto done;
-      }
-    }
-
-    intersect = *spades & *hearts & *clubs;
-    intersect2 = *spades & *diamonds;
-    while (intersect) {
-      int1 = intersect & (intersect-1);
-      card = intersect & (~int1);
-      intersect = int1;
-      if (intersect2 & (~card)) {
-        result = 1;
-        heur = 1; 
-        goto done;
-      }
-    }
-
-    intersect = *spades & *diamonds & *clubs;
-    intersect2 = *spades & *hearts;
-    while (intersect) {
-      int1 = intersect & (intersect-1);
-      card = intersect & (~int1);
-      intersect = int1;
-      if (intersect2 & (~card)) {
-        result =1;
-        heur = 1; 
-        goto done;
-      }
-    }
+    int heur = hasFull(*spades, *hearts, *diamonds, *clubs);
     
-    // Check for a straight
-    RankSet join = *spades | *hearts | *diamonds | *clubs;
-    for (int m = 0; m <10; m++) {
-      if ((join & straights[m]) != straights[m])
-        continue;
-      RankSet straight = straights[m];
-      RankSet s = *spades & straight;
-      RankSet h = *hearts & straight;
-      RankSet d = *diamonds & straight;
-      RankSet c = *clubs & straight;
-      int bs = bitcount(s);
-      int bh = bitcount(h);
-      int bd = bitcount(d);
-      int bc = bitcount(c);
-      if ( bs < 2 || bh < 1 || bd < 1 || bc < 1)
-        continue;
-      if ( bs == 2 && bh == 1 && (*spades & *hearts) )
-        continue;
-      if ( bs == 2 && bd == 1 && (*spades &  *diamonds))
-        continue;
-      if ( bs == 2 && bc == 1 && (*spades &  *clubs))
-        continue;
-      if ( bh == 1 && bd == 1 && (*hearts & *diamonds) )
-        continue;
-      if ( bh == 1 && bc == 1 && (*hearts &  *clubs))
-        continue;
-      if ( bd == 2 && bc == 1 && (*diamonds & *clubs))
-        continue;
-      int cards[5];
-      memset(cards, 0, sizeof(cards));
-      // which cards of the straight are in each suit?
-      RankSet st = straight;
-      for (int j = 0; j < 5; j++) {  // for each bit 
-        RankSet st1 = st & (st-1);   // clear lsb
-        RankSet card = st & (~st1);  // isolate the bit
-        st = st1;                    // remaining cards
-        if (s & card) cards[j] |= 8;
-        if (h & card) cards[j] |= 4;
-        if (d & card) cards[j] |= 2;
-        if (c & card) cards[j] |= 1;
-      }
-      int available[5];
-      int used[5][4];
-      memset(used, 0, sizeof(used));
-      available[0] = cards[0];
-      int k = 0;
-      while (k >= 0) {
-        while (available[k]) {
-          if (1 & available[k]) {
-            used[k][0] += 1;
-            available[k] &= ~1;
-          }
-          else if (2 & available[k]) {
-            used[k][1] += 1;
-            available[k] &= ~2;
-          }
-          else if (4 & available[k]) {
-            used[k][2] += 1;
-            available[k] &= ~4;
-          }
-          else {
-            used[k][3] += 1;
-            available[k] &= ~8;
-          }
-          k++;
-          if (k == 5) {
-            result = 1;
-            heur = 1;
-            goto done;
-          }
-          available[k] =cards[k];
-          for (int m = 0; m < 4; m++)
-            used[k][m] = used[k-1][m];
-          if (used[k][0]==1)
-            available[k] &= ~1;
-          if (used[k][1]==1)
-            available[k] &= ~2;
-          if (used[k][2]==1)
-            available[k] &= ~4;
-          if (used[k][3]==2)
-          available[k] &= ~8;
-        }
-        k-=1;
-      }
-    }
-    result = solver(*spades, *hearts, *diamonds, *clubs);
+    fprintf(stderr, "%x %x %x %x full %d\n",   
+       *spades, *hearts, *diamonds, *clubs, heur);
 
-done:
+    if (!heur)
+      heur = hasStraight4(*spades, *hearts, *diamonds, *clubs);
+
+    if (!heur)
+      result = solver(*spades, *hearts, *diamonds, *clubs);
 
     if (heur == 0) {
       state.exhaustC += 1;
@@ -221,6 +132,7 @@ done:
     } else {
       state.heurC += 1;
       state.heurD += factor;
+      result = 1;
     }
 
     if (result == 1) state.solutions += factor;

@@ -91,7 +91,7 @@ void dist_7_7_6_5() {
         if ((*spades & ~intersect) & (*hearts & ~intersect)) 
           heur = 1;
       }
-      else  // look for a straight
+      if (!heur)  // look for a straight
         heur = hasStraight3(*spades, *hearts, *diamonds);
       if (heur) result = 5;
     }

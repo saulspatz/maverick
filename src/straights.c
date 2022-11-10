@@ -100,7 +100,7 @@ int hasStraight4(RankSet spades, RankSet hearts, RankSet diamonds, RankSet clubs
       k--;
     }
   }
-#ifdef DEBUF
+#ifdef DEBUG
   fprintf(stderr, "%x %x %x %x fail\n", spades, hearts, diamonds, clubs);
 #endif
   return 0;

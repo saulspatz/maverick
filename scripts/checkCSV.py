@@ -19,12 +19,13 @@ with open ('classes.txt') as fin:
 
 with open('/home/saul/Desktop/counts.csv', newline='') as fin:
     reader = csv.reader(fin)
-    first = 1
+
     for line in reader:
-        if first:
-            first = 0
-            continue          
-        line[1:8] = [int(k) for k in line[1:8]]
+        if not line[0]: continue
+        if line[0].startswith('D'):continue
+        
+        for k in range(1,8):      
+            line[k] = int(line[k].replace(',',''))
         key = line[0].strip()
         clas = sum(line[1:4])
         part = sum(line[4:7])
